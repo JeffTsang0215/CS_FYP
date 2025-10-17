@@ -1,5 +1,6 @@
 import pygame, random
 
+# draw text on screen
 def text(screen, text, color, size, pos, align="left"):
     text = text.encode("utf-8").decode("utf-8")
     try:
@@ -13,8 +14,10 @@ def text(screen, text, color, size, pos, align="left"):
         text_rect = text_surface.get_rect(center=pos)
         screen.blit(text_surface, text_rect)
 
+# convert romaji to katagana
 def textinput(inp):
     out = []
+    # read input, remove already read character
     while len(inp) != 0:
         try:
             if inp[0] == "a":
@@ -485,13 +488,16 @@ def textinput(inp):
         outstr = outstr + element
     return outstr
 
+#ckeck if pos [x, y] is inside rect_prop [x1, y1, w, h]
 def click_check(pos, rect_prop):
     if rect_prop[0] <= pos[0] and pos[0] <= rect_prop[0]+rect_prop[2]:
         if rect_prop[1] <= pos[1] and pos[1] <= rect_prop[1]+rect_prop[3]:
             return True
     return False
 
+
 def main():
+    #basic set up for pygame
     pygame.init()
     pygame.font.init()
     WIDTH, HEIGHT = 800, 600
@@ -500,6 +506,7 @@ def main():
     pygame.display.set_caption("learn Japanese!")
     clock = pygame.time.Clock()
 
+    # question bank: verb form convertion
     # size: 27
     choose_list = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     not_chosen_list = []
@@ -543,6 +550,7 @@ def main():
     verb_saseru_rareru = ["いらせられる", "行かせられる", "来させられる", "帰らせられる", "出掛けさせられる", "させられる", "食べさせられる", "飲ませられる", "見させられる", "読ませられる", "書かせられる", "聞かせられる", "買わせられる", "起きさせられる", "寝させられる", "乗らせられる", "売らせられる", "降(お)りさせられる", "迎えさせられる", "会わせられる", "働かせられる", "休ませられる", "入らせられる", "出させられる", "着させられる", "履かせられる", "脱がせられる", "座らせられる", "渡らせられる", "通らせられる", "置かせられる", "使わせられる", "刺させられる", "押させられる", "話させられる", "言わせられる", "替えさせられる", "走らせられる", "戻らせられる", "泊まらせられる", "止めさせられる", "教えさせられる", "習わせられる", "泳がせられる", "弾かせられる", "開けさせられる", "閉めさせられる", "付けさせられる", "消させられる", "洗わせられる", "入れさせられる", "取らせられる", "打たせられる", "作らせられる", "焼かせられる", "歩かせられる", "曲げさせられる"]
     verb_saseru_rareru_hira = ["いらせられる", "いかせられる", "こさせられる", "かえらせられる", "でかけさせられる", "させられる", "たべさせられる", "のませられる", "みさせられる", "よませられる", "かかせられる", "きかせられる", "かわせられる", "おきさせられる", "ねさせられる", "のらせられる", "うらせられる", "おりさせられる", "むかえさせられる", "あわせられる", "はたらかせられる", "やすませられる", "はいらせられる", "ださせられる", "きさせられる", "きさせられる", "はかせられる", "ぬがせられる", "すわらせられる", "わたらせられる", "とおらせられる", "おかせられる", "つかわせられる", "させられる", "おさせられる", "はなさせられる", "いわせられる", "かえさせられる", "はさせられる", "もどらせられる", "とまらせられる", "やめさせられる", "おしえさせられる", "ならわせられる", "およがせられる", "ひかせられる", "あけさせられる", "しめさせられる", "つけさせられる", "keさせられる", "あらわせられる", "いれさせられる", "とらせられる", "うたせられる", "つくらせられる", "やかせられる", "あるかせられる", "まげさせられる"]
 
+    # basic initialize of variables for the game loop
     game_state = "menu"
     running = True
     inputArr = ""
@@ -559,6 +567,8 @@ def main():
     temptime = pygame.time.get_ticks()
     score = 0
     prevScore = 0
+
+    # main game loop
     while running:         
         if game_state == "menu":
             for event in pygame.event.get():
@@ -577,10 +587,8 @@ def main():
                     if click_check(pos, [WIDTH/2-128/2, HEIGHT/2-60/2+64, 128, 60]):
                         running = False
 
-            
-
             screen.fill((135, 206, 235))
-            # Title
+            # Title text
             text(screen, "日本語を勉強する", (0, 0, 0), 48, (WIDTH/2, HEIGHT/2 - 64), "center")
 
             # play button
@@ -600,8 +608,10 @@ def main():
             
         if game_state == "start":
             for event in pygame.event.get():
+                # allow close game
                 if event.type == pygame.QUIT:
                     running = False
+                # set up in-game keyboard input
                 if event.type == pygame.KEYDOWN and pause == False:
                     if event.key == pygame.K_a:
                         inputArr = inputArr + 'a'
@@ -828,13 +838,18 @@ def main():
                             
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     pos = pygame.mouse.get_pos()
+                    # all button action will be set up here
                     if click_check(pos, [64-12, 64, 64, 30]):
                         game_state = "menu"
+
+            # game bg color
             screen.fill((135, 206, 235))
 
+            # the game will stop for 1 second after user answered a question, for let them view whether that question is correct or wrong
             if(pygame.time.get_ticks()-temptime>= 1000):
                 pause = False
             else:
+                # draw the correct symbol: O; and wrong symbol: X
                 if score - prevScore == 1:
                     pygame.draw.circle(screen, (255, 50, 50), (WIDTH - 128, HEIGHT/2), 48)
                     pygame.draw.circle(screen, (135, 206, 235), (WIDTH - 128, HEIGHT/2), 32)
@@ -842,11 +857,9 @@ def main():
                     pygame.draw.line(screen, (255, 50, 50), [WIDTH - 128-48, HEIGHT/2-48], [WIDTH - 128+48, HEIGHT/2+48], 16)
                     pygame.draw.line(screen, (255, 50, 50), [WIDTH - 128+48, HEIGHT/2-48], [WIDTH - 128-48, HEIGHT/2+48], 16)
 
-            #heart
+            # draw heart, here use screen blit to paste a pygame.Surface to screen. transparent png image must use this.
             for i in range(no_of_heart):
                 screen.blit(heart, (128 + 32 * i, 120))
-
-            # print(pause, no_of_heart)
 
             # back button
             text_input_box = pygame.draw.rect(screen, (20, 20, 20), [64-12, 64, 64, 30])
@@ -873,10 +886,7 @@ def main():
                 choose_list[choise] = 1
                 inputing = True
 
-            # question box
-            # text_input_box = pygame.draw.rect(screen, (200, 200, 200), [200, 180, 400, 64])
-            # text_input_box = pygame.draw.rect(screen, (20, 20, 20), [202, 182, 396, 60])
-            
+            # let variable verb be the answer            
             if kara == "jisyo":
                 verb = verb_ru[choise]
             elif kara == "masu":
@@ -906,15 +916,17 @@ def main():
             elif kara == "siyiksausan":
                 verb = verb_saseru_rareru[choise]
 
+            # draw the question text on screen
             if(pause):
                 text(screen, str(qs_answered) + ") " + verb, (0, 0, 0), 24, (206, 186))
-
             else:
                 text(screen, str(qs_answered+1) + ") " + verb, (0, 0, 0), 24, (206, 186))
 
             # score text
             text(screen, "スコア: " + str(score), (0, 0, 0), 24, (550, 120))
 
+
+            # players' goal is to convert verb in <text1> form into <text2> form, and this is just converting romaji into kanji
             text1 = ""
             if kara == "jisyo":
                 text1 = "辞書形"
@@ -975,14 +987,16 @@ def main():
             elif made == "siyiksausan":
                 text2 = "使役受身形"
 
+            # show text on screen: from <text1>, to <text2>
             text(screen, text1 + "から、" + text2 + "まで", (0, 0, 0), 48, (128, 64))
 
+            # change game state after win or lose
             if no_of_heart <= 0 and pause == False:
                 game_state = "lost"
             elif qs_answered >= no_of_qs and pause == False:
                 game_state = "showScore"
 
-
+        # game state for seleting stage: from <text1>
         if game_state == "select_kara":
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -1091,6 +1105,7 @@ def main():
 
             text(screen, "から", (0, 0, 0), 48, (128+270+135+64, 128+30+128), "center")
 
+        # game state for seleting stage: to <text2>
         if game_state == "select_made":
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -1229,6 +1244,7 @@ def main():
                 text1 = "使役受身形"
             text(screen, text1 + "から、", (0, 0, 0), 48, (128, 64))
 
+        # difficulty selection
         if game_state == "chooseNumOfQs":
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -1325,6 +1341,8 @@ def main():
 
             text(screen, text1 + "から、" + text2 + "まで", (0, 0, 0), 48, (128, 64))
 
+
+        # this is game state of winning the game
         if game_state == "showScore":
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -1344,6 +1362,7 @@ def main():
             text_input_box = pygame.draw.rect(screen, (140, 235, 52), [WIDTH/2-128/2+2, HEIGHT/2-60/2+2+128, 128-4, 60-4])
             text(screen, "戻る", (0, 0, 0), 24, (WIDTH/2, HEIGHT/2+128), "center")
 
+        # this is game state for losing the game
         if game_state == "lost":
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -1367,5 +1386,7 @@ def main():
         clock.tick(60)
         pygame.display.update()
 
+
+# run the game
 if __name__ == "__main__":
     main()
