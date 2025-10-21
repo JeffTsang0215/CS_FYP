@@ -1,10 +1,10 @@
-import pygame, random
+import pygame, random, os
 
 # draw text on screen
 def text(screen, text, color, size, pos, align="left"):
     text = text.encode("utf-8").decode("utf-8")
     try:
-        my_font = pygame.font.Font('media/BIZ-UDMinchoM.ttc', size)
+        my_font = pygame.font.Font('media/LXGWMarkerGothic-Regular.ttf', size)
     except Exception:
         my_font = pygame.font.Font(pygame.font.get_default_font(), size)
     text_surface = my_font.render(text, True, color)
@@ -500,11 +500,14 @@ def main():
     #basic set up for pygame
     pygame.init()
     pygame.font.init()
-    WIDTH, HEIGHT = 800, 600
+    WIDTH, HEIGHT = 1440, 960
+    
+    os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % ((pygame.display.get_desktop_sizes()[0][0]-WIDTH)/2, 20)
     
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("learn Japanese!")
     clock = pygame.time.Clock()
+    fps = 60
 
     # question bank: verb form convertion
     # size: 27
@@ -551,7 +554,7 @@ def main():
     verb_saseru_rareru_hira = ["いらせられる", "いかせられる", "こさせられる", "かえらせられる", "でかけさせられる", "させられる", "たべさせられる", "のませられる", "みさせられる", "よませられる", "かかせられる", "きかせられる", "かわせられる", "おきさせられる", "ねさせられる", "のらせられる", "うらせられる", "おりさせられる", "むかえさせられる", "あわせられる", "はたらかせられる", "やすませられる", "はいらせられる", "ださせられる", "きさせられる", "きさせられる", "はかせられる", "ぬがせられる", "すわらせられる", "わたらせられる", "とおらせられる", "おかせられる", "つかわせられる", "させられる", "おさせられる", "はなさせられる", "いわせられる", "かえさせられる", "はさせられる", "もどらせられる", "とまらせられる", "やめさせられる", "おしえさせられる", "ならわせられる", "およがせられる", "ひかせられる", "あけさせられる", "しめさせられる", "つけさせられる", "keさせられる", "あらわせられる", "いれさせられる", "とらせられる", "うたせられる", "つくらせられる", "やかせられる", "あるかせられる", "まげさせられる"]
 
     # basic initialize of variables for the game loop
-    game_state = "menu"
+    game_state = "story"
     running = True
     inputArr = ""
     outputArr = ""
@@ -567,46 +570,121 @@ def main():
     temptime = pygame.time.get_ticks()
     score = 0
     prevScore = 0
+    time = 0
+    images = [
+        pygame.transform.scale(pygame.image.load("media/dungeon_crystal_1.png"), [WIDTH, HEIGHT]),  # 0
+        pygame.transform.scale(pygame.image.load("media/title_text.png"), [816, 144]),              # 1
+        pygame.transform.scale(pygame.image.load("media/press_to_start.png"), [269, 36]),           # 2
+        pygame.transform.scale(pygame.image.load("media/forest_1.png"), [WIDTH, HEIGHT]),           # 3
+        pygame.transform.scale(pygame.image.load("media/main_char.png"), [640, 768]),               # 4
+        pygame.transform.scale(pygame.image.load("media/teacher_no_glasses.png"), [517, 680]),      # 5
+        pygame.transform.scale(pygame.image.load("media/skip.png"), [310, 80]),                     # 6
+        pygame.transform.scale(pygame.image.load("media/main_char_gray.png"), [640, 768]),          # 7
+        pygame.transform.scale(pygame.image.load("media/teacher_no_glasses_gray.png"), [517, 680]), # 8
+        pygame.transform.scale(pygame.image.load("media/forest_1.png"), [269, 36]),                 # 7
+        pygame.transform.scale(pygame.image.load("media/forest_1.png"), [269, 36]),                 # 8
+        pygame.transform.scale(pygame.image.load("media/forest_1.png"), [269, 36]),                 # 9
+
+    ]
+
+    dialog = [
+        [
+            "？？？：\nおいおい！起[お]きろ！",
+            "赤真：\n什麼？我在哪裡？那個女孩在說什麼？",
+            "？？？：\n終於醒了。這裡是春日森林，我在旁邊路過就看到你\n躺在這裡。",
+            "莉子：\n我叫莉子[りこ]，你還記得你的名字嗎？\n（幸好我在學校學過中文..."
+        ],
+    ]
+    # 0: both gray; 1: left talking; 2: right talking; 3: both talking
+    talking = [
+        [
+            2,
+            1,
+            2,
+            2
+        ]
+    ]
+    story_num = 0
+    dialog_num = 0
+    
+    s = pygame.Surface((WIDTH,HEIGHT))
+    s.fill((0,0,0))
 
     # main game loop
-    while running:         
+    while running: 
         if game_state == "menu":
+
+            # BG image
+            screen.blit(images[0], (0, 0))
+
+            # Title text
+            r = images[1].get_rect()
+            r.center = screen.get_rect().center
+            screen.blit(images[1], r)
+
+            # play button
+            screen.blit(images[2], (586, 787))
+            
+            if(time != 0):
+                time += 1
+                s.set_alpha(int(time/fps/2*255))
+                screen.blit(s, (0,0))
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
+                if event.type == pygame.KEYDOWN:
+                    if (time == 0):
+                        time += 1
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    pos = pygame.mouse.get_pos()
-                    if click_check(pos, [WIDTH/2-128/2, HEIGHT/2-60/2, 128, 60]):
-                        inputing = False
-                        qs_answered = 0
-                        score = 0
-                        inputArr = ""
-                        outputArr = ""
-                        game_state = "select_kara"
-                        no_of_heart = 3
-                    if click_check(pos, [WIDTH/2-128/2, HEIGHT/2-60/2+64, 128, 60]):
-                        running = False
+                    if pygame.mouse.get_pressed()[0] or pygame.mouse.get_pressed()[2]:
+                        if (time == 0):
+                            time += 1
 
-            screen.fill((135, 206, 235))
-            # Title text
-            text(screen, "日本語を勉強する", (0, 0, 0), 48, (WIDTH/2, HEIGHT/2 - 64), "center")
-
-            # play button
-            text_input_box = pygame.draw.rect(screen, (20, 20, 20), [WIDTH/2-128/2, HEIGHT/2-60/2, 128, 60])
-            text_input_box = pygame.draw.rect(screen, (140, 235, 52), [WIDTH/2-128/2+2, HEIGHT/2-60/2+2, 128-4, 60-4])
-            text(screen, "遊ぶ", (0, 0, 0), 24, (WIDTH/2, HEIGHT/2), "center")
-
-            # end button
-            text_input_box = pygame.draw.rect(screen, (20, 20, 20), [WIDTH/2-128/2, HEIGHT/2-60/2+64, 128, 60])
-            text_input_box = pygame.draw.rect(screen, (140, 235, 52), [WIDTH/2-128/2+2, HEIGHT/2-60/2+2+64, 128-4, 60-4])
-            text(screen, "終了", (0, 0, 0), 24, (WIDTH/2, HEIGHT/2+64), "center")
-
-            # option button?
-            # text_input_box = pygame.draw.rect(screen, (20, 20, 20), [WIDTH/2-128/2, HEIGHT/2-60/2+128, 128, 60])
-            # text_input_box = pygame.draw.rect(screen, (140, 235, 52), [WIDTH/2-128/2+2, HEIGHT/2-60/2+2+128, 128-4, 60-4])
-            # text(screen, "終了", (0, 0, 0), 24, (WIDTH/2, HEIGHT/2+128), "center")
+            if(time > fps*2):
+                game_state = "story"
+                story_num = 0
+                dialog_num = 0
+                
             
-        if game_state == "start":
+        if game_state == "story":
+            screen.blit(images[3], (0, 0))
+
+            if talking[story_num][dialog_num] == 1 or talking[story_num][dialog_num] == 3:
+                screen.blit(images[4], (-139, 218))
+            else:
+                screen.blit(images[7], (-139, 218))
+
+            if talking[story_num][dialog_num] == 2 or talking[story_num][dialog_num] == 3:
+                screen.blit(images[5], (1013, 280))
+            else:
+                screen.blit(images[8], (1013, 280))
+
+            screen.blit(images[6], (1111, 35))
+            
+            pygame.draw.rect(screen, pygame.Color("#e8e8e8"), [123, 766, 1193, 184], border_radius=5)
+
+            if dialog_num == len(dialog[story_num]):
+                game_state = "playing"
+            else:
+                text(screen, dialog[story_num][dialog_num], (0, 0, 0), 48, [153, 776])
+
+
+            for event in pygame.event.get():
+                # allow close game
+                if event.type == pygame.QUIT:
+                    running = False
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if pygame.mouse.get_pressed()[0]:
+                        if click_check(pygame.mouse.get_pos(), [1111, 35, images[6].get_width(), images[6].get_height()]):
+                            dialog_num = len(dialog[story_num])
+                        else:
+                            dialog_num += 1
+            
+            
+
+
+        if game_state == "playing":
             for event in pygame.event.get():
                 # allow close game
                 if event.type == pygame.QUIT:
@@ -1383,7 +1461,7 @@ def main():
             text_input_box = pygame.draw.rect(screen, (140, 235, 52), [WIDTH/2-128/2+2, HEIGHT/2-60/2+2+128, 128-4, 60-4])
             text(screen, "戻る", (0, 0, 0), 24, (WIDTH/2, HEIGHT/2+128), "center")
 
-        clock.tick(60)
+        clock.tick(fps)
         pygame.display.update()
 
 
