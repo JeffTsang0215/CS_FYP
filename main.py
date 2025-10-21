@@ -14,6 +14,20 @@ def text(screen, text, color, size, pos, align="left"):
         text_rect = text_surface.get_rect(center=pos)
         screen.blit(text_surface, text_rect)
 
+def text_sp(screen, text, color, size, pos, alpla, align="left"):
+    text = text.encode("utf-8").decode("utf-8")
+    try:
+        my_font = pygame.font.Font('media/YujiSyuku-Regular.ttf', size)
+    except Exception:
+        my_font = pygame.font.Font(pygame.font.get_default_font(), size)
+    text_surface = my_font.render(text, True, color)
+    text_surface.set_alpha(alpla)
+    if align == "left":
+        screen.blit(text_surface, pos)
+    elif align == "center" or align == "centre":
+        text_rect = text_surface.get_rect(center=pos)
+        screen.blit(text_surface, text_rect)
+
 # convert romaji to katagana
 def textinput(inp):
     out = []
@@ -554,7 +568,7 @@ def main():
     verb_saseru_rareru_hira = ["いらせられる", "いかせられる", "こさせられる", "かえらせられる", "でかけさせられる", "させられる", "たべさせられる", "のませられる", "みさせられる", "よませられる", "かかせられる", "きかせられる", "かわせられる", "おきさせられる", "ねさせられる", "のらせられる", "うらせられる", "おりさせられる", "むかえさせられる", "あわせられる", "はたらかせられる", "やすませられる", "はいらせられる", "ださせられる", "きさせられる", "きさせられる", "はかせられる", "ぬがせられる", "すわらせられる", "わたらせられる", "とおらせられる", "おかせられる", "つかわせられる", "させられる", "おさせられる", "はなさせられる", "いわせられる", "かえさせられる", "はさせられる", "もどらせられる", "とまらせられる", "やめさせられる", "おしえさせられる", "ならわせられる", "およがせられる", "ひかせられる", "あけさせられる", "しめさせられる", "つけさせられる", "keさせられる", "あらわせられる", "いれさせられる", "とらせられる", "うたせられる", "つくらせられる", "やかせられる", "あるかせられる", "まげさせられる"]
 
     # basic initialize of variables for the game loop
-    game_state = "story"
+    game_state = "menu"
     running = True
     inputArr = ""
     outputArr = ""
@@ -581,29 +595,45 @@ def main():
         pygame.transform.scale(pygame.image.load("media/skip.png"), [310, 80]),                     # 6
         pygame.transform.scale(pygame.image.load("media/main_char_gray.png"), [640, 768]),          # 7
         pygame.transform.scale(pygame.image.load("media/teacher_no_glasses_gray.png"), [517, 680]), # 8
-        pygame.transform.scale(pygame.image.load("media/forest_1.png"), [269, 36]),                 # 7
-        pygame.transform.scale(pygame.image.load("media/forest_1.png"), [269, 36]),                 # 8
-        pygame.transform.scale(pygame.image.load("media/forest_1.png"), [269, 36]),                 # 9
-
     ]
 
     dialog = [
         [
-            "？？？：\nおいおい！起[お]きろ！",
-            "赤真：\n什麼？我在哪裡？那個女孩在說什麼？",
-            "？？？：\n終於醒了。這裡是春日森林，我在旁邊路過就看到你\n躺在這裡。",
-            "莉子：\n我叫莉子[りこ]，你還記得你的名字嗎？\n（幸好我在學校學過中文..."
+            (2, "？？？：\nおいおい！起[お]きろ！"),
+            (1, "？？？：\n什麼？我在哪裡？那個女孩在說什麼？"),
+            (2, "？？？：\n終於醒了。這裡是春日森林，我在旁邊路過就看到你\n躺在這裡。"),
+            (2, "莉子：\n我叫莉子[りこ]，你還記得你的名字嗎？\n（幸好我在學校學過中文..."),
+            (1, "赤真：\n我好像叫赤真。春日森林...是在日本嗎？"),
+            (2, "莉子：\n日本？這裡是東瀛喔！\n我從未聽說過你所說的日本呢。（難道他失憶了？"),
+            (1, "赤真：\n欸欸欸？！難道我像漫畫中一樣穿越到異世界了嗎？？"),
+            (2, "莉子：\n什麼是漫畫？異世界？"),
+            (1, "赤真：\n沒什麼！（看來是真的了，\n我的宅男之夢終於成真了！！"),
+            (2, "莉子：\n。。。"),
+            (1, "赤真：\n請問你知道冒險者、魔物、魔法嗎？（期待"),
+            (2, "莉子：\n看來你沒有失憶呢。沒錯，本小姐正是\nD級冒險者，剛接下討伐史萊姆的任務！"),
+            (1, "赤真：\n史萊姆！！你要如何跟史萊姆戰鬥？"),
+            (2, "莉子：\n我用的是言靈魔法啊！你呢？"),
+            (1, "赤真：\n言靈魔法聽起來很酷呢！我也能用魔法嗎？"),
+            (2, "莉子：\n你不會用魔法嗎？讓本小姐教你吧！"),
+            (2, "莉子：\n言靈魔法需要東瀛語來發動，最初階的言靈魔法是\n「五十音」。"),
+            (3, "*作者：本作中的東瀛語=日語"),
+            (2, "莉子：\n雖然比較難理解，但是「五十音」不只有50個音喔！"),
+            (2, "莉子：\n不管了，讓我先開始教你吧！"),
+            (2, "莉子：\n先記下這5個音。\n「あ」a、「い」i、「う」u、「え」e、「お」o"),
+            (1, "赤真：\n「あ」a、「い」i、「う」u、「え」e、「お」o\n。。。"),
+            (1, "赤真：\n這五個音有什麼意思嗎？"),
+            (2, "莉子：\n單獨來看的話沒有什麼意思，\n要組成詞語和句子才有意思喔！"),
+            (1, "赤真：\n原來如此。我先試試看。"),
+            (1.1, "赤真：\n<あ>！"),
+            (2, "莉子：\n嘩，真厲害！只教了你一次就發動成功了！\n本小姐教得真好！（嘿嘿！成功得到一個免費打手～"),
+            (2, "莉子：\n看那邊！那裡有隻史萊姆，立刻實戰一下吧！"),
+            (1, "赤真：\n等...等一下！能再說多次那5個音嗎？"),
+            (2, "莉子：\n真拿你沒辦法～ 聽好了哦！\n「あ」a、「い」i、「う」u、「え」e、「お」o"),
+            (2, "莉子：\n準備好了嗎？"),
+            (1, "赤真：\n準備好了！來吧！")
         ],
     ]
     # 0: both gray; 1: left talking; 2: right talking; 3: both talking
-    talking = [
-        [
-            2,
-            1,
-            2,
-            2
-        ]
-    ]
     story_num = 0
     dialog_num = 0
     
@@ -645,44 +675,59 @@ def main():
                 game_state = "story"
                 story_num = 0
                 dialog_num = 0
+                time = 0
                 
             
         if game_state == "story":
-            screen.blit(images[3], (0, 0))
-
-            if talking[story_num][dialog_num] == 1 or talking[story_num][dialog_num] == 3:
-                screen.blit(images[4], (-139, 218))
-            else:
-                screen.blit(images[7], (-139, 218))
-
-            if talking[story_num][dialog_num] == 2 or talking[story_num][dialog_num] == 3:
-                screen.blit(images[5], (1013, 280))
-            else:
-                screen.blit(images[8], (1013, 280))
-
-            screen.blit(images[6], (1111, 35))
-            
-            pygame.draw.rect(screen, pygame.Color("#e8e8e8"), [123, 766, 1193, 184], border_radius=5)
-
             if dialog_num == len(dialog[story_num]):
-                game_state = "playing"
+                time = 0
+                game_state = "menu"
             else:
-                text(screen, dialog[story_num][dialog_num], (0, 0, 0), 48, [153, 776])
+                # BG image
+                screen.blit(images[3], (0, 0))
 
+                # left character
+                talking = int(dialog[story_num][dialog_num][0])
+                if talking == 1 or talking == 0:
+                    screen.blit(images[4], (-139, 218))
+                else:
+                    screen.blit(images[7], (-139, 218))
 
-            for event in pygame.event.get():
-                # allow close game
-                if event.type == pygame.QUIT:
-                    running = False
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    if pygame.mouse.get_pressed()[0]:
-                        if click_check(pygame.mouse.get_pos(), [1111, 35, images[6].get_width(), images[6].get_height()]):
-                            dialog_num = len(dialog[story_num])
-                        else:
-                            dialog_num += 1
-            
-            
+                # right character
+                if talking == 2 or talking == 0:
+                    screen.blit(images[5], (1013, 280))
+                else:
+                    screen.blit(images[8], (1013, 280))
 
+                # skip button
+                screen.blit(images[6], (1111, 35))
+
+                # dialog box
+                pygame.draw.rect(screen, pygame.Color("#e8e8e8"), [123, 766, 1193, 184], border_radius=5)
+                text(screen, dialog[story_num][dialog_num][1], (0, 0, 0), 48, [153, 776])
+
+                # effect
+                if (dialog[story_num][dialog_num][0] == 1.1):
+                    if(time > 0):
+                        time += 1
+                        text_sp(screen, "あ", (120, 0, 0), 200, [WIDTH/2, HEIGHT/2], int((fps*2-time)/(fps*2)*255), "center")
+                    elif(time >= fps*2):
+                        time = 0
+                    
+
+                for event in pygame.event.get():
+                    # allow close game
+                    if event.type == pygame.QUIT:
+                        running = False
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        if pygame.mouse.get_pressed()[0]:
+                            if click_check(pygame.mouse.get_pos(), [1111, 35, images[6].get_width(), images[6].get_height()]):
+                                dialog_num = len(dialog[story_num])
+                            else:
+                                dialog_num += 1
+                                if dialog_num != len(dialog[story_num]):
+                                    if dialog[story_num][dialog_num][0] == 1.1:
+                                        time = 1
 
         if game_state == "playing":
             for event in pygame.event.get():
