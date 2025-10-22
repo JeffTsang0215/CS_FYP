@@ -595,8 +595,10 @@ def main():
         pygame.transform.scale(pygame.image.load("media/skip.png"), [310, 80]),                     # 6
         pygame.transform.scale(pygame.image.load("media/main_char_gray.png"), [640, 768]),          # 7
         pygame.transform.scale(pygame.image.load("media/teacher_no_glasses_gray.png"), [517, 680]), # 8
+        pygame.transform.scale(pygame.image.load("media/purple_slime_1.png"), [532, 572]),          # 9
     ]
 
+    # 基礎言靈魔法表示: <あ>
     dialog = [
         [
             (2, "？？？：\nおいおい！起[お]きろ！"),
@@ -637,6 +639,37 @@ def main():
     story_num = 0
     dialog_num = 0
     
+
+    # question type: MC, Drag, input
+    battle_detail = [
+        # 0
+        {
+            "question_type": "MC",
+            "question": ["あ","い","う","え","お"],
+            "answer": {
+                "あ": ("a", ["a", "i", "u", "e"]),
+                "い": ("i", ["i", "u", "e", "o"]),
+                "う": ("u", ["u", "e", "o", "a"]),
+                "え": ("e", ["e", "o", "a", "i"]),
+                "お": ("o", ["o", "a", "i", "u"])
+            },
+            "num_of_qs": 10,
+            "order": [],
+            "enemy_surf": pygame.transform.flip(images[9], flip_x=True, flip_y=False)
+            
+        }
+    ]
+    player_hp = 100
+    enemy_hp = 100
+    stage = 0
+    question_num = 0
+    
+    def battle_hp_init():
+        player_hp = 100
+        enemy_hp = 100
+        battle_detail[stage]["order"] = [random.randint(0, len(battle_detail[stage]["question"])-1) for _ in range(battle_detail[stage]["num_of_qs"])]
+        question_num = 0
+
     s = pygame.Surface((WIDTH,HEIGHT))
     s.fill((0,0,0))
 
@@ -681,7 +714,19 @@ def main():
         if game_state == "story":
             if dialog_num == len(dialog[story_num]):
                 time = 0
-                game_state = "menu"
+
+                # inputing = False
+                # qs_answered = 0
+                # score = 0
+                # inputArr = ""
+                # outputArr = ""
+                # game_state = "select_kara"
+                # no_of_heart = 3
+
+                game_state = "playing"
+                battle_hp_init()
+                stage = 0
+                random.shuffle(battle_detail[stage]["answer"][battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]]][1])
             else:
                 # BG image
                 screen.blit(images[3], (0, 0))
@@ -730,394 +775,441 @@ def main():
                                         time = 1
 
         if game_state == "playing":
-            for event in pygame.event.get():
-                # allow close game
-                if event.type == pygame.QUIT:
-                    running = False
-                # set up in-game keyboard input
-                if event.type == pygame.KEYDOWN and pause == False:
-                    if event.key == pygame.K_a:
-                        inputArr = inputArr + 'a'
-                    if event.key == pygame.K_b:
-                        inputArr = inputArr + 'b'
-                    if event.key == pygame.K_c:
-                        inputArr = inputArr + 'c'
-                    if event.key == pygame.K_d:
-                        inputArr = inputArr + 'd'
-                    if event.key == pygame.K_e:
-                        inputArr = inputArr + 'e'
-                    if event.key == pygame.K_f:
-                        inputArr = inputArr + 'f'
-                    if event.key == pygame.K_g:
-                        inputArr = inputArr + 'g'
-                    if event.key == pygame.K_h:
-                        inputArr = inputArr + 'h'
-                    if event.key == pygame.K_i:
-                        inputArr = inputArr + 'i'
-                    if event.key == pygame.K_j:
-                        inputArr = inputArr + 'j'
-                    if event.key == pygame.K_k:
-                        inputArr = inputArr + 'k'
-                    if event.key == pygame.K_l:
-                        inputArr = inputArr + 'l'
-                    if event.key == pygame.K_m:
-                        inputArr = inputArr + 'm'
-                    if event.key == pygame.K_n:
-                        inputArr = inputArr + 'n'
-                    if event.key == pygame.K_o:
-                        inputArr = inputArr + 'o'
-                    if event.key == pygame.K_p:
-                        inputArr = inputArr + 'p'
-                    if event.key == pygame.K_q:
-                        inputArr = inputArr + 'q'
-                    if event.key == pygame.K_r:
-                        inputArr = inputArr + 'r'
-                    if event.key == pygame.K_s:
-                        inputArr = inputArr + 's'
-                    if event.key == pygame.K_t:
-                        inputArr = inputArr + 't'
-                    if event.key == pygame.K_u:
-                        inputArr = inputArr + 'u'
-                    if event.key == pygame.K_v:
-                        inputArr = inputArr + 'v'
-                    if event.key == pygame.K_w:
-                        inputArr = inputArr + 'w'
-                    if event.key == pygame.K_x:
-                        inputArr = inputArr + 'x'
-                    if event.key == pygame.K_y:
-                        inputArr = inputArr + 'y'
-                    if event.key == pygame.K_z:
-                        inputArr = inputArr + 'z'
-                    if event.key == pygame.K_BACKSPACE:
-                        inputArr = inputArr[:-1]
-                    outputArr = textinput(inputArr)
-                    if event.key == pygame.K_RETURN:
-                        temptime = pygame.time.get_ticks()
-                        pause = True
-                        inputing = False
-                        qs_answered += 1
-                        # check()
-                        prevScore = score
-                        if made == "jisyo" and outputArr == verb_ru_hira[choise]:
-                            score += 1
-                        elif made == "masu" and outputArr == verb_masu_hira[choise]:
-                            score += 1
-                        elif made == "te" and outputArr == verb_te_hira[choise]:
-                            score += 1
-                        elif made == "ta" and outputArr == verb_ta_hira[choise]:
-                            score += 1
-                        elif made == "nai" and outputArr == verb_nai_hira[choise]:
-                            score += 1
+            if battle_detail[stage]["question_type"] == "MC":
+                # BG image
+                screen.blit(images[3], (0, 0))
 
-                        elif made == "kanou" and outputArr == verb_kanou_hira[choise]:
-                            score += 1
-                        elif made == "tiugin" and outputArr == verb_ba_hira[choise]:
-                            score += 1
-                        elif made == "mingling" and outputArr == verb_ro_hira[choise]:
-                            score += 1
-                        elif made == "jiheung" and outputArr == verb_ikou_hira[choise]:
-                            score += 1
-                        elif made == "gamji" and outputArr == verb_na_hira[choise]:
-                            score += 1
+                # right character
+                screen.blit(pygame.transform.flip(images[4], flip_x=True, flip_y=False), (959, 263))
+                pygame.draw.rect(screen, pygame.Color("#d9d9d9"), [1130, 0, 310, 80])
+                text(screen, "HP", (0, 0, 0), 24, [1158, 22])
+                pygame.draw.rect(screen, (0, 0, 0), [1209, 34, 204, 13])
+                pygame.draw.rect(screen, (255, 0, 0), [1209, 34, player_hp/100*204, 13])
+                
 
-                        elif made == "sausan" and outputArr == verb_rareru_hira[choise]:
-                            score += 1
-                        elif made == "siyik" and outputArr == verb_saseru_hira[choise]:
-                            score += 1
-                        elif made == "siyiksausan" and outputArr == verb_saseru_rareru_hira[choise]:
-                            score += 1
+                # left enemy
+                screen.blit(battle_detail[stage]["enemy_surf"], (-51, 100))
+                pygame.draw.rect(screen, pygame.Color("#d9d9d9"), [0, 0, 310, 80])
+                text(screen, "HP", (0, 0, 0), 24, [28, 22])
+                pygame.draw.rect(screen, (0, 0, 0), [79, 34, 204, 13])
+                pygame.draw.rect(screen, (255, 0, 0), [79, 34, enemy_hp/100*204, 13])
 
-                        screen.fill((135, 206, 235))
+                pygame.draw.rect(screen, pygame.Color("#d9d9d9"), [324, 552, 791, 408])
+                pygame.draw.rect(screen, pygame.Color("#ececec"), [407, 729, 194, 94])
+                pygame.draw.rect(screen, pygame.Color("#ececec"), [840, 729, 194, 94])
+                pygame.draw.rect(screen, pygame.Color("#ececec"), [407, 842, 194, 94])
+                pygame.draw.rect(screen, pygame.Color("#ececec"), [840, 842, 194, 94])
 
-                        # back button
-                        text_input_box = pygame.draw.rect(screen, (20, 20, 20), [64-12, 64, 64, 30])
-                        text_input_box = pygame.draw.rect(screen, (140, 235, 52), [66-12, 66, 64-4, 30-4])
-                        text(screen, "戻る", (0, 0, 0), 16, (64+64/2-12, 64+32/2), "center")
+                text(screen, battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]], (0, 0, 0), 64, [688, 601], "center")
+                
+                text(screen, battle_detail[stage]["answer"][battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]]][1][0], (0, 0, 0), 64, [504, 776], "center")
+                text(screen, battle_detail[stage]["answer"][battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]]][1][1], (0, 0, 0), 64, [937, 776], "center")
+                text(screen, battle_detail[stage]["answer"][battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]]][1][2], (0, 0, 0), 64, [504, 889], "center")
+                text(screen, battle_detail[stage]["answer"][battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]]][1][3], (0, 0, 0), 64, [937, 889], "center")
 
-                        # input box (english)
-                        text_input_box = pygame.draw.rect(screen, (200, 200, 200), [200, 250, 400, 64])
-                        text_input_box = pygame.draw.rect(screen, (20, 20, 20), [202, 252, 396, 60])
-                        text(screen, inputArr, (255, 255, 255), 24, (206, 256))
-
-                        # input box (japanese)
-                        text_input_box = pygame.draw.rect(screen, (200, 200, 200), [200, 250 + 96, 400, 64])
-                        text_input_box = pygame.draw.rect(screen, (20, 20, 20), [202, 252 + 96, 396, 60])
-                        text(screen, outputArr, (255, 255, 255), 24, (206, 256 + 96))
-
-                        if kara == "jisyo":
-                            verb = verb_ru[choise]
-                        elif kara == "masu":
-                            verb = verb_masu[choise]
-                        elif kara == "te":
-                            verb = verb_te[choise]
-                        elif kara == "ta":
-                            verb = verb_ta[choise]
-                        elif kara == "nai":
-                            verb = verb_nai[choise]
-
-                        elif kara == "kanou":
-                            verb = verb_kanou[choise]
-                        elif kara == "tiugin":
-                            verb = verb_ba[choise]
-                        elif kara == "mingling":
-                            verb = verb_ro[choise]
-                        elif kara == "jiheung":
-                            verb = verb_ikou[choise]
-                        elif kara == "gamji":
-                            verb = verb_na[choise]
-
-                        elif kara == "sausan":
-                            verb = verb_rareru[choise]
-                        elif kara == "siyik":
-                            verb = verb_saseru[choise]
-                        elif kara == "siyiksausan":
-                            verb = verb_saseru_rareru[choise]
-                            
-                        text(screen, str(qs_answered) + ") " + verb, (0, 0, 0), 24, (206, 186))
-                        text(screen, "スコア: " + str(score), (0, 0, 0), 24, (550, 120))
-
-                        text1 = ""
-                        if kara == "jisyo":
-                            text1 = "辞書形"
-                        elif kara == "masu":
-                            text1 = "ます形"
-                        elif kara == "te":
-                            text1 = "て形"
-                        elif kara == "ta":
-                            text1 = "た形"
-                        elif kara == "nai":
-                            text1 = "ない形"
-
-                        elif kara == "kanou":
-                            text1 = "可能形"
-                        elif kara == "tiugin":
-                            text1 = "条件形"
-                        elif kara == "mingling":
-                            text1 = "命令形"
-                        elif kara == "jiheung":
-                            text1 = "意向形"
-                        elif kara == "gamji":
-                            text1 = "禁止形"
-
-                        elif kara == "sausan":
-                            text1 = "受身形"
-                        elif kara == "siyik":
-                            text1 = "使役形"
-                        elif kara == "siyiksausan":
-                            text1 = "使役受身形"
-
-                        text2 = ""
-                        if made == "jisyo":
-                            text2 = "辞書形"
-                        elif made == "masu":
-                            text2 = "ます形"
-                        elif made == "te":
-                            text2 = "て形"
-                        elif made == "ta":
-                            text2 = "た形"
-                        elif made == "nai":
-                            text2 = "ない形"
-
-                        elif made == "kanou":
-                            text2 = "可能形"
-                        elif made == "tiugin":
-                            text2 = "条件形"
-                        elif made == "mingling":
-                            text2 = "命令形"
-                        elif made == "jiheung":
-                            text2 = "意向形"
-                        elif made == "gamji":
-                            text2 = "禁止形"
-
-                        elif made == "sausan":
-                            text2 = "受身形"
-                        elif made == "siyik":
-                            text2 = "使役形"
-                        elif made == "siyiksausan":
-                            text2 = "使役受身形"
-
-                        text(screen, text1 + "から、" + text2 + "まで", (0, 0, 0), 48, (128, 64))
-
-                        if score - prevScore == 1:
-                            pygame.draw.circle(screen, (255, 50, 50), (WIDTH - 128, HEIGHT/2), 48)
-                            pygame.draw.circle(screen, (135, 206, 235), (WIDTH - 128, HEIGHT/2), 32)
+                for event in pygame.event.get():
+                    # allow close game
+                    if event.type == pygame.QUIT:
+                        running = False
+                    if event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_RIGHT:
+                            question_num += 1
+                        if question_num >= battle_detail[stage]["num_of_qs"]:
+                            game_state = "menu"
                         else:
-                            pygame.draw.line(screen, (255, 50, 50), [WIDTH - 128-48, HEIGHT/2-48], [WIDTH - 128+48, HEIGHT/2+48], 16)
-                            pygame.draw.line(screen, (255, 50, 50), [WIDTH - 128+48, HEIGHT/2-48], [WIDTH - 128-48, HEIGHT/2+48], 16)
+                            random.shuffle(battle_detail[stage]["answer"][battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]]][1])
 
-                        if score - prevScore != 1:
-                            no_of_heart -= 1
 
-                        #heart
-                        for i in range(no_of_heart):
-                            screen.blit(heart, (128 + 32 * i, 120))
 
-                        pygame.display.update()
-                        # pygame.time.wait(1000)
+            else:
+                for event in pygame.event.get():
+                    # allow close game
+                    if event.type == pygame.QUIT:
+                        running = False
+                    # set up in-game keyboard input
+                    if event.type == pygame.KEYDOWN and pause == False:
+                        if event.key == pygame.K_a:
+                            inputArr = inputArr + 'a'
+                        if event.key == pygame.K_b:
+                            inputArr = inputArr + 'b'
+                        if event.key == pygame.K_c:
+                            inputArr = inputArr + 'c'
+                        if event.key == pygame.K_d:
+                            inputArr = inputArr + 'd'
+                        if event.key == pygame.K_e:
+                            inputArr = inputArr + 'e'
+                        if event.key == pygame.K_f:
+                            inputArr = inputArr + 'f'
+                        if event.key == pygame.K_g:
+                            inputArr = inputArr + 'g'
+                        if event.key == pygame.K_h:
+                            inputArr = inputArr + 'h'
+                        if event.key == pygame.K_i:
+                            inputArr = inputArr + 'i'
+                        if event.key == pygame.K_j:
+                            inputArr = inputArr + 'j'
+                        if event.key == pygame.K_k:
+                            inputArr = inputArr + 'k'
+                        if event.key == pygame.K_l:
+                            inputArr = inputArr + 'l'
+                        if event.key == pygame.K_m:
+                            inputArr = inputArr + 'm'
+                        if event.key == pygame.K_n:
+                            inputArr = inputArr + 'n'
+                        if event.key == pygame.K_o:
+                            inputArr = inputArr + 'o'
+                        if event.key == pygame.K_p:
+                            inputArr = inputArr + 'p'
+                        if event.key == pygame.K_q:
+                            inputArr = inputArr + 'q'
+                        if event.key == pygame.K_r:
+                            inputArr = inputArr + 'r'
+                        if event.key == pygame.K_s:
+                            inputArr = inputArr + 's'
+                        if event.key == pygame.K_t:
+                            inputArr = inputArr + 't'
+                        if event.key == pygame.K_u:
+                            inputArr = inputArr + 'u'
+                        if event.key == pygame.K_v:
+                            inputArr = inputArr + 'v'
+                        if event.key == pygame.K_w:
+                            inputArr = inputArr + 'w'
+                        if event.key == pygame.K_x:
+                            inputArr = inputArr + 'x'
+                        if event.key == pygame.K_y:
+                            inputArr = inputArr + 'y'
+                        if event.key == pygame.K_z:
+                            inputArr = inputArr + 'z'
+                        if event.key == pygame.K_BACKSPACE:
+                            inputArr = inputArr[:-1]
+                        outputArr = textinput(inputArr)
+                        if event.key == pygame.K_RETURN:
+                            temptime = pygame.time.get_ticks()
+                            pause = True
+                            inputing = False
+                            qs_answered += 1
+                            # check()
+                            prevScore = score
+                            if made == "jisyo" and outputArr == verb_ru_hira[choise]:
+                                score += 1
+                            elif made == "masu" and outputArr == verb_masu_hira[choise]:
+                                score += 1
+                            elif made == "te" and outputArr == verb_te_hira[choise]:
+                                score += 1
+                            elif made == "ta" and outputArr == verb_ta_hira[choise]:
+                                score += 1
+                            elif made == "nai" and outputArr == verb_nai_hira[choise]:
+                                score += 1
 
-                        
-                        inputArr = ""
-                        outputArr = ""
+                            elif made == "kanou" and outputArr == verb_kanou_hira[choise]:
+                                score += 1
+                            elif made == "tiugin" and outputArr == verb_ba_hira[choise]:
+                                score += 1
+                            elif made == "mingling" and outputArr == verb_ro_hira[choise]:
+                                score += 1
+                            elif made == "jiheung" and outputArr == verb_ikou_hira[choise]:
+                                score += 1
+                            elif made == "gamji" and outputArr == verb_na_hira[choise]:
+                                score += 1
+
+                            elif made == "sausan" and outputArr == verb_rareru_hira[choise]:
+                                score += 1
+                            elif made == "siyik" and outputArr == verb_saseru_hira[choise]:
+                                score += 1
+                            elif made == "siyiksausan" and outputArr == verb_saseru_rareru_hira[choise]:
+                                score += 1
+
+                            screen.fill((135, 206, 235))
+
+                            # back button
+                            text_input_box = pygame.draw.rect(screen, (20, 20, 20), [64-12, 64, 64, 30])
+                            text_input_box = pygame.draw.rect(screen, (140, 235, 52), [66-12, 66, 64-4, 30-4])
+                            text(screen, "戻る", (0, 0, 0), 16, (64+64/2-12, 64+32/2), "center")
+
+                            # input box (english)
+                            text_input_box = pygame.draw.rect(screen, (200, 200, 200), [200, 250, 400, 64])
+                            text_input_box = pygame.draw.rect(screen, (20, 20, 20), [202, 252, 396, 60])
+                            text(screen, inputArr, (255, 255, 255), 24, (206, 256))
+
+                            # input box (japanese)
+                            text_input_box = pygame.draw.rect(screen, (200, 200, 200), [200, 250 + 96, 400, 64])
+                            text_input_box = pygame.draw.rect(screen, (20, 20, 20), [202, 252 + 96, 396, 60])
+                            text(screen, outputArr, (255, 255, 255), 24, (206, 256 + 96))
+
+                            if kara == "jisyo":
+                                verb = verb_ru[choise]
+                            elif kara == "masu":
+                                verb = verb_masu[choise]
+                            elif kara == "te":
+                                verb = verb_te[choise]
+                            elif kara == "ta":
+                                verb = verb_ta[choise]
+                            elif kara == "nai":
+                                verb = verb_nai[choise]
+
+                            elif kara == "kanou":
+                                verb = verb_kanou[choise]
+                            elif kara == "tiugin":
+                                verb = verb_ba[choise]
+                            elif kara == "mingling":
+                                verb = verb_ro[choise]
+                            elif kara == "jiheung":
+                                verb = verb_ikou[choise]
+                            elif kara == "gamji":
+                                verb = verb_na[choise]
+
+                            elif kara == "sausan":
+                                verb = verb_rareru[choise]
+                            elif kara == "siyik":
+                                verb = verb_saseru[choise]
+                            elif kara == "siyiksausan":
+                                verb = verb_saseru_rareru[choise]
+                                
+                            text(screen, str(qs_answered) + ") " + verb, (0, 0, 0), 24, (206, 186))
+                            text(screen, "スコア: " + str(score), (0, 0, 0), 24, (550, 120))
+
+                            text1 = ""
+                            if kara == "jisyo":
+                                text1 = "辞書形"
+                            elif kara == "masu":
+                                text1 = "ます形"
+                            elif kara == "te":
+                                text1 = "て形"
+                            elif kara == "ta":
+                                text1 = "た形"
+                            elif kara == "nai":
+                                text1 = "ない形"
+
+                            elif kara == "kanou":
+                                text1 = "可能形"
+                            elif kara == "tiugin":
+                                text1 = "条件形"
+                            elif kara == "mingling":
+                                text1 = "命令形"
+                            elif kara == "jiheung":
+                                text1 = "意向形"
+                            elif kara == "gamji":
+                                text1 = "禁止形"
+
+                            elif kara == "sausan":
+                                text1 = "受身形"
+                            elif kara == "siyik":
+                                text1 = "使役形"
+                            elif kara == "siyiksausan":
+                                text1 = "使役受身形"
+
+                            text2 = ""
+                            if made == "jisyo":
+                                text2 = "辞書形"
+                            elif made == "masu":
+                                text2 = "ます形"
+                            elif made == "te":
+                                text2 = "て形"
+                            elif made == "ta":
+                                text2 = "た形"
+                            elif made == "nai":
+                                text2 = "ない形"
+
+                            elif made == "kanou":
+                                text2 = "可能形"
+                            elif made == "tiugin":
+                                text2 = "条件形"
+                            elif made == "mingling":
+                                text2 = "命令形"
+                            elif made == "jiheung":
+                                text2 = "意向形"
+                            elif made == "gamji":
+                                text2 = "禁止形"
+
+                            elif made == "sausan":
+                                text2 = "受身形"
+                            elif made == "siyik":
+                                text2 = "使役形"
+                            elif made == "siyiksausan":
+                                text2 = "使役受身形"
+
+                            text(screen, text1 + "から、" + text2 + "まで", (0, 0, 0), 48, (128, 64))
+
+                            if score - prevScore == 1:
+                                pygame.draw.circle(screen, (255, 50, 50), (WIDTH - 128, HEIGHT/2), 48)
+                                pygame.draw.circle(screen, (135, 206, 235), (WIDTH - 128, HEIGHT/2), 32)
+                            else:
+                                pygame.draw.line(screen, (255, 50, 50), [WIDTH - 128-48, HEIGHT/2-48], [WIDTH - 128+48, HEIGHT/2+48], 16)
+                                pygame.draw.line(screen, (255, 50, 50), [WIDTH - 128+48, HEIGHT/2-48], [WIDTH - 128-48, HEIGHT/2+48], 16)
+
+                            if score - prevScore != 1:
+                                no_of_heart -= 1
+
+                            #heart
+                            for i in range(no_of_heart):
+                                screen.blit(heart, (128 + 32 * i, 120))
+
+                            pygame.display.update()
+                            # pygame.time.wait(1000)
+
                             
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    pos = pygame.mouse.get_pos()
-                    # all button action will be set up here
-                    if click_check(pos, [64-12, 64, 64, 30]):
-                        game_state = "menu"
+                            inputArr = ""
+                            outputArr = ""
+                                
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        pos = pygame.mouse.get_pos()
+                        # all button action will be set up here
+                        if click_check(pos, [64-12, 64, 64, 30]):
+                            game_state = "menu"
 
-            # game bg color
-            screen.fill((135, 206, 235))
+                # game bg color
+                screen.fill((135, 206, 235))
 
-            # the game will stop for 1 second after user answered a question, for let them view whether that question is correct or wrong
-            if(pygame.time.get_ticks()-temptime>= 1000):
-                pause = False
-            else:
-                # draw the correct symbol: O; and wrong symbol: X
-                if score - prevScore == 1:
-                    pygame.draw.circle(screen, (255, 50, 50), (WIDTH - 128, HEIGHT/2), 48)
-                    pygame.draw.circle(screen, (135, 206, 235), (WIDTH - 128, HEIGHT/2), 32)
+                # the game will stop for 1 second after user answered a question, for let them view whether that question is correct or wrong
+                if(pygame.time.get_ticks()-temptime>= 1000):
+                    pause = False
                 else:
-                    pygame.draw.line(screen, (255, 50, 50), [WIDTH - 128-48, HEIGHT/2-48], [WIDTH - 128+48, HEIGHT/2+48], 16)
-                    pygame.draw.line(screen, (255, 50, 50), [WIDTH - 128+48, HEIGHT/2-48], [WIDTH - 128-48, HEIGHT/2+48], 16)
+                    # draw the correct symbol: O; and wrong symbol: X
+                    if score - prevScore == 1:
+                        pygame.draw.circle(screen, (255, 50, 50), (WIDTH - 128, HEIGHT/2), 48)
+                        pygame.draw.circle(screen, (135, 206, 235), (WIDTH - 128, HEIGHT/2), 32)
+                    else:
+                        pygame.draw.line(screen, (255, 50, 50), [WIDTH - 128-48, HEIGHT/2-48], [WIDTH - 128+48, HEIGHT/2+48], 16)
+                        pygame.draw.line(screen, (255, 50, 50), [WIDTH - 128+48, HEIGHT/2-48], [WIDTH - 128-48, HEIGHT/2+48], 16)
 
-            # draw heart, here use screen blit to paste a pygame.Surface to screen. transparent png image must use this.
-            for i in range(no_of_heart):
-                screen.blit(heart, (128 + 32 * i, 120))
+                # draw heart, here use screen blit to paste a pygame.Surface to screen. transparent png image must use this.
+                for i in range(no_of_heart):
+                    screen.blit(heart, (128 + 32 * i, 120))
 
-            # back button
-            text_input_box = pygame.draw.rect(screen, (20, 20, 20), [64-12, 64, 64, 30])
-            text_input_box = pygame.draw.rect(screen, (140, 235, 52), [66-12, 66, 64-4, 30-4])
-            text(screen, "戻る", (0, 0, 0), 16, (64+64/2-12, 64+32/2), "center")
+                # back button
+                text_input_box = pygame.draw.rect(screen, (20, 20, 20), [64-12, 64, 64, 30])
+                text_input_box = pygame.draw.rect(screen, (140, 235, 52), [66-12, 66, 64-4, 30-4])
+                text(screen, "戻る", (0, 0, 0), 16, (64+64/2-12, 64+32/2), "center")
 
-            # input box (english)
-            text_input_box = pygame.draw.rect(screen, (200, 200, 200), [200, 250, 400, 64])
-            text_input_box = pygame.draw.rect(screen, (20, 20, 20), [202, 252, 396, 60])
-            text(screen, inputArr, (255, 255, 255), 24, (206, 256))
+                # input box (english)
+                text_input_box = pygame.draw.rect(screen, (200, 200, 200), [200, 250, 400, 64])
+                text_input_box = pygame.draw.rect(screen, (20, 20, 20), [202, 252, 396, 60])
+                text(screen, inputArr, (255, 255, 255), 24, (206, 256))
 
-            # input box (japanese)
-            text_input_box = pygame.draw.rect(screen, (200, 200, 200), [200, 250 + 96, 400, 64])
-            text_input_box = pygame.draw.rect(screen, (20, 20, 20), [202, 252 + 96, 396, 60])
-            text(screen, outputArr, (255, 255, 255), 24, (206, 256 + 96))
-            
-            # generate new qs
-            if inputing == False and qs_answered < no_of_qs and pause == False:
-                not_chosen_list = []
-                for i in range(len(choose_list)):
-                    if choose_list[i] == 0:
-                        not_chosen_list.append(i)
-                choise = random.choice(not_chosen_list)
-                choose_list[choise] = 1
-                inputing = True
+                # input box (japanese)
+                text_input_box = pygame.draw.rect(screen, (200, 200, 200), [200, 250 + 96, 400, 64])
+                text_input_box = pygame.draw.rect(screen, (20, 20, 20), [202, 252 + 96, 396, 60])
+                text(screen, outputArr, (255, 255, 255), 24, (206, 256 + 96))
+                
+                # generate new qs
+                if inputing == False and qs_answered < no_of_qs and pause == False:
+                    not_chosen_list = []
+                    for i in range(len(choose_list)):
+                        if choose_list[i] == 0:
+                            not_chosen_list.append(i)
+                    choise = random.choice(not_chosen_list)
+                    choose_list[choise] = 1
+                    inputing = True
 
-            # let variable verb be the answer            
-            if kara == "jisyo":
-                verb = verb_ru[choise]
-            elif kara == "masu":
-                verb = verb_masu[choise]
-            elif kara == "te":
-                verb = verb_te[choise]
-            elif kara == "ta":
-                verb = verb_ta[choise]
-            elif kara == "nai":
-                verb = verb_nai[choise]
+                # let variable verb be the answer            
+                if kara == "jisyo":
+                    verb = verb_ru[choise]
+                elif kara == "masu":
+                    verb = verb_masu[choise]
+                elif kara == "te":
+                    verb = verb_te[choise]
+                elif kara == "ta":
+                    verb = verb_ta[choise]
+                elif kara == "nai":
+                    verb = verb_nai[choise]
 
-            elif kara == "kanou":
-                verb = verb_kanou[choise]
-            elif kara == "tiugin":
-                verb = verb_ba[choise]
-            elif kara == "mingling":
-                verb = verb_ro[choise]
-            elif kara == "jiheung":
-                verb = verb_ikou[choise]
-            elif kara == "gamji":
-                verb = verb_na[choise]
+                elif kara == "kanou":
+                    verb = verb_kanou[choise]
+                elif kara == "tiugin":
+                    verb = verb_ba[choise]
+                elif kara == "mingling":
+                    verb = verb_ro[choise]
+                elif kara == "jiheung":
+                    verb = verb_ikou[choise]
+                elif kara == "gamji":
+                    verb = verb_na[choise]
 
-            elif kara == "sausan":
-                verb = verb_rareru[choise]
-            elif kara == "siyik":
-                verb = verb_saseru[choise]
-            elif kara == "siyiksausan":
-                verb = verb_saseru_rareru[choise]
+                elif kara == "sausan":
+                    verb = verb_rareru[choise]
+                elif kara == "siyik":
+                    verb = verb_saseru[choise]
+                elif kara == "siyiksausan":
+                    verb = verb_saseru_rareru[choise]
 
-            # draw the question text on screen
-            if(pause):
-                text(screen, str(qs_answered) + ") " + verb, (0, 0, 0), 24, (206, 186))
-            else:
-                text(screen, str(qs_answered+1) + ") " + verb, (0, 0, 0), 24, (206, 186))
+                # draw the question text on screen
+                if(pause):
+                    text(screen, str(qs_answered) + ") " + verb, (0, 0, 0), 24, (206, 186))
+                else:
+                    text(screen, str(qs_answered+1) + ") " + verb, (0, 0, 0), 24, (206, 186))
 
-            # score text
-            text(screen, "スコア: " + str(score), (0, 0, 0), 24, (550, 120))
+                # score text
+                text(screen, "スコア: " + str(score), (0, 0, 0), 24, (550, 120))
 
 
-            # players' goal is to convert verb in <text1> form into <text2> form, and this is just converting romaji into kanji
-            text1 = ""
-            if kara == "jisyo":
-                text1 = "辞書形"
-            elif kara == "masu":
-                text1 = "ます形"
-            elif kara == "te":
-                text1 = "て形"
-            elif kara == "ta":
-                text1 = "た形"
-            elif kara == "nai":
-                text1 = "ない形"
+                # players' goal is to convert verb in <text1> form into <text2> form, and this is just converting romaji into kanji
+                text1 = ""
+                if kara == "jisyo":
+                    text1 = "辞書形"
+                elif kara == "masu":
+                    text1 = "ます形"
+                elif kara == "te":
+                    text1 = "て形"
+                elif kara == "ta":
+                    text1 = "た形"
+                elif kara == "nai":
+                    text1 = "ない形"
 
-            elif kara == "kanou":
-                text1 = "可能形"
-            elif kara == "tiugin":
-                text1 = "条件形"
-            elif kara == "mingling":
-                text1 = "命令形"
-            elif kara == "jiheung":
-                text1 = "意向形"
-            elif kara == "gamji":
-                text1 = "禁止形"
+                elif kara == "kanou":
+                    text1 = "可能形"
+                elif kara == "tiugin":
+                    text1 = "条件形"
+                elif kara == "mingling":
+                    text1 = "命令形"
+                elif kara == "jiheung":
+                    text1 = "意向形"
+                elif kara == "gamji":
+                    text1 = "禁止形"
 
-            elif kara == "sausan":
-                text1 = "受身形"
-            elif kara == "siyik":
-                text1 = "使役形"
-            elif kara == "siyiksausan":
-                text1 = "使役受身形"
+                elif kara == "sausan":
+                    text1 = "受身形"
+                elif kara == "siyik":
+                    text1 = "使役形"
+                elif kara == "siyiksausan":
+                    text1 = "使役受身形"
 
-            text2 = ""
-            if made == "jisyo":
-                text2 = "辞書形"
-            elif made == "masu":
-                text2 = "ます形"
-            elif made == "te":
-                text2 = "て形"
-            elif made == "ta":
-                text2 = "た形"
-            elif made == "nai":
-                text2 = "ない形"
+                text2 = ""
+                if made == "jisyo":
+                    text2 = "辞書形"
+                elif made == "masu":
+                    text2 = "ます形"
+                elif made == "te":
+                    text2 = "て形"
+                elif made == "ta":
+                    text2 = "た形"
+                elif made == "nai":
+                    text2 = "ない形"
 
-            elif made == "kanou":
-                text2 = "可能形"
-            elif made == "tiugin":
-                text2 = "条件形"
-            elif made == "mingling":
-                text2 = "命令形"
-            elif made == "jiheung":
-                text2 = "意向形"
-            elif made == "gamji":
-                text2 = "禁止形"
+                elif made == "kanou":
+                    text2 = "可能形"
+                elif made == "tiugin":
+                    text2 = "条件形"
+                elif made == "mingling":
+                    text2 = "命令形"
+                elif made == "jiheung":
+                    text2 = "意向形"
+                elif made == "gamji":
+                    text2 = "禁止形"
 
-            elif made == "sausan":
-                text2 = "受身形"
-            elif made == "siyik":
-                text2 = "使役形"
-            elif made == "siyiksausan":
-                text2 = "使役受身形"
+                elif made == "sausan":
+                    text2 = "受身形"
+                elif made == "siyik":
+                    text2 = "使役形"
+                elif made == "siyiksausan":
+                    text2 = "使役受身形"
 
-            # show text on screen: from <text1>, to <text2>
-            text(screen, text1 + "から、" + text2 + "まで", (0, 0, 0), 48, (128, 64))
+                # show text on screen: from <text1>, to <text2>
+                text(screen, text1 + "から、" + text2 + "まで", (0, 0, 0), 48, (128, 64))
 
-            # change game state after win or lose
-            if no_of_heart <= 0 and pause == False:
-                game_state = "lost"
-            elif qs_answered >= no_of_qs and pause == False:
-                game_state = "showScore"
+                # change game state after win or lose
+                if no_of_heart <= 0 and pause == False:
+                    game_state = "lost"
+                elif qs_answered >= no_of_qs and pause == False:
+                    game_state = "showScore"
 
         # game state for seleting stage: from <text1>
         if game_state == "select_kara":
