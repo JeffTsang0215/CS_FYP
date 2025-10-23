@@ -655,20 +655,15 @@ def main():
             },
             "num_of_qs": 10,
             "order": [],
-            "enemy_surf": pygame.transform.flip(images[9], flip_x=True, flip_y=False)
-            
+            "enemy_surf": pygame.transform.flip(images[9], flip_x=True, flip_y=False),
+            "enemy_attack_word": "む" ,
         }
     ]
     player_hp = 100
     enemy_hp = 100
     stage = 0
     question_num = 0
-    
-    def battle_hp_init():
-        player_hp = 100
-        enemy_hp = 100
-        battle_detail[stage]["order"] = [random.randint(0, len(battle_detail[stage]["question"])-1) for _ in range(battle_detail[stage]["num_of_qs"])]
-        question_num = 0
+        
 
     s = pygame.Surface((WIDTH,HEIGHT))
     s.fill((0,0,0))
@@ -724,8 +719,21 @@ def main():
                 # no_of_heart = 3
 
                 game_state = "playing"
-                battle_hp_init()
+                player_hp = 100
+                enemy_hp = 100
+                battle_detail[stage]["order"] = []
+                for _ in range(battle_detail[stage]["num_of_qs"]):
+                    temp = random.randint(0, len(battle_detail[stage]["question"])-1)
+                    if len(battle_detail[stage]["order"]) == 0:
+                        battle_detail[stage]["order"].append(temp)
+                    else:
+                        while battle_detail[stage]["order"][-1] == temp:
+                            temp = random.randint(0, len(battle_detail[stage]["question"])-1)
+                        battle_detail[stage]["order"].append(temp)
+                action = "attack"
+                question_num = 0
                 stage = 0
+                correct = None
                 random.shuffle(battle_detail[stage]["answer"][battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]]][1])
             else:
                 # BG image
@@ -753,7 +761,7 @@ def main():
 
                 # effect
                 if (dialog[story_num][dialog_num][0] == 1.1):
-                    if(time > 0):
+                    if(time > 0 and time < fps*2):
                         time += 1
                         text_sp(screen, "あ", (120, 0, 0), 200, [WIDTH/2, HEIGHT/2], int((fps*2-time)/(fps*2)*255), "center")
                     elif(time >= fps*2):
@@ -795,17 +803,24 @@ def main():
                 pygame.draw.rect(screen, (255, 0, 0), [79, 34, enemy_hp/100*204, 13])
 
                 pygame.draw.rect(screen, pygame.Color("#d9d9d9"), [324, 552, 791, 408])
-                pygame.draw.rect(screen, pygame.Color("#ececec"), [407, 729, 194, 94])
-                pygame.draw.rect(screen, pygame.Color("#ececec"), [840, 729, 194, 94])
-                pygame.draw.rect(screen, pygame.Color("#ececec"), [407, 842, 194, 94])
-                pygame.draw.rect(screen, pygame.Color("#ececec"), [840, 842, 194, 94])
+                if action == "attack" or action == "recover":
+                    pygame.draw.rect(screen, pygame.Color("#ececec"), [407, 729, 194, 94])
+                    pygame.draw.rect(screen, pygame.Color("#ececec"), [840, 729, 194, 94])
+                    pygame.draw.rect(screen, pygame.Color("#ececec"), [407, 842, 194, 94])
+                    pygame.draw.rect(screen, pygame.Color("#ececec"), [840, 842, 194, 94])
 
-                text(screen, battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]], (0, 0, 0), 64, [688, 601], "center")
-                
-                text(screen, battle_detail[stage]["answer"][battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]]][1][0], (0, 0, 0), 64, [504, 776], "center")
-                text(screen, battle_detail[stage]["answer"][battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]]][1][1], (0, 0, 0), 64, [937, 776], "center")
-                text(screen, battle_detail[stage]["answer"][battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]]][1][2], (0, 0, 0), 64, [504, 889], "center")
-                text(screen, battle_detail[stage]["answer"][battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]]][1][3], (0, 0, 0), 64, [937, 889], "center")
+                    text(screen, battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]], (0, 0, 0), 64, [688, 601], "center")
+                    
+                    text(screen, battle_detail[stage]["answer"][battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]]][1][0], (0, 0, 0), 64, [504, 776], "center")
+                    text(screen, battle_detail[stage]["answer"][battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]]][1][1], (0, 0, 0), 64, [937, 776], "center")
+                    text(screen, battle_detail[stage]["answer"][battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]]][1][2], (0, 0, 0), 64, [504, 889], "center")
+                    text(screen, battle_detail[stage]["answer"][battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]]][1][3], (0, 0, 0), 64, [937, 889], "center")
+                else:
+                    pygame.draw.rect(screen, pygame.Color("#ececec"), [407, 729, 194, 207])
+                    pygame.draw.rect(screen, pygame.Color("#ececec"), [840, 729, 194, 207])
+                    text(screen, "攻擊", (0, 0, 0), 64, [504, 813], "center")
+                    text(screen, "回復", (0, 0, 0), 64, [937, 813], "center")
+
 
                 for event in pygame.event.get():
                     # allow close game
@@ -814,11 +829,104 @@ def main():
                     if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_RIGHT:
                             question_num += 1
-                        if question_num >= battle_detail[stage]["num_of_qs"]:
+                            if question_num >= battle_detail[stage]["num_of_qs"]:
+                                game_state = "menu"
+                            else:
+                                random.shuffle(battle_detail[stage]["answer"][battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]]][1])
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        if pygame.mouse.get_pressed()[0]:
+                            pos = pygame.mouse.get_pos()
+                            if action == "attack" or action == "recover":
+                               if time == 0:
+                                    if click_check(pos, [407, 729, 194, 94]):
+                                        time = 1
+                                        if battle_detail[stage]["answer"][battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]]][1][0] == battle_detail[stage]["answer"][battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]]][0]:
+                                            correct = True
+                                        else:
+                                            correct = False
+                                    elif click_check(pos, [840, 729, 194, 94]):
+                                        time = 1
+                                        if battle_detail[stage]["answer"][battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]]][1][1] == battle_detail[stage]["answer"][battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]]][0]:
+                                            correct = True
+                                        else:
+                                            correct = False
+                                    elif click_check(pos, [407, 842, 194, 94]):
+                                        time = 1
+                                        if battle_detail[stage]["answer"][battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]]][1][2] == battle_detail[stage]["answer"][battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]]][0]:
+                                            correct = True
+                                        else:
+                                            correct = False
+                                    elif click_check(pos, [840, 842, 194, 94]):
+                                        time = 1
+                                        if battle_detail[stage]["answer"][battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]]][1][3] == battle_detail[stage]["answer"][battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]]][0]:
+                                            correct = True
+                                        else:
+                                            correct = False
+
+                                
+                            else:
+                                if click_check(pos, [407, 729, 194, 207]):
+                                    action = "attack"
+                                elif click_check(pos, [840, 729, 194, 207]):
+                                    action = "recover"
+
+                if correct == True:
+                    if action == "attack":
+                        if(time > 0 and time < fps*2):
+                            time += 1
+                            text_sp(screen, battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]], (120, 0, 0), 200, [220, 330], int((fps*2-time)/(fps*2)*255), "center")
+                        elif(time >= fps*2):
+                            time = 0
+                        if time == 0:
+                            enemy_hp -= 20
+                            correct = None
+                            if stage == 0:
+                                action = "attack"
+                            else:
+                                action = None
+                            question_num += 1
+                            if question_num >= battle_detail[stage]["num_of_qs"] or enemy_hp <= 0:
+                                time = 0
+                                game_state = "menu"
+                            else:
+                                random.shuffle(battle_detail[stage]["answer"][battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]]][1])
+                    elif action == "recover":
+                        pass
+
+                elif correct == False:
+                    if action == "attack":
+                        if(time > 0 and time < fps*2):
+                            time += 1
+                            text_sp(screen, battle_detail[stage]["enemy_attack_word"], (120, 0, 120), 200, [1310, 520], int((fps*2-time)/(fps*2)*255), "center")
+                        elif(time >= fps*2):
+                            time = 0
+                        if time == 0:
+                            player_hp -= 40
+                            correct = None
+                            if stage == 0:
+                                    action = "attack"
+                            else:
+                                action = None
+                            question_num += 1
+                            if question_num >= battle_detail[stage]["num_of_qs"] or player_hp <= 0:
+                                time = 0
+                                game_state = "menu"
+                            else:
+                                random.shuffle(battle_detail[stage]["answer"][battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]]][1])
+                    elif action == "recover":
+                        correct = None
+                        if stage == 0:
+                                action = "attack"
+                        else:
+                            action = None
+                        question_num += 1
+                        if question_num >= battle_detail[stage]["num_of_qs"] or player_hp <= 0:
+                            time = 0
                             game_state = "menu"
                         else:
                             random.shuffle(battle_detail[stage]["answer"][battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]]][1])
 
+                    
 
 
             else:
