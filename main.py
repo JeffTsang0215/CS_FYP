@@ -944,7 +944,7 @@ battle_detail = [
 
 ]
 
-battle_detail_backup = deepcopy(battle_detail)
+#battle_detail_backup = deepcopy(battle_detail)
 
 player_hp = 100
 enemy_hp = 100
@@ -1004,7 +1004,7 @@ while running:
     if game_state == "story":
         # end story
         if dialog_num == len(dialog[story_num]):
-            battle_detail = deepcopy(battle_detail_backup)
+            #battle_detail = deepcopy(battle_detail_backup)
             time = 0
             game_state = "playing"
             
@@ -1285,7 +1285,7 @@ while running:
             text(screen, "HP", (0, 0, 0), 24, transform_scale([1158, 22]))
             pygame.draw.rect(screen, (0, 0, 0), transform_scale([1209, 34, 204, 13]))
             pygame.draw.rect(screen, (255, 0, 0), transform_scale([1209, 34, player_hp/100*204, 13]))
-                
+
 
             # left enemy
             screen.blit(battle_detail[stage]["enemy_surf"], transform_scale([-51, 100]))
@@ -1296,185 +1296,192 @@ while running:
 
             q_index = battle_detail[stage]["order"][question_num]
             current_q = battle_detail[stage]["questions"][q_index]
-            
-            # Create rects for options if they don't exist for the current question
-            if not draggable_rects:
-                options = current_q["options"]
-                option_y = transform_scale([800])[0]
-                option_width, option_height = transform_scale([180, 90])
-                total_width = len(options) * option_width + (len(options) - 1) * 20
-                start_x = (WIDTH - total_width) / 2
-                for i, option_text in enumerate(options):
-                    rect = pygame.Rect(start_x + i * (option_width + 20), option_y, option_width, option_height)
-                    draggable_rects.append(rect)
-                    draggable_rects_initial_pos.append(rect.copy())
 
-            # Draw question sentence with a blank
-            sentence = current_q["sentence"]
-            part1_text, separator, part2_text = sentence.partition('_')
-            font_size = 64
-            try: my_font = pygame.font.Font('media/LXGWMarkerGothic-Regular.ttf', transform_scale([font_size])[0])
-            except: my_font = pygame.font.Font(pygame.font.get_default_font(), transform_scale([font_size])[0])
-            
-            part1_surf = my_font.render(part1_text, True, (0,0,0))
-            part2_surf = my_font.render(part2_text, True, (0,0,0))
-            box_width, box_height = transform_scale([120, 80])
-            total_q_width = part1_surf.get_width() + box_width + part2_surf.get_width()
-            
-            start_q_x = (WIDTH - total_q_width) / 2
-            q_y = transform_scale([400])[0]
-            
-            # Draw the first part of the sentence
-            screen.blit(part1_surf, (start_q_x, q_y))
-            
-            # Define the drop target rect and draw it
-            drop_target_rect = pygame.Rect(start_q_x + part1_surf.get_width(), q_y, box_width, box_height)
-            pygame.draw.rect(screen, pygame.Color("#d9d9d9"), drop_target_rect, border_radius=5)
-            pygame.draw.rect(screen, (0,0,0), drop_target_rect, 3, 5)
-            
-            # Draw the second part of the sentence
-            screen.blit(part2_surf, (drop_target_rect.right, q_y))
+            # If no action is chosen, show Attack/Recover options
+            if action is None:
+                pygame.draw.rect(screen, pygame.Color("#d9d9d9"), transform_scale([324, 552, 791, 408]))
+                pygame.draw.rect(screen, pygame.Color("#ececec"), transform_scale([407, 729, 194, 207]))
+                pygame.draw.rect(screen, pygame.Color("#ececec"), transform_scale([840, 729, 194, 207]))
+                text(screen, "攻擊", (0, 0, 0), 64, transform_scale([504, 813]), "center")
+                text(screen, "回復", (0, 0, 0), 64, transform_scale([937, 813]), "center")
+            else: # An action has been chosen, show the question
+                # Create rects for options if they don't exist for the current question
+                if not draggable_rects:
+                    options = current_q["options"]
+                    option_y = transform_scale([800])[0]
+                    option_width, option_height = transform_scale([180, 90])
+                    total_width = len(options) * option_width + (len(options) - 1) * 20
+                    start_x = (WIDTH - total_width) / 2
+                    for i, option_text in enumerate(options):
+                        rect = pygame.Rect(start_x + i * (option_width + 20), option_y, option_width, option_height)
+                        draggable_rects.append(rect)
+                        draggable_rects_initial_pos.append(rect.copy())
 
-            # Draw draggable options
-            for i, rect in enumerate(draggable_rects):
-                if i != dragged_item_index: # Don't draw the original if it's being dragged
-                    pygame.draw.rect(screen, pygame.Color("#ececec"), rect, border_radius=10)
-                    text(screen, current_q["options"][i], (0,0,0), 50, rect.center, "center")
-                    
-            if is_dragging and dragged_item_index != -1: # Draw dragged item on top
-                rect = draggable_rects[dragged_item_index]
-                pygame.draw.rect(screen, pygame.Color("#aaddff"), rect, border_radius=10)
-                text(screen, current_q["options"][dragged_item_index], (0,0,0), 50, rect.center, "center")
+                # Draw question sentence with a blank
+                sentence = current_q["sentence"]
+                part1_text, separator, part2_text = sentence.partition('_')
+                font_size = 64
+                try: my_font = pygame.font.Font('media/LXGWMarkerGothic-Regular.ttf', transform_scale([font_size])[0])
+                except: my_font = pygame.font.Font(pygame.font.get_default_font(), transform_scale([font_size])[0])
+
+                part1_surf = my_font.render(part1_text, True, (0,0,0))
+                part2_surf = my_font.render(part2_text, True, (0,0,0))
+                box_width, box_height = transform_scale([120, 80])
+                total_q_width = part1_surf.get_width() + box_width + part2_surf.get_width()
+
+                start_q_x = (WIDTH - total_q_width) / 2
+                q_y = transform_scale([400])[0]
+
+                # Draw the first part of the sentence
+                screen.blit(part1_surf, (start_q_x, q_y))
+
+                # Define the drop target rect and draw it
+                drop_target_rect = pygame.Rect(start_q_x + part1_surf.get_width(), q_y, box_width, box_height)
+                pygame.draw.rect(screen, pygame.Color("#d9d9d9"), drop_target_rect, border_radius=5)
+                pygame.draw.rect(screen, (0,0,0), drop_target_rect, 3, 5)
+
+                # Draw the second part of the sentence
+                screen.blit(part2_surf, (drop_target_rect.right, q_y))
+
+                # Draw draggable options
+                for i, rect in enumerate(draggable_rects):
+                    if i != dragged_item_index: # Don't draw the original if it's being dragged
+                        pygame.draw.rect(screen, pygame.Color("#ececec"), rect, border_radius=10)
+                        text(screen, current_q["options"][i], (0,0,0), 50, rect.center, "center")
+
+                if is_dragging and dragged_item_index != -1: # Draw dragged item on top
+                    rect = draggable_rects[dragged_item_index]
+                    pygame.draw.rect(screen, pygame.Color("#aaddff"), rect, border_radius=10)
+                    text(screen, current_q["options"][dragged_item_index], (0,0,0), 50, rect.center, "center")
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
                 if time == 0:
-                    if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and not is_dragging:
-                        for i, rect in enumerate(draggable_rects):
-                            if rect.collidepoint(event.pos):
-                                is_dragging = True
-                                dragged_item_index = i
-                                drag_offset_x = event.pos[0] - rect.x
-                                drag_offset_y = event.pos[1] - rect.y
-                                break
-                    elif event.type == pygame.MOUSEMOTION and is_dragging:
-                        if dragged_item_index != -1:
-                            draggable_rects[dragged_item_index].x = event.pos[0] - drag_offset_x
-                            draggable_rects[dragged_item_index].y = event.pos[1] - drag_offset_y
-                    elif event.type == pygame.MOUSEBUTTONUP and event.button == 1 and is_dragging:
-                        q_index = battle_detail[stage]["order"][question_num]
-                        current_q = battle_detail[stage]["questions"][q_index]
-                        
-                        if drop_target_rect.colliderect(draggable_rects[dragged_item_index]):
-                            selected_option = current_q["options"][dragged_item_index]
-                            correct = (selected_option == current_q["answer"])
-                            time = 1 # Trigger post-answer animation and logic
-                        else: # If not on target, snap back to original position
-                            draggable_rects[dragged_item_index] = draggable_rects_initial_pos[dragged_item_index].copy()
-                        
-                        is_dragging = False
-                        dragged_item_index = -1
+                    if action is None:
+                        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                            pos = pygame.mouse.get_pos()
+                            if click_check(pos, transform_scale([407, 729, 194, 207])):
+                                action = "attack"
+                            elif click_check(pos, transform_scale([840, 729, 194, 207])):
+                                action = "recover"
+                    else: # Action is "attack" or "recover"
+                        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and not is_dragging:
+                            for i, rect in enumerate(draggable_rects):
+                                if rect.collidepoint(event.pos):
+                                    is_dragging = True
+                                    dragged_item_index = i
+                                    drag_offset_x = event.pos[0] - rect.x
+                                    drag_offset_y = event.pos[1] - rect.y
+                                    break
+                        elif event.type == pygame.MOUSEMOTION and is_dragging:
+                            if dragged_item_index != -1:
+                                draggable_rects[dragged_item_index].x = event.pos[0] - drag_offset_x
+                                draggable_rects[dragged_item_index].y = event.pos[1] - drag_offset_y
+                        elif event.type == pygame.MOUSEBUTTONUP and event.button == 1 and is_dragging:
+                            if drop_target_rect.colliderect(draggable_rects[dragged_item_index]):
+                                selected_option = current_q["options"][dragged_item_index]
+                                correct = (selected_option == current_q["answer"])
+                                time = 1 # Trigger post-answer animation and logic
+                            else: # If not on target, snap back to original position
+                                draggable_rects[dragged_item_index] = draggable_rects_initial_pos[dragged_item_index].copy()
+
+                            is_dragging = False
+                            dragged_item_index = -1
 
             # --- START OF POST-ANSWER LOGIC ---
-            # This entire block runs only when the 'correct' variable has been set (i.e., an answer was just submitted).
             if correct is not None:
                 if correct: # Correct Answer Logic
-                    # For Drag and Drop, the action is always "attack". For MC, it uses the selected action.
-                    action_type = "attack" if battle_detail[stage]["question_type"] == "Drag" else action
-                    
+                    action_type = action
+
                     if action_type == "attack":
-                        # Animate the attack
                         if(time > 0 and time < fps*1):
                             time += 1
-                            # Get the correct text to display for the animation based on question type
-                            q_text = ""
-                            if battle_detail[stage]["question_type"] == "Drag":
-                                q_text = battle_detail[stage]["questions"][battle_detail[stage]["order"][question_num]]["answer"]
-                            else: # MC
-                                q_text = battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]]
+                            q_text = current_q["answer"]
                             text_sp(screen, q_text, (120, 0, 0), 200, transform_scale([220, 330]), int((fps*1-time)/(fps*1)*255), "center")
                         elif(time >= fps*1): time = 0
                         
-                        # When animation finishes, apply damage
                         if time == 0:
                             enemy_hp -= 40
-                    
+
                     elif action_type == "recover":
-                        # Animate the recovery
                         if(time > 0 and time < fps*1):
                             time += 1
-                            text_sp(screen, battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]], (120, 255, 120), 200, transform_scale([1310, 520]), int((fps*1-time)/(fps*1)*255), "center")
+                            q_text = current_q["answer"]
+                            text_sp(screen, q_text, (120, 255, 120), 200, transform_scale([1310, 520]), int((fps*1-time)/(fps*1)*255), "center")
                         elif(time >= fps*1): time = 0
                         
-                        # When animation finishes, restore HP
                         if time == 0:
                             player_hp = min(player_hp+20, 100)
-                    
-                    # After any correct action's animation is done
+
                     if time == 0:
-                        correct = None # Reset for the next turn
+                        correct = None 
                         question_num += 1
-                        if stage == 0: action = "attack" # Reset action for stage 0
-                        else: action = None
+                        action = None
                         
-                        # Check for enemy defeat (win condition)
                         if enemy_hp <= 0:
-                            time = -1*fps # Start win screen countdown
-                            # Award stars based on performance (number of questions answered)
+                            time = -1*fps 
                             if (question_num <= battle_detail[stage]["target"][0]): save["star"][stage] = 3
                             elif (question_num <= battle_detail[stage]["target"][1]): save["star"][stage] = max(save["star"][stage], 2)
                             else: save["star"][stage] = max(save["star"][stage], 1)
-                            # Unlock the next stage
+                            
                             if save["current_stage"] + 1 < len(save["unlock"]):
                                 save["unlock"][save["current_stage"]+1]=True
                             write()
                             game_state = "win"
                         else: 
-                            # Prepare the next question
-                            if battle_detail[stage]["question_type"] == "MC":
-                                temp = random.randint(0, len(battle_detail[stage]["question"])-1)
-                                battle_detail[stage]["order"].append(temp)
-                                random.shuffle(battle_detail[stage]["answer"][battle_detail[stage]["question"][temp]][1])
-                            elif battle_detail[stage]["question_type"] == "Drag":
-                                draggable_rects.clear() # Reset UI elements
-                                draggable_rects_initial_pos.clear()
-                                # If all questions in the list are done, shuffle and start over
-                                if question_num >= len(battle_detail[stage]["order"]):
-                                    random.shuffle(battle_detail[stage]["order"])
-                                    question_num = 0
+                            draggable_rects.clear() 
+                            draggable_rects_initial_pos.clear()
+                            if question_num >= len(battle_detail[stage]["order"]):
+                                random.shuffle(battle_detail[stage]["order"])
+                                question_num = 0
 
                 elif not correct: # Incorrect Answer Logic
-                    # Animate the enemy's attack
-                    if(time > 0 and time < fps*1):
-                        time += 1
-                        text_sp(screen, battle_detail[stage]["enemy_attack_word"], (120, 0, 120), 200, transform_scale([1310, 520]), int((fps*1-time)/(fps*1)*255), "center")
-                    elif(time >= fps*1): time = 0
-                    
-                    # When animation finishes, apply damage to the player
-                    if time == 0:
-                        player_hp -= 25
-                        correct = None # Reset for the next turn
-                        question_num += 1
-                        if stage == 0: action = "attack"
-                        else: action = None
+                    if action == "attack":
+                        if(time > 0 and time < fps*1):
+                            time += 1
+                            text_sp(screen, battle_detail[stage]["enemy_attack_word"], (120, 0, 120), 200, transform_scale([1310, 520]), int((fps*1-time)/(fps*1)*255), "center")
+                        elif(time >= fps*1): time = 0
                         
-                        # Check for player defeat (lose condition)
-                        if player_hp <= 0:
-                            time = -1*fps # Start lose screen countdown
-                            game_state = "lose"
-                        else: 
-                            # Prepare the next question
-                            if battle_detail[stage]["question_type"] == "MC":
-                                temp = random.randint(0, len(battle_detail[stage]["question"])-1)
-                                battle_detail[stage]["order"].append(temp)
-                                random.shuffle(battle_detail[stage]["answer"][battle_detail[stage]["question"][temp]][1])
-                            elif battle_detail[stage]["question_type"] == "Drag":
+                        if time == 0:
+                            player_hp -= 40
+                            correct = None
+                            question_num += 1
+                            action = None
+                            
+                            if player_hp <= 0:
+                                time = -1*fps
+                                game_state = "lose"
+                            else: 
                                 draggable_rects.clear()
                                 draggable_rects_initial_pos.clear()
                                 if question_num >= len(battle_detail[stage]["order"]):
                                     random.shuffle(battle_detail[stage]["order"])
                                     question_num = 0
+                    elif action == "recover":
+                        if(time > 0 and time < fps*1):
+                            time += 1
+                            q_text = current_q["answer"]
+                            text_sp(screen, q_text, (120, 255, 120), 200, transform_scale([1310, 520]), int((fps*1-time)/(fps*1)*255), "center")
+                            text_sp(screen, "╳", (120, 255, 120), 200, transform_scale([1310, 520]), int((fps*1-time)/(fps*1)*255), "center")
+                        elif(time >= fps*1): time = 0
+
+                        if time == 0:
+                            player_hp -= 10
+                            correct = None
+                            question_num += 1
+                            action = None
+                            
+                            if player_hp <= 0:
+                                time = -1*fps
+                                game_state = "lose"
+                            else: 
+                                draggable_rects.clear()
+                                draggable_rects_initial_pos.clear()
+                                if question_num >= len(battle_detail[stage]["order"]):
+                                    random.shuffle(battle_detail[stage]["order"])
+                                    question_num = 0
+
 
         elif battle_detail[stage]["question_type"] == "input":
             # BG image
