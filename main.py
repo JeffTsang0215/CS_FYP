@@ -5,7 +5,7 @@ from copy import deepcopy
 pygame.init()
 pygame.font.init()
 
-new_game = False
+new_game = True
 
 save = {
     'unlock': [True, True, False, False],
@@ -620,7 +620,7 @@ def draw_stage_selection(n):
             center = 20
         else:
             center = 19
-        title = 21
+        title = 23
         if n+1 < len(save["unlock"]):
             if save["unlock"][n+1]:
                 next = 20
@@ -632,13 +632,14 @@ def draw_stage_selection(n):
             prev = 17
         else:
             prev = 18
+    
     elif n == 3:
         bg = 10
         if save["unlock"][n]:
             center = 20
         else:
             center = 19
-        title = 21
+        title = 24
         if n+1 < len(save["unlock"]):
             if save["unlock"][n+1]:
                 next = 20
@@ -676,7 +677,7 @@ load()
 
 if new_game:
     save = {
-        'unlock': [True, True, False, False],
+        'unlock': [True, True, True, True],
         'star': [0, 0, 0, 0],
         'current_stage': 0,
     }
@@ -774,7 +775,8 @@ images = [
     pygame.transform.scale(pygame.image.load("media/stage_type_2_img_light.png"),transform_scale([847, 635])),   #20
     pygame.transform.scale(pygame.image.load("media/stage2_title.png"),transform_scale([185, 60])),              #21
     pygame.transform.scale(pygame.image.load("media/continue.png"),transform_scale([520, 110])),                 #22
-    #pygame.transform.scale(pygame.image.load("media/stage3_title"),transform_scale([200,60]))                    #23
+    pygame.transform.scale(pygame.image.load("media/stage3_title.png"), transform_scale([186, 60])),             #23
+    pygame.transform.scale(pygame.image.load("media/stage4_title.png"), transform_scale([187, 60]))              #24
 
 ]
 
@@ -924,8 +926,8 @@ battle_detail = [
         "order": [],
         "enemy_surf": pygame.transform.flip(images[9], flip_x=True, flip_y=False),
         "enemy_attack_word": "が",
-        "target": [6, 8],
-        "enemy_hp": 250,
+        "target": [7, 9],
+        "enemy_hp": 140,
     },
     #3 (masu to ru)
     {
@@ -934,9 +936,9 @@ battle_detail = [
         "answer": "verb_ru",
         "enemy_surf": pygame.transform.flip(images[9], flip_x=True, flip_y=False),
         "counter": 0,
-        "enemy_attack_word": "が",
-        "target": [6, 8],
-        "enemy_hp": 250,
+        "enemy_attack_word": "打",
+        "target": [7, 10],
+        "enemy_hp": 140,
         "curr_qs": None
 
     }
@@ -1389,98 +1391,101 @@ while running:
                             is_dragging = False
                             dragged_item_index = -1
 
-            # --- START OF POST-ANSWER LOGIC ---
-            if correct is not None:
-                if correct: # Correct Answer Logic
-                    action_type = action
 
-                    if action_type == "attack":
-                        if(time > 0 and time < fps*1):
-                            time += 1
-                            q_text = current_q["answer"]
-                            text_sp(screen, q_text, (120, 0, 0), 200, transform_scale([220, 330]), int((fps*1-time)/(fps*1)*255), "center")
-                        elif(time >= fps*1): time = 0
-                        
-                        if time == 0:
-                            enemy_hp -= 40
-
-                    elif action_type == "recover":
-                        if(time > 0 and time < fps*1):
-                            time += 1
-                            q_text = current_q["answer"]
-                            text_sp(screen, q_text, (120, 255, 120), 200, transform_scale([1310, 520]), int((fps*1-time)/(fps*1)*255), "center")
-                        elif(time >= fps*1): time = 0
-                        
-                        if time == 0:
-                            player_hp = min(player_hp+20, 100)
-
+            if correct == True:
+                if action == "attack":
+                    if(time > 0 and time < fps*1):
+                        time += 1
+                        q_text = current_q["answer"]
+                        text_sp(screen, q_text, (120, 0, 0), 200, transform_scale([220, 330]), int((fps*1-time)/(fps*1)*255), "center")
+                    elif(time >= fps*1): 
+                        time = 0
+                    
                     if time == 0:
-                        correct = None 
+                        enemy_hp -= 20
+
+                elif action == "recover":
+                    if(time > 0 and time < fps*1):
+                        time += 1
+                        q_text = current_q["answer"]
+                        text_sp(screen, q_text, (120, 255, 120), 200, transform_scale([1310, 520]), int((fps*1-time)/(fps*1)*255), "center")
+                    elif(time >= fps*1): time = 0
+                    
+                    if time == 0:
+                        player_hp = min(player_hp+20, 100)
+
+                if time == 0:
+                    correct = None 
+                    question_num += 1
+                    action = None
+                    
+                    if enemy_hp <= 0:
+                        time = -1*fps 
+                        if (question_num <= battle_detail[stage]["target"][0]):
+                            save["star"][stage] = 3
+                        elif (question_num <= battle_detail[stage]["target"][1]):
+                            save["star"][stage] = max(save["star"][stage], 2)
+                        else:
+                            save["star"][stage] = max(save["star"][stage], 1)
+                        
+                        if save["current_stage"] + 1 < len(save["unlock"]):
+                            save["unlock"][save["current_stage"]+1]=True
+                        write()
+                        game_state = "win"
+                    else: 
+                        draggable_rects.clear() 
+                        draggable_rects_initial_pos.clear()
+                        if question_num >= len(battle_detail[stage]["order"]):
+                            random.shuffle(battle_detail[stage]["order"])
+                            question_num = 0
+
+            elif correct == False:
+                if action == "attack":
+                    if(time > 0 and time < fps*1):
+                        time += 1
+                        text_sp(screen, battle_detail[stage]["enemy_attack_word"], (120, 0, 120), 200, transform_scale([1310, 520]), int((fps*1-time)/(fps*1)*255), "center")
+                    elif(time >= fps*1):
+                        time = 0
+                    
+                    if time == 0:
+                        player_hp -= 40
+                        correct = None
                         question_num += 1
                         action = None
                         
-                        if enemy_hp <= 0:
-                            time = -1*fps 
-                            if (question_num <= battle_detail[stage]["target"][0]): save["star"][stage] = 3
-                            elif (question_num <= battle_detail[stage]["target"][1]): save["star"][stage] = max(save["star"][stage], 2)
-                            else: save["star"][stage] = max(save["star"][stage], 1)
-                            
-                            if save["current_stage"] + 1 < len(save["unlock"]):
-                                save["unlock"][save["current_stage"]+1]=True
-                            write()
-                            game_state = "win"
+                        if player_hp <= 0:
+                            time = -1*fps
+                            game_state = "lose"
                         else: 
-                            draggable_rects.clear() 
+                            draggable_rects.clear()
                             draggable_rects_initial_pos.clear()
                             if question_num >= len(battle_detail[stage]["order"]):
                                 random.shuffle(battle_detail[stage]["order"])
                                 question_num = 0
+                elif action == "recover":
+                    if(time > 0 and time < fps*1):
+                        time += 1
+                        q_text = current_q["answer"]
+                        text_sp(screen, q_text, (120, 255, 120), 200, transform_scale([1310, 520]), int((fps*1-time)/(fps*1)*255), "center")
+                        text_sp(screen, "╳", (120, 255, 120), 200, transform_scale([1310, 520]), int((fps*1-time)/(fps*1)*255), "center")
+                    elif(time >= fps*1):
+                        time = 0
 
-                elif not correct: # Incorrect Answer Logic
-                    if action == "attack":
-                        if(time > 0 and time < fps*1):
-                            time += 1
-                            text_sp(screen, battle_detail[stage]["enemy_attack_word"], (120, 0, 120), 200, transform_scale([1310, 520]), int((fps*1-time)/(fps*1)*255), "center")
-                        elif(time >= fps*1): time = 0
+                    if time == 0:
+                        player_hp -= 10
+                        correct = None
+                        question_num += 1
+                        action = None
                         
-                        if time == 0:
-                            player_hp -= 40
-                            correct = None
-                            question_num += 1
-                            action = None
-                            
-                            if player_hp <= 0:
-                                time = -1*fps
-                                game_state = "lose"
-                            else: 
-                                draggable_rects.clear()
-                                draggable_rects_initial_pos.clear()
-                                if question_num >= len(battle_detail[stage]["order"]):
-                                    random.shuffle(battle_detail[stage]["order"])
-                                    question_num = 0
-                    elif action == "recover":
-                        if(time > 0 and time < fps*1):
-                            time += 1
-                            q_text = current_q["answer"]
-                            text_sp(screen, q_text, (120, 255, 120), 200, transform_scale([1310, 520]), int((fps*1-time)/(fps*1)*255), "center")
-                            text_sp(screen, "╳", (120, 255, 120), 200, transform_scale([1310, 520]), int((fps*1-time)/(fps*1)*255), "center")
-                        elif(time >= fps*1): time = 0
-
-                        if time == 0:
-                            player_hp -= 10
-                            correct = None
-                            question_num += 1
-                            action = None
-                            
-                            if player_hp <= 0:
-                                time = -1*fps
-                                game_state = "lose"
-                            else: 
-                                draggable_rects.clear()
-                                draggable_rects_initial_pos.clear()
-                                if question_num >= len(battle_detail[stage]["order"]):
-                                    random.shuffle(battle_detail[stage]["order"])
-                                    question_num = 0
+                        if player_hp <= 0:
+                            time = -1*fps
+                            game_state = "lose"
+                        else: 
+                            draggable_rects.clear()
+                            draggable_rects_initial_pos.clear()
+                            if question_num >= len(battle_detail[stage]["order"]):
+                                random.shuffle(battle_detail[stage]["order"])
+                                question_num = 0
 
 
         elif battle_detail[stage]["question_type"] == "input":
