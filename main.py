@@ -9,8 +9,8 @@ new_game = True
 god_mod = True
 
 save = {
-    'unlock': [True, False, False, False],
-    'star': [0, 0, 0, 0],
+    'unlock': [True, False, False, False, False],
+    'star': [0, 0, 0, 0, 0],
     'current_stage': 0,
 }
 
@@ -568,92 +568,109 @@ def load():
         with open('udata.sf', 'w') as store_file:
             json.dump(deepcopy(save), store_file)
 
-
-
 def write():
     with open('udata.sf', 'w') as store_data:
         json.dump(save, store_data)
 
 def draw_stage_selection(n):
-    if n == 0:
-        bg = 10
-        center = 17
-        title = 12
-        if save["unlock"][n+1]:
-            next = 17
-        else:
-            next = 18
-        prev = None
-    elif n == 1:
-        # later stage can just copy from this
-
-        # bg image
-        bg = 10
-
-        # image at center, if havent unlock then will show the gray version
-        if save["unlock"][n]:
+    match n:
+        case 0:
+            bg = 10
             center = 17
-        else:
-            center = 18
-
-        # the title text, but in image format, Jeff can help gen
-        title = 21
-
-        #image of next stage
-        if n+1 < len(save["unlock"]):
+            title = 12
             if save["unlock"][n+1]:
-                next = 20
+                next = 17
             else:
-                next = 19
-        else:
-            next = None
+                next = 18
+            prev = None
+        case 1:
+            # later stage can just copy from this
 
-        # image of previos stage
-        if save["unlock"][n-1]:
-            prev = 17
-        else:
-            prev = 18
+            # bg image
+            bg = 10
 
-    elif n == 2:
-        bg = 10
-        # Center stage (Stage 3) is Type 1
-        if save["unlock"][n]:
-            center = 20
-        else:
-            center = 19
-        title = 23
-        if n+1 < len(save["unlock"]):
-            if save["unlock"][n+1]:
-                next = 20
+            # image at center, if havent unlock then will show the gray version
+            if save["unlock"][n]:
+                center = 17
             else:
-                next = 19
-        else:
-            next = None
-        if save["unlock"][n-1]:
-            prev = 17
-        else:
-            prev = 18
-    
-    elif n == 3:
-        bg = 10
-        if save["unlock"][n]:
-            center = 20
-        else:
-            center = 19
-        title = 24
-        if n+1 < len(save["unlock"]):
-            if save["unlock"][n+1]:
-                next = 20
-            else:
-                next = 19
-        else:
-            next = None
-        if save["unlock"][n-1]:
-            prev = 20
-        else:
-            prev = 19
+                center = 18
 
-    screen.blit(images[bg], transform_scale([0, -60]))
+            # the title text, but in image format, Jeff can help gen
+            title = 21
+
+            #image of next stage
+            if n+1 < len(save["unlock"]):
+                if save["unlock"][n+1]:
+                    next = 20
+                else:
+                    next = 19
+            else:
+                next = None
+
+            # image of previos stage
+            if save["unlock"][n-1]:
+                prev = 17
+            else:
+                prev = 18
+
+        case 2:
+            bg = 10
+            # Center stage (Stage 3) is Type 1
+            if save["unlock"][n]:
+                center = 20
+            else:
+                center = 19
+            title = 23
+            if n+1 < len(save["unlock"]):
+                if save["unlock"][n+1]:
+                    next = 20
+                else:
+                    next = 19
+            else:
+                next = None
+            if save["unlock"][n-1]:
+                prev = 17
+            else:
+                prev = 18
+        
+        case 3:
+            bg = 10
+            if save["unlock"][n]:
+                center = 20
+            else:
+                center = 19
+            title = 24
+            if n+1 < len(save["unlock"]):
+                if save["unlock"][n+1]:
+                    next = 27
+                else:
+                    next = 26
+            else:
+                next = None
+            if save["unlock"][n-1]:
+                prev = 20
+            else:
+                prev = 19
+        case 4:
+            bg = 25
+            if save["unlock"][n]:
+                center = 27
+            else:
+                center = 26
+            title = 28
+            if n+1 < len(save["unlock"]):
+                if save["unlock"][n+1]:
+                    next = 20
+                else:
+                    next = 19
+            else:
+                next = None
+            if save["unlock"][n-1]:
+                prev = 20
+            else:
+                prev = 19
+
+    screen.blit(images[bg], transform_scale([0, 0]))
     screen.blit(images[center], transform_scale([297, 198]))
 
     r = images[title].get_rect()
@@ -665,6 +682,20 @@ def draw_stage_selection(n):
         screen.blit(images[next], transform_scale([1287, 198]))
     if prev:
         screen.blit(images[prev], transform_scale([-694, 198]))
+
+def draw_story_bg(stage):
+    match stage:
+        case 0:
+            screen.blit(images[3], (0, 0))
+        case 1:
+            screen.blit(images[3], (0, 0))
+        case 2:
+            screen.blit(images[3], (0, 0))
+        case 3:
+            screen.blit(images[3], (0, 0))
+        case 4:
+            screen.blit(images[25], (0, 0))
+            
 
 
 os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % ((pygame.display.get_desktop_sizes()[0][0]-WIDTH)/2, 20)
@@ -678,14 +709,14 @@ load()
 
 if new_game:
     save = {
-        'unlock': [True, False, False, False],
-        'star': [0, 0, 0, 0],
+        'unlock': [True, False, False, False, False],
+        'star': [0, 0, 0, 0, 0],
         'current_stage': 0,
     }
 if god_mod:
     save = {
-        'unlock': [True, True, True, True],
-        'star': [0, 0, 0, 0],
+        'unlock': [True, True, True, True, True],
+        'star': [0, 0, 0, 0, 0],
         'current_stage': 0,
     }
 # question bank: verb form convertion
@@ -783,9 +814,15 @@ images = [
     pygame.transform.scale(pygame.image.load("media/stage2_title.png"),transform_scale([185, 60])),              #21
     pygame.transform.scale(pygame.image.load("media/continue.png"),transform_scale([520, 110])),                 #22
     pygame.transform.scale(pygame.image.load("media/stage3_title.png"), transform_scale([186, 60])),             #23
-    pygame.transform.scale(pygame.image.load("media/stage4_title.png"), transform_scale([187, 60]))              #24
+    pygame.transform.scale(pygame.image.load("media/stage4_title.png"), transform_scale([187, 60])),             #24
+    pygame.transform.scale(pygame.image.load("media/hell_bg.png"), [WIDTH, HEIGHT]),                             #25
+    pygame.transform.scale(pygame.image.load("media/hell_bg_dark.png"),transform_scale([847, 635])),             #26
+    pygame.transform.scale(pygame.image.load("media/hell_bg_light.png"),transform_scale([847, 635])),            #27
+    pygame.transform.scale(pygame.image.load("media/finalstage1_title.png"),transform_scale([299, 60])),         #28
+    pygame.transform.scale(pygame.image.load("media/demon_1.png"), transform_scale([685, 400])),                 #29
+    pygame.transform.scale(pygame.image.load("media/high_demon_1.png"), transform_scale([187, 60])),  # unused
 
-]
+]                                                              
 
 # 基礎言靈魔法表示: <あ>
 dialog = [
@@ -856,10 +893,13 @@ dialog = [
         (2, '莉子：\n接下來，我們要學習如何將單字組成句子。'),
         (1, '赤真：\n喔喔！'),
         (2, '莉子：\n看看這個句子，然後把正確的詞語拖到空格裡吧！'),
-        (1, '赤真：\n好的，我試試看！')
+        (1, '赤真：\n好的，我試試看！'),
     ],
     [
-        (1, '赤真：\n好的，我試試看！')
+        (1, '赤真：\n好的，我試試看！'),
+    ],
+    [
+        (1, '赤真：\n好的，我試試看！'),
     ]
 
 ]
@@ -892,6 +932,7 @@ battle_detail = [
             "え": ("e", ["e", "o", "a", "i"]),
             "お": ("o", ["o", "a", "i", "u"])
         },
+        "word_size": 64,
         "order": [],
         "enemy_surf": 9,
         "enemy_attack_word": "む" ,
@@ -915,6 +956,7 @@ battle_detail = [
             "げ": ("ge", ["ge", "ke", "ko", "go"]),
             "ご": ("go", ["go", "ko", "so", "ga"])
         },
+        "word_size": 64,
         "order": [],
         "enemy_surf": 9,
         "enemy_attack_word": "む" ,
@@ -939,12 +981,36 @@ battle_detail = [
         "enemy_hp": 140,
         "discription": "以滑鼠拖拉正確的選項至空格內",
     },
-    #3 (masu to ru)
+    #3 (kanji to hiragana 1 )
+    {
+        "question_type": "MC",
+        "question": ["行きます","来ます", "帰ります", "出掛けます","食べます", "飲みます", "見ます", "読みます", "書きます", "聞きます"],
+        "answer": {
+            "行きます": ("いきます", ["いきます", "ひきます", "いくきます", "ちきます"]),
+            "来ます": ("きます", ["きます", "くます", "います", "いきます"]),
+            "帰ります": ("かえります", ["かえります", "かります", "もどります", "でかります"]),
+            "出掛けます": ("でかけます", ["でかけます", "てかけます", "てがけます", "けがけます"]),
+            "食べます": ("たべます", ["たべます", "しゃべます", "だべます", "くべます"]),
+            "飲みます": ("のみます", ["のみます", "いんみます", "おんみます", "のみみます"]),
+            "見ます": ("みます", ["みます", "みえます", "けんます", "みせます"]),
+            "読みます": ("よみます", ["よみます", "どくみます", "とくみます", "のみます"]),
+            "書きます": ("かきます", ["かきます", "がきます", "しょきます", "よみます"]),
+            "聞きます": ("ききます", ["ききます", "みにます", "こくます", "きます"])
+        },
+        "word_size": 36,
+        "order": [],
+        "enemy_surf": 9,
+        "enemy_attack_word": "む" ,
+        "target": [5, 7],
+        "enemy_hp": 100,
+        "discription": "以滑鼠點擊正確的選項",
+    },
+    #4 (masu to ru)
     {
         "question_type": "input",
         "question": "verb_masu",
         "answer": "verb_ru",
-        "enemy_surf": 9,
+        "enemy_surf": 29,
         "counter": 0,
         "enemy_attack_word": "打",
         "target": [7, 10],
@@ -1054,7 +1120,8 @@ while running:
         else:
             
             # BG image
-            screen.blit(images[3], (0, 0))
+            draw_story_bg(stage)
+            
 
             # left character
             talking = int(dialog[story_num][dialog_num][0])
@@ -1100,7 +1167,7 @@ while running:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if pygame.mouse.get_pressed()[0]:
                         
-                        if click_check(pygame.mouse.get_pos(), transform_scale([1111, 35, images[6].get_width(), images[6].get_height()])):
+                        if click_check(pygame.mouse.get_pos(), transform_scale([1111, 35, 310, 80])):
                             # skip button
                             dialog_num = len(dialog[story_num])
                         else:
@@ -1132,8 +1199,8 @@ while running:
             pygame.draw.rect(screen, (255, 0, 0), transform_scale([79, 34, enemy_hp/battle_detail[stage]["enemy_hp"]*204, 13]))
 
             # discription
-            pygame.draw.rect(screen, pygame.Color("#d9d9d9"), transform_scale([720-500/2, 48-64/2, 500, 64]))
-            text(screen, battle_detail[stage]["discription"], (20, 20, 20), transform_scale([50])[0], transform_scale([720, 48]), "center")
+            pygame.draw.rect(screen, pygame.Color("#d9d9d9"), transform_scale([320, 0, 800, 80]))
+            text(screen, battle_detail[stage]["discription"], (20, 20, 20), transform_scale([35])[0], transform_scale([720, 48]), "center")
 
             # Q&A box
             pygame.draw.rect(screen, pygame.Color("#d9d9d9"), transform_scale([324, 552, 791, 408]))
@@ -1145,10 +1212,10 @@ while running:
 
                 text(screen, battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]], (0, 0, 0), 64, transform_scale([688, 601]), "center")
                 
-                text(screen, battle_detail[stage]["answer"][battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]]][1][0], (0, 0, 0), 64, transform_scale([504, 776]), "center")
-                text(screen, battle_detail[stage]["answer"][battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]]][1][1], (0, 0, 0), 64, transform_scale([937, 776]), "center")
-                text(screen, battle_detail[stage]["answer"][battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]]][1][2], (0, 0, 0), 64, transform_scale([504, 889]), "center")
-                text(screen, battle_detail[stage]["answer"][battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]]][1][3], (0, 0, 0), 64, transform_scale([937, 889]), "center")
+                text(screen, battle_detail[stage]["answer"][battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]]][1][0], (0, 0, 0), battle_detail[stage]["word_size"], transform_scale([504, 776]), "center")
+                text(screen, battle_detail[stage]["answer"][battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]]][1][1], (0, 0, 0), battle_detail[stage]["word_size"], transform_scale([937, 776]), "center")
+                text(screen, battle_detail[stage]["answer"][battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]]][1][2], (0, 0, 0), battle_detail[stage]["word_size"], transform_scale([504, 889]), "center")
+                text(screen, battle_detail[stage]["answer"][battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]]][1][3], (0, 0, 0), battle_detail[stage]["word_size"], transform_scale([937, 889]), "center")
             else:
                 pygame.draw.rect(screen, pygame.Color("#ececec"), transform_scale([407, 729, 194, 207]))
                 pygame.draw.rect(screen, pygame.Color("#ececec"), transform_scale([840, 729, 194, 207]))
@@ -1199,7 +1266,7 @@ while running:
                 if action == "attack":
                     if(time > 0 and time < fps*1):
                         time += 1
-                        text_sp(screen, battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]], (120, 0, 0), 200, transform_scale([220, 330]), int((fps*1-time)/(fps*1)*255), "center")
+                        text_sp(screen, battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]][0], (120, 0, 0), 200, transform_scale([220, 330]), int((fps*1-time)/(fps*1)*255), "center")
                     elif(time >= fps*1):
                         time = 0
                     if time == 0:
@@ -1233,7 +1300,7 @@ while running:
                 elif action == "recover":
                     if(time > 0 and time < fps*1):
                         time += 1
-                        text_sp(screen, battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]], (120, 255, 120), 200, transform_scale([1310, 520]), int((fps*1-time)/(fps*1)*255), "center")
+                        text_sp(screen, battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]][0], (120, 255, 120), 200, transform_scale([1310, 520]), int((fps*1-time)/(fps*1)*255), "center")
                     elif(time >= fps*1):
                         time = 0
                     if time == 0:
@@ -1273,7 +1340,7 @@ while running:
                 elif action == "recover":
                     if(time > 0 and time < fps*1):
                         time += 1
-                        text_sp(screen, battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]], (120, 255, 120), 200, transform_scale([1310, 520]), int((fps*1-time)/(fps*1)*255), "center")
+                        text_sp(screen, battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]][0], (120, 255, 120), 200, transform_scale([1310, 520]), int((fps*1-time)/(fps*1)*255), "center")
                         text_sp(screen, "╳", (120, 255, 120), 200, transform_scale([1310, 520]), int((fps*1-time)/(fps*1)*255), "center")
                     elif(time >= fps*1):
                         time = 0
@@ -1312,8 +1379,8 @@ while running:
             pygame.draw.rect(screen, (255, 0, 0), transform_scale([79, 34, enemy_hp/battle_detail[stage]["enemy_hp"]*204, 13]))
 
             # discription
-            pygame.draw.rect(screen, pygame.Color("#d9d9d9"), transform_scale([720-640/2, 48-64/2, 640, 64]))
-            text(screen, battle_detail[stage]["discription"], (20, 20, 20), transform_scale([50])[0], transform_scale([720, 48]), "center")
+            pygame.draw.rect(screen, pygame.Color("#d9d9d9"), transform_scale([320, 0, 800, 80]))
+            text(screen, battle_detail[stage]["discription"], (20, 20, 20), transform_scale([35])[0], transform_scale([720, 48]), "center")
 
             q_index = battle_detail[stage]["order"][question_num]
             current_q = battle_detail[stage]["questions"][q_index]
@@ -1506,7 +1573,6 @@ while running:
                                 random.shuffle(battle_detail[stage]["order"])
                                 question_num = 0
 
-
         elif battle_detail[stage]["question_type"] == "input":
             # BG image
             screen.blit(images[3], (0, 0))
@@ -1527,8 +1593,8 @@ while running:
             pygame.draw.rect(screen, (255, 0, 0), transform_scale([79, 34, enemy_hp/battle_detail[stage]["enemy_hp"]*204, 13]))
 
             # discription
-            pygame.draw.rect(screen, pygame.Color("#d9d9d9"), transform_scale([720-500/2, 48-64/2, 500, 64]))
-            text(screen, battle_detail[stage]["discription"], (20, 20, 20), transform_scale([50])[0], transform_scale([720, 48]), "center")
+            pygame.draw.rect(screen, pygame.Color("#d9d9d9"), transform_scale([320, 0, 800, 80]))
+            text(screen, battle_detail[stage]["discription"], (20, 20, 20), transform_scale([35])[0], transform_scale([720, 48]), "center")
 
             pygame.draw.rect(screen, pygame.Color("#d9d9d9"), transform_scale([324, 702, 791, 258]))
             
@@ -1729,13 +1795,6 @@ while running:
                             inputArr = ""
                             outputArr = ""
 
-
-
-            
-
-
-            
-
     # stage select
     if game_state == "select_stage":
         
@@ -1787,353 +1846,6 @@ while running:
             story_num = save["current_stage"]
             dialog_num = 0
             time = 0
-
-
-    # game state for seleting stage: from <text1>
-    if game_state == "select_kara":
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                pos = pygame.mouse.get_pos()
-                if click_check(pos, [128, 128, 128, 60]):
-                    kara = "masu"
-                    game_state = "select_made"
-                if click_check(pos, [128, 128+64, 128, 60]):
-                    kara = "jisyo"
-                    game_state = "select_made"
-                if click_check(pos, [128, 128+128, 128, 60]):
-                    kara = "te"
-                    game_state = "select_made"
-                if click_check(pos, [128, 128+128+64, 128, 60]):
-                    kara = "ta"
-                    game_state = "select_made"
-                if click_check(pos, [128, 128+256, 128, 60]):
-                    kara = "nai"
-                    game_state = "select_made"
-
-                if click_check(pos, [128 + 135, 128, 128, 60]):
-                    kara = "kanou"
-                    game_state = "select_made"
-                if click_check(pos, [128 + 135, 128+64, 128, 60]):
-                    kara = "tiugin"
-                    game_state = "select_made"
-                if click_check(pos, [128 + 135, 128+128, 128, 60]):
-                    kara = "mingling"
-                    game_state = "select_made"
-                if click_check(pos, [128 + 135, 128+128+64, 128, 60]):
-                    kara = "jiheung"
-                    game_state = "select_made"
-                if click_check(pos, [128 + 135, 128+256, 128, 60]):
-                    kara = "gamji"
-                    game_state = "select_made"
-
-                if click_check(pos, [128 + 270, 128+64, 128, 60]):
-                    kara = "sausan"
-                    game_state = "select_made"
-                if click_check(pos, [128 + 270, 128+128, 128, 60]):
-                    kara = "siyik"
-                    game_state = "select_made"
-                if click_check(pos, [128 + 270, 128+128+64, 128, 60]):
-                    kara = "siyiksausan"
-                    game_state = "select_made"
-                
-
-        screen.fill((135, 206, 235))
-
-        text_input_box = pygame.draw.rect(screen, (20, 20, 20), [128, 128, 128, 60])
-        text_input_box = pygame.draw.rect(screen, (140, 235, 52), [128+2, 128+2, 128-4, 60-4])
-        text(screen, "ます形", (0, 0, 0), 24, (128+64, 128+30), "center")
-
-        text_input_box = pygame.draw.rect(screen, (20, 20, 20), [128, 128+64, 128, 60])
-        text_input_box = pygame.draw.rect(screen, (140, 235, 52), [128+2, 128+2+64, 128-4, 60-4])
-        text(screen, "辞書形", (0, 0, 0), 24, (128+64, 128+30+64), "center")
-
-        text_input_box = pygame.draw.rect(screen, (20, 20, 20), [128, 128+128, 128, 60])
-        text_input_box = pygame.draw.rect(screen, (140, 235, 52), [128+2, 128+2+128, 128-4, 60-4])
-        text(screen, "て形", (0, 0, 0), 24, (128+64, 128+30+128), "center")
-
-        text_input_box = pygame.draw.rect(screen, (20, 20, 20), [128, 128+128+64, 128, 60])
-        text_input_box = pygame.draw.rect(screen, (140, 235, 52), [128+2, 128+2+128+64, 128-4, 60-4])
-        text(screen, "た形", (0, 0, 0), 24, (128+64, 128+30+128+64), "center")
-
-        text_input_box = pygame.draw.rect(screen, (20, 20, 20), [128, 128+256, 128, 60])
-        text_input_box = pygame.draw.rect(screen, (140, 235, 52), [128+2, 128+2+256, 128-4, 60-4])
-        text(screen, "ない形", (0, 0, 0), 24, (128+64, 128+30+256), "center")
-
-
-        text_input_box = pygame.draw.rect(screen, (20, 20, 20), [128 + 135, 128, 128, 60])
-        text_input_box = pygame.draw.rect(screen, (140, 235, 52), [128 + 135 +2, 128+2, 128-4, 60-4])
-        text(screen, "可能形", (0, 0, 0), 24, (128 + 135 + 64, 128+30), "center")
-
-        text_input_box = pygame.draw.rect(screen, (20, 20, 20), [128 + 135, 128+64, 128, 60])
-        text_input_box = pygame.draw.rect(screen, (140, 235, 52), [128 + 135 +2, 128+2+64, 128-4, 60-4])
-        text(screen, "条件形", (0, 0, 0), 24, (128 + 135 + 64, 128+30+64), "center")
-
-        text_input_box = pygame.draw.rect(screen, (20, 20, 20), [128 + 135, 128+128, 128, 60])
-        text_input_box = pygame.draw.rect(screen, (140, 235, 52), [128 + 135 +2, 128+2+128, 128-4, 60-4])
-        text(screen, "命令形", (0, 0, 0), 24, (128 + 135 + 64, 128+30+128), "center")
-
-        text_input_box = pygame.draw.rect(screen, (20, 20, 20), [128 + 135, 128+128+64, 128, 60])
-        text_input_box = pygame.draw.rect(screen, (140, 235, 52), [128 + 135 +2, 128+2+128+64, 128-4, 60-4])
-        text(screen, "意向形", (0, 0, 0), 24, (128 + 135 + 64, 128+30+128+64), "center")
-
-        text_input_box = pygame.draw.rect(screen, (20, 20, 20), [128 + 135, 128+256, 128, 60])
-        text_input_box = pygame.draw.rect(screen, (140, 235, 52), [128 + 135 +2, 128+2+256, 128-4, 60-4])
-        text(screen, "禁止形", (0, 0, 0), 24, (128 + 135 + 64, 128+30+256), "center")
-
-
-        text_input_box = pygame.draw.rect(screen, (20, 20, 20), [128 + 270, 128+64, 128, 60])
-        text_input_box = pygame.draw.rect(screen, (140, 235, 52), [128 + 270 + 2, 128+2+64, 128-4, 60-4])
-        text(screen, "受身形", (0, 0, 0), 24, (128 + 270 + 64, 128+30+64), "center")
-
-        text_input_box = pygame.draw.rect(screen, (20, 20, 20), [128 + 270, 128+128, 128, 60])
-        text_input_box = pygame.draw.rect(screen, (140, 235, 52), [128 + 270 + 2, 128+2+128, 128-4, 60-4])
-        text(screen, "使役形", (0, 0, 0), 24, (128 + 270 + 64, 128+30+128), "center")
-
-        text_input_box = pygame.draw.rect(screen, (20, 20, 20), [128 + 270, 128+128+64, 128, 60])
-        text_input_box = pygame.draw.rect(screen, (140, 235, 52), [128 + 270 + 2, 128+2+128+64, 128-4, 60-4])
-        text(screen, "使役受身形", (0, 0, 0), 24, (128 + 270 + 64, 128+30+128+64), "center")
-
-
-        text(screen, "から", (0, 0, 0), 48, (128+270+135+64, 128+30+128), "center")
-
-    # game state for seleting stage: to <text2>
-    if game_state == "select_made":
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                pos = pygame.mouse.get_pos()
-                if click_check(pos, [128, 128, 128, 60]):
-                    made = "masu"
-                    game_state = "chooseNumOfQs"
-                if click_check(pos, [128, 128+64, 128, 60]):
-                    made = "jisyo"
-                    game_state = "chooseNumOfQs"
-                if click_check(pos, [128, 128+128, 128, 60]):
-                    made = "te"
-                    game_state = "chooseNumOfQs"
-                if click_check(pos, [128, 128+128+64, 128, 60]):
-                    made = "ta"
-                    game_state = "chooseNumOfQs"
-                if click_check(pos, [128, 128+256, 128, 60]):
-                    made = "nai"
-                    game_state = "chooseNumOfQs"
-
-                if click_check(pos, [128 + 135, 128, 128, 60]):
-                    made = "kanou"
-                    game_state = "chooseNumOfQs"
-                if click_check(pos, [128 + 135, 128+64, 128, 60]):
-                    made = "tiugin"
-                    game_state = "chooseNumOfQs"
-                if click_check(pos, [128 + 135, 128+128, 128, 60]):
-                    made = "mingling"
-                    game_state = "chooseNumOfQs"
-                if click_check(pos, [128 + 135, 128+128+64, 128, 60]):
-                    made = "jiheung"
-                    game_state = "chooseNumOfQs"
-                if click_check(pos, [128 + 135, 128+256, 128, 60]):
-                    made = "gamji"
-                    game_state = "chooseNumOfQs"
-
-                if click_check(pos, [128 + 270, 128+64, 128, 60]):
-                    made = "sausan"
-                    game_state = "chooseNumOfQs"
-                if click_check(pos, [128 + 270, 128+128, 128, 60]):
-                    made = "siyik"
-                    game_state = "chooseNumOfQs"
-                if click_check(pos, [128 + 270, 128+128+64, 128, 60]):
-                    made = "siyiksausan"
-                    game_state = "chooseNumOfQs"
-
-        screen.fill((135, 206, 235))
-
-        text_input_box = pygame.draw.rect(screen, (20, 20, 20), [128, 128, 128, 60])
-        text_input_box = pygame.draw.rect(screen, (140, 235, 52), [128+2, 128+2, 128-4, 60-4])
-        text(screen, "ます形", (0, 0, 0), 24, (128+64, 128+30), "center")
-
-        text_input_box = pygame.draw.rect(screen, (20, 20, 20), [128, 128+64, 128, 60])
-        text_input_box = pygame.draw.rect(screen, (140, 235, 52), [128+2, 128+2+64, 128-4, 60-4])
-        text(screen, "辞書形", (0, 0, 0), 24, (128+64, 128+30+64), "center")
-
-        text_input_box = pygame.draw.rect(screen, (20, 20, 20), [128, 128+128, 128, 60])
-        text_input_box = pygame.draw.rect(screen, (140, 235, 52), [128+2, 128+2+128, 128-4, 60-4])
-        text(screen, "て形", (0, 0, 0), 24, (128+64, 128+30+128), "center")
-
-        text_input_box = pygame.draw.rect(screen, (20, 20, 20), [128, 128+128+64, 128, 60])
-        text_input_box = pygame.draw.rect(screen, (140, 235, 52), [128+2, 128+2+128+64, 128-4, 60-4])
-        text(screen, "た形", (0, 0, 0), 24, (128+64, 128+30+128+64), "center")
-
-        text_input_box = pygame.draw.rect(screen, (20, 20, 20), [128, 128+256, 128, 60])
-        text_input_box = pygame.draw.rect(screen, (140, 235, 52), [128+2, 128+2+256, 128-4, 60-4])
-        text(screen, "ない形", (0, 0, 0), 24, (128+64, 128+30+256), "center")
-
-
-        text_input_box = pygame.draw.rect(screen, (20, 20, 20), [128 + 135, 128, 128, 60])
-        text_input_box = pygame.draw.rect(screen, (140, 235, 52), [128 + 135 +2, 128+2, 128-4, 60-4])
-        text(screen, "可能形", (0, 0, 0), 24, (128 + 135 + 64, 128+30), "center")
-
-        text_input_box = pygame.draw.rect(screen, (20, 20, 20), [128 + 135, 128+64, 128, 60])
-        text_input_box = pygame.draw.rect(screen, (140, 235, 52), [128 + 135 +2, 128+2+64, 128-4, 60-4])
-        text(screen, "条件形", (0, 0, 0), 24, (128 + 135 + 64, 128+30+64), "center")
-
-        text_input_box = pygame.draw.rect(screen, (20, 20, 20), [128 + 135, 128+128, 128, 60])
-        text_input_box = pygame.draw.rect(screen, (140, 235, 52), [128 + 135 +2, 128+2+128, 128-4, 60-4])
-        text(screen, "命令形", (0, 0, 0), 24, (128 + 135 + 64, 128+30+128), "center")
-
-        text_input_box = pygame.draw.rect(screen, (20, 20, 20), [128 + 135, 128+128+64, 128, 60])
-        text_input_box = pygame.draw.rect(screen, (140, 235, 52), [128 + 135 +2, 128+2+128+64, 128-4, 60-4])
-        text(screen, "意向形", (0, 0, 0), 24, (128 + 135 + 64, 128+30+128+64), "center")
-
-        text_input_box = pygame.draw.rect(screen, (20, 20, 20), [128 + 135, 128+256, 128, 60])
-        text_input_box = pygame.draw.rect(screen, (140, 235, 52), [128 + 135 +2, 128+2+256, 128-4, 60-4])
-        text(screen, "禁止形", (0, 0, 0), 24, (128 + 135 + 64, 128+30+256), "center")
-
-
-        text_input_box = pygame.draw.rect(screen, (20, 20, 20), [128 + 270, 128+64, 128, 60])
-        text_input_box = pygame.draw.rect(screen, (140, 235, 52), [128 + 270 + 2, 128+2+64, 128-4, 60-4])
-        text(screen, "受身形", (0, 0, 0), 24, (128 + 270 + 64, 128+30+64), "center")
-
-        text_input_box = pygame.draw.rect(screen, (20, 20, 20), [128 + 270, 128+128, 128, 60])
-        text_input_box = pygame.draw.rect(screen, (140, 235, 52), [128 + 270 + 2, 128+2+128, 128-4, 60-4])
-        text(screen, "使役形", (0, 0, 0), 24, (128 + 270 + 64, 128+30+128), "center")
-
-        text_input_box = pygame.draw.rect(screen, (20, 20, 20), [128 + 270, 128+128+64, 128, 60])
-        text_input_box = pygame.draw.rect(screen, (140, 235, 52), [128 + 270 + 2, 128+2+128+64, 128-4, 60-4])
-        text(screen, "使役受身形", (0, 0, 0), 24, (128 + 270 + 64, 128+30+128+64), "center")
-
-
-        text(screen, "まで", (0, 0, 0), 48, (128+270+135+64, 128+30+128), "center")
-
-        text1 = ""
-        if kara == "jisyo":
-            text1 = "辞書形"
-        elif kara == "masu":
-            text1 = "ます形"
-        elif kara == "te":
-            text1 = "て形"
-        elif kara == "ta":
-            text1 = "た形"
-        elif kara == "nai":
-            text1 = "ない形"
-
-        elif kara == "kanou":
-            text1 = "可能形"
-        elif kara == "tiugin":
-            text1 = "条件形"
-        elif kara == "mingling":
-            text1 = "命令形"
-        elif kara == "jiheung":
-            text1 = "意向形"
-        elif kara == "gamji":
-            text1 = "禁止形"
-
-        elif kara == "sausan":
-            text1 = "受身形"
-        elif kara == "siyik":
-            text1 = "使役形"
-        elif kara == "siyiksausan":
-            text1 = "使役受身形"
-        text(screen, text1 + "から、", (0, 0, 0), 48, (128, 64))
-
-    # difficulty selection
-    if game_state == "chooseNumOfQs":
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                pos = pygame.mouse.get_pos()
-                if click_check(pos, [WIDTH/2-128, HEIGHT/2-60/2, 256, 60]):
-                    no_of_qs = 5
-                    game_state = "start"
-                if click_check(pos, [WIDTH/2-128, HEIGHT/2-60/2+64, 256, 60]):
-                    no_of_qs = 10
-                    game_state = "start"
-                if click_check(pos, [WIDTH/2-128, HEIGHT/2-60/2+128, 256, 60]):
-                    no_of_qs = 25
-                    game_state = "start"
-        
-        screen.fill((135, 206, 235))
-        text(screen, "難易度を選択", (0, 0, 0), 48, (WIDTH/2, HEIGHT/2 - 64), "center")
-
-        # 5 button
-        text_input_box = pygame.draw.rect(screen, (20, 20, 20), [WIDTH/2-128, HEIGHT/2-60/2, 256, 60])
-        text_input_box = pygame.draw.rect(screen, (140, 235, 52), [WIDTH/2-128+2, HEIGHT/2-60/2+2, 256-4, 60-4])
-        text(screen, "簡単: 5つの質問", (0, 0, 0), 24, (WIDTH/2, HEIGHT/2), "center")
-
-        # 10 button
-        text_input_box = pygame.draw.rect(screen, (20, 20, 20), [WIDTH/2-128, HEIGHT/2-60/2+64, 256, 60])
-        text_input_box = pygame.draw.rect(screen, (140, 235, 52), [WIDTH/2-128+2, HEIGHT/2-60/2+2+64, 256-4, 60-4])
-        text(screen, "中等: 10つの質問", (0, 0, 0), 24, (WIDTH/2, HEIGHT/2+64), "center")
-
-        # 25 button
-        text_input_box = pygame.draw.rect(screen, (20, 20, 20), [WIDTH/2-128, HEIGHT/2-60/2+128, 256, 60])
-        text_input_box = pygame.draw.rect(screen, (140, 235, 52), [WIDTH/2-128+2, HEIGHT/2-60/2+2+128, 256-4, 60-4])
-        text(screen, "難しい: 25つの質問", (0, 0, 0), 24, (WIDTH/2, HEIGHT/2+128), "center")
-
-        text1 = ""
-        if kara == "jisyo":
-            text1 = "辞書形"
-        elif kara == "masu":
-            text1 = "ます形"
-        elif kara == "te":
-            text1 = "て形"
-        elif kara == "ta":
-            text1 = "た形"
-        elif kara == "nai":
-            text1 = "ない形"
-
-        elif kara == "kanou":
-            text1 = "可能形"
-        elif kara == "tiugin":
-            text1 = "条件形"
-        elif kara == "mingling":
-            text1 = "命令形"
-        elif kara == "jiheung":
-            text1 = "意向形"
-        elif kara == "gamji":
-            text1 = "禁止形"
-
-        elif kara == "sausan":
-            text1 = "受身形"
-        elif kara == "siyik":
-            text1 = "使役形"
-        elif kara == "siyiksausan":
-            text1 = "使役受身形"
-
-        text2 = ""
-        if made == "jisyo":
-            text2 = "辞書形"
-        elif made == "masu":
-            text2 = "ます形"
-        elif made == "te":
-            text2 = "て形"
-        elif made == "ta":
-            text2 = "た形"
-        elif made == "nai":
-            text2 = "ない形"
-
-        elif made == "kanou":
-            text2 = "可能形"
-        elif made == "tiugin":
-            text2 = "条件形"
-        elif made == "mingling":
-            text2 = "命令形"
-        elif made == "jiheung":
-            text2 = "意向形"
-        elif made == "gamji":
-            text2 = "禁止形"
-
-        elif made == "sausan":
-            text2 = "受身形"
-        elif made == "siyik":
-            text2 = "使役形"
-        elif made == "siyiksausan":
-            text2 = "使役受身形"
-
-        text(screen, text1 + "から、" + text2 + "まで", (0, 0, 0), 48, (128, 64))
-
 
     # this is game state of winning the game
     if game_state == "win" or game_state == "lose":
