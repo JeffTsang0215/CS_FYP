@@ -6,9 +6,10 @@ pygame.init()
 pygame.font.init()
 
 new_game = True
+god_mod = True
 
 save = {
-    'unlock': [True, True, False, False],
+    'unlock': [True, False, False, False],
     'star': [0, 0, 0, 0],
     'current_stage': 0,
 }
@@ -677,6 +678,12 @@ load()
 
 if new_game:
     save = {
+        'unlock': [True, False, False, False],
+        'star': [0, 0, 0, 0],
+        'current_stage': 0,
+    }
+if god_mod:
+    save = {
         'unlock': [True, True, True, True],
         'star': [0, 0, 0, 0],
         'current_stage': 0,
@@ -886,10 +893,11 @@ battle_detail = [
             "お": ("o", ["o", "a", "i", "u"])
         },
         "order": [],
-        "enemy_surf": pygame.transform.flip(images[9], flip_x=True, flip_y=False),
+        "enemy_surf": 9,
         "enemy_attack_word": "む" ,
         "target": [5, 7],
         "enemy_hp": 100,
+        "discription": "以滑鼠點擊正確的選項",
     },
     # 1
     {
@@ -908,10 +916,11 @@ battle_detail = [
             "ご": ("go", ["go", "ko", "so", "ga"])
         },
         "order": [],
-        "enemy_surf": pygame.transform.flip(images[9], flip_x=True, flip_y=False),
+        "enemy_surf": 9,
         "enemy_attack_word": "む" ,
         "target": [10, 14],
         "enemy_hp": 200,
+        "discription": "以滑鼠點擊正確的選項",
     },
     #2
     {
@@ -924,29 +933,30 @@ battle_detail = [
             { "sentence": "寿司＿食べます。", "answer": "を", "options": ["を", "は", "が", "も"] },
         ],
         "order": [],
-        "enemy_surf": pygame.transform.flip(images[9], flip_x=True, flip_y=False),
+        "enemy_surf": 9,
         "enemy_attack_word": "が",
         "target": [7, 9],
         "enemy_hp": 140,
+        "discription": "以滑鼠拖拉正確的選項至空格內",
     },
     #3 (masu to ru)
     {
         "question_type": "input",
         "question": "verb_masu",
         "answer": "verb_ru",
-        "enemy_surf": pygame.transform.flip(images[9], flip_x=True, flip_y=False),
+        "enemy_surf": 9,
         "counter": 0,
         "enemy_attack_word": "打",
         "target": [7, 10],
         "enemy_hp": 140,
-        "curr_qs": None
-
+        "curr_qs": None,
+        "discription": "以鍵盤輸入答案的羅馬拼音\nます形 → 辞書形",
     }
     
 
 ]
 
-#battle_detail_backup = deepcopy(battle_detail)
+battle_detail_backup = deepcopy(battle_detail)
 
 player_hp = 100
 enemy_hp = 100
@@ -1006,7 +1016,7 @@ while running:
     if game_state == "story":
         # end story
         if dialog_num == len(dialog[story_num]):
-            #battle_detail = deepcopy(battle_detail_backup)
+            battle_detail = deepcopy(battle_detail_backup)
             time = 0
             game_state = "playing"
             
@@ -1115,12 +1125,17 @@ while running:
             
 
             # left enemy
-            screen.blit(battle_detail[stage]["enemy_surf"], transform_scale([-51, 100]))
+            screen.blit(pygame.transform.flip(images[battle_detail[stage]["enemy_surf"]], flip_x=True, flip_y=False), transform_scale([-51, 100]))
             pygame.draw.rect(screen, pygame.Color("#d9d9d9"), transform_scale([0, 0, 310, 80]))
             text(screen, "HP", (0, 0, 0), 24, transform_scale([28, 22]))
             pygame.draw.rect(screen, (0, 0, 0), transform_scale([79, 34, 204, 13]))
             pygame.draw.rect(screen, (255, 0, 0), transform_scale([79, 34, enemy_hp/battle_detail[stage]["enemy_hp"]*204, 13]))
 
+            # discription
+            pygame.draw.rect(screen, pygame.Color("#d9d9d9"), transform_scale([720-500/2, 48-64/2, 500, 64]))
+            text(screen, battle_detail[stage]["discription"], (20, 20, 20), transform_scale([50])[0], transform_scale([720, 48]), "center")
+
+            # Q&A box
             pygame.draw.rect(screen, pygame.Color("#d9d9d9"), transform_scale([324, 552, 791, 408]))
             if action == "attack" or action == "recover":
                 pygame.draw.rect(screen, pygame.Color("#ececec"), transform_scale([407, 729, 194, 94]))
@@ -1188,7 +1203,7 @@ while running:
                     elif(time >= fps*1):
                         time = 0
                     if time == 0:
-                        enemy_hp -= 20
+                        enemy_hp -= 20 if not(god_mod) else 9999
                         correct = None
                         if stage == 0:
                             action = "attack"
@@ -1290,11 +1305,15 @@ while running:
 
 
             # left enemy
-            screen.blit(battle_detail[stage]["enemy_surf"], transform_scale([-51, 100]))
+            screen.blit(pygame.transform.flip(images[battle_detail[stage]["enemy_surf"]], flip_x=True, flip_y=False), transform_scale([-51, 100]))
             pygame.draw.rect(screen, pygame.Color("#d9d9d9"), transform_scale([0, 0, 310, 80]))
             text(screen, "HP", (0, 0, 0), 24, transform_scale([28, 22]))
             pygame.draw.rect(screen, (0, 0, 0), transform_scale([79, 34, 204, 13]))
             pygame.draw.rect(screen, (255, 0, 0), transform_scale([79, 34, enemy_hp/battle_detail[stage]["enemy_hp"]*204, 13]))
+
+            # discription
+            pygame.draw.rect(screen, pygame.Color("#d9d9d9"), transform_scale([720-640/2, 48-64/2, 640, 64]))
+            text(screen, battle_detail[stage]["discription"], (20, 20, 20), transform_scale([50])[0], transform_scale([720, 48]), "center")
 
             q_index = battle_detail[stage]["order"][question_num]
             current_q = battle_detail[stage]["questions"][q_index]
@@ -1402,7 +1421,7 @@ while running:
                         time = 0
                     
                     if time == 0:
-                        enemy_hp -= 20
+                        enemy_hp -= 20 if not(god_mod) else 9999
 
                 elif action == "recover":
                     if(time > 0 and time < fps*1):
@@ -1501,11 +1520,15 @@ while running:
                 
 
             # left enemy
-            screen.blit(battle_detail[stage]["enemy_surf"], transform_scale([-51, 100]))
+            screen.blit(pygame.transform.flip(images[battle_detail[stage]["enemy_surf"]], flip_x=True, flip_y=False), transform_scale([-51, 100]))
             pygame.draw.rect(screen, pygame.Color("#d9d9d9"), transform_scale([0, 0, 310, 80]))
             text(screen, "HP", (0, 0, 0), 24, transform_scale([28, 22]))
             pygame.draw.rect(screen, (0, 0, 0), transform_scale([79, 34, 204, 13]))
             pygame.draw.rect(screen, (255, 0, 0), transform_scale([79, 34, enemy_hp/battle_detail[stage]["enemy_hp"]*204, 13]))
+
+            # discription
+            pygame.draw.rect(screen, pygame.Color("#d9d9d9"), transform_scale([720-500/2, 48-64/2, 500, 64]))
+            text(screen, battle_detail[stage]["discription"], (20, 20, 20), transform_scale([50])[0], transform_scale([720, 48]), "center")
 
             pygame.draw.rect(screen, pygame.Color("#d9d9d9"), transform_scale([324, 702, 791, 258]))
             
@@ -1620,7 +1643,7 @@ while running:
                     elif(time >= fps*1):
                         time = 0
                     if time == 0:
-                        enemy_hp -= 20
+                        enemy_hp -= 20 if not(god_mod) else 9999
                         correct = None
                         action = None
                         if enemy_hp <= 0:
@@ -2126,7 +2149,7 @@ while running:
         
 
         # left enemy
-        screen.blit(battle_detail[stage]["enemy_surf"], transform_scale([-51, 100]))
+        screen.blit(pygame.transform.flip(images[battle_detail[stage]["enemy_surf"]], flip_x=True, flip_y=False), transform_scale([-51, 100]))
         pygame.draw.rect(screen, pygame.Color("#d9d9d9"), transform_scale([0, 0, 310, 80]))
         text(screen, "HP", (0, 0, 0), 24, transform_scale([28, 22]))
         pygame.draw.rect(screen, (0, 0, 0), transform_scale([79, 34, 204, 13]))
