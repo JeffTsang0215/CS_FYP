@@ -967,16 +967,16 @@ battle_detail = [
     #2
     {
         "question_type": "Drag",
-        "questions": [
-            { "sentence": "私＿学生です。", "answer": "は", "options": ["は", "も", "で", "に"] },
-            { "sentence": "これ＿本です。", "answer": "は", "options": ["は", "を", "が", "へ"] },
-            { "sentence": "猫＿います。", "answer": "が", "options": ["が", "は", "も", "と"] },
-            { "sentence": "公園＿行きます。", "answer": "へ", "options": ["へ", "で", "に", "を"] },
-            { "sentence": "寿司＿食べます。", "answer": "を", "options": ["を", "は", "が", "も"] },
+         "questions": [
+            { "sentence": "貓_", "answer": "ねこ", "options": ["ねこ", "いぬ", "とり", "さかな"] },
+            { "sentence": "狗_", "answer": "いぬ", "options": ["いぬ", "ねこ", "うさぎ", "へび"] },
+            { "sentence": "書_", "answer": "ほん", "options": ["ほん", "えんぴつ", "かばん", "とけい"] },
+            { "sentence": "水_", "answer": "みず", "options": ["みず", "おちゃ", "ごはん", "ぱん"] },
+            { "sentence": "人_", "answer": "ひと", "options": ["ひと", "おとこ", "おんな", "こども"] },
         ],
         "order": [],
         "enemy_surf": 9,
-        "enemy_attack_word": "が",
+        "enemy_attack_word": "む",
         "target": [7, 9],
         "enemy_hp": 140,
         "discription": "以滑鼠拖拉正確的選項至空格內",
