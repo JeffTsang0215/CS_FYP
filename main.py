@@ -1420,9 +1420,12 @@ while running:
                 start_q_x = (WIDTH - total_q_width) / 2
                 q_y = transform_scale([400])[0]
 
+                #grey box behind question area
+                pygame.draw.rect(screen, pygame.Color("#d9d9d9"), transform_scale([324, 350, 791, 200]), border_radius=10)
+                
                 # Draw the first part of the sentence
                 screen.blit(part1_surf, (start_q_x, q_y))
-
+                
                 # Define the drop target rect and draw it
                 drop_target_rect = pygame.Rect(start_q_x + part1_surf.get_width(), q_y, box_width, box_height)
                 pygame.draw.rect(screen, pygame.Color("#d9d9d9"), drop_target_rect, border_radius=5)
