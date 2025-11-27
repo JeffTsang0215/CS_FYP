@@ -1181,7 +1181,7 @@ while running:
     if game_state == "playing":
         if battle_detail[stage]["question_type"] == "MC":
             # BG image
-            screen.blit(images[3], (0, 0))
+            draw_story_bg(stage)
 
             # right character
             screen.blit(pygame.transform.flip(images[4], flip_x=True, flip_y=False), transform_scale([959, 263]))
@@ -1361,7 +1361,7 @@ while running:
 
         elif battle_detail[stage]["question_type"] == "Drag":
             # BG image
-            screen.blit(images[3], (0, 0))
+            draw_story_bg(stage)
 
             # right character
             screen.blit(pygame.transform.flip(images[4], flip_x=True, flip_y=False), transform_scale([959, 263]))
@@ -1578,7 +1578,7 @@ while running:
 
         elif battle_detail[stage]["question_type"] == "input":
             # BG image
-            screen.blit(images[3], (0, 0))
+            draw_story_bg(stage)
 
             # right character
             screen.blit(pygame.transform.flip(images[4], flip_x=True, flip_y=False), transform_scale([959, 263]))
@@ -1734,8 +1734,8 @@ while running:
                             while temp == battle_detail[stage]["curr_qs"]:
                                 temp = random.randint(0, len(verb[battle_detail[stage]["question"]])-1)
                             battle_detail[stage]["curr_qs"] = temp
-                            inputArr = ""
-                            outputArr = ""
+                        inputArr = ""
+                        outputArr = ""
                 elif action == "recover":
                     if(time > 0 and time < fps*1):
                         time += 1
@@ -1774,8 +1774,8 @@ while running:
                             while temp == battle_detail[stage]["curr_qs"]:
                                 temp = random.randint(0, len(verb[battle_detail[stage]["question"]])-1)
                             battle_detail[stage]["curr_qs"] = temp
-                            inputArr = ""
-                            outputArr = ""
+                        inputArr = ""
+                        outputArr = ""
                 elif action == "recover":
                     if(time > 0 and time < fps*1):
                         time += 1
@@ -1795,8 +1795,8 @@ while running:
                             while temp == battle_detail[stage]["curr_qs"]:
                                 temp = random.randint(0, len(verb[battle_detail[stage]["question"]])-1)
                             battle_detail[stage]["curr_qs"] = temp
-                            inputArr = ""
-                            outputArr = ""
+                        inputArr = ""
+                        outputArr = ""
 
     # stage select
     if game_state == "select_stage":
@@ -1847,13 +1847,14 @@ while running:
         if(time > fps*2):
             game_state = "story"
             story_num = save["current_stage"]
+            stage = save["current_stage"]
             dialog_num = 0
             time = 0
 
     # this is game state of winning the game
     if game_state == "win" or game_state == "lose":
         # BG image
-        screen.blit(images[3], (0, 0))
+        draw_story_bg(stage)
 
         # right character
         screen.blit(pygame.transform.flip(images[4], flip_x=True, flip_y=False), transform_scale([959, 263]))
