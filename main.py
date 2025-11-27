@@ -1016,7 +1016,7 @@ battle_detail = [
         "target": [7, 10],
         "enemy_hp": 140,
         "curr_qs": None,
-        "discription": "以鍵盤輸入答案的羅馬拼音\nます形 → 辞書形",
+        "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\nます形 → 辞書形",
     }
     
 
