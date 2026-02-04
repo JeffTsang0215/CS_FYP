@@ -6,7 +6,7 @@ pygame.init()
 pygame.font.init()
 
 new_game = True
-god_mod = True
+god_mod = False
 
 save = {
     'unlock': [True, False, False, False, False],
@@ -585,19 +585,15 @@ def draw_stage_selection(n):
             prev = None
         case 1:
             # later stage can just copy from this
-
             # bg image
             bg = 10
-
             # image at center, if havent unlock then will show the gray version
             if save["unlock"][n]:
                 center = 17
             else:
                 center = 18
-
             # the title text, but in image format, Jeff can help gen
             title = 21
-
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
@@ -606,7 +602,6 @@ def draw_stage_selection(n):
                     next = 19
             else:
                 next = None
-
             # image of previos stage
             if save["unlock"][n-1]:
                 prev = 17
@@ -785,7 +780,7 @@ outputArr = ""
 
 
 time = 0                                
-menu_effect_timer = 0                        
+effect_time = 0                        
 win_lose_effect_timer = 0    
 
 
@@ -1044,16 +1039,27 @@ while running:
         r.center = screen.get_rect().center
         screen.blit(images[1], r)
 
-        # press any button to start text
-        images[2].set_alpha(int(205+math.sin(menu_effect_timer)*50))
-        screen.blit(images[2], transform_scale([586, 787]))
-        menu_effect_timer += 0.1
-        if menu_effect_timer > 100000:
-            menu_effect_timer = 0
+        temp = transform_scale([4])[0]
+        pygame.draw.rect(screen, [186, 148, 45], transform_scale([570, 620, 300, 50]), border_radius=temp)
+        pygame.draw.rect(screen, [0, 0, 0], transform_scale([570, 620, 300, 50]), temp, temp)
+        text(screen, "Start", [0, 0, 0], temp*10, transform_scale([570+150, 620+25]), "center")
+
+        pygame.draw.rect(screen, [186, 148, 45], transform_scale([570, 690, 300, 50]), border_radius=temp)
+        pygame.draw.rect(screen, [0, 0, 0], transform_scale([570, 690, 300, 50]), temp, temp)
+        text(screen, "Option", [0, 0, 0], temp*10, transform_scale([570+150, 690+25]), "center")
+
+        pygame.draw.rect(screen, [186, 148, 45], transform_scale([570, 760, 300, 50]), border_radius=temp)
+        pygame.draw.rect(screen, [0, 0, 0], transform_scale([570, 760, 300, 50]), temp, temp)
+        text(screen, "Achievements", [0, 0, 0], temp*10, transform_scale([570+150, 760+25]), "center")
+
+        pygame.draw.rect(screen, [186, 148, 45], transform_scale([570, 830, 300, 50]), border_radius=temp)
+        pygame.draw.rect(screen, [0, 0, 0], transform_scale([570, 830, 300, 50]), temp, temp)
+        text(screen, "Exit", [0, 0, 0], temp*10, transform_scale([570+150, 830+25]), "center")
+
         
         if(time != 0):
             time += 1
-            s.set_alpha(int(time/fps/2*255))
+            s.set_alpha(int(time/fps/1*255))
             screen.blit(s, (0,0))
 
         for event in pygame.event.get():
@@ -1063,21 +1069,42 @@ while running:
                 if (time == 0):
                     time += 1
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if pygame.mouse.get_pressed()[0] or pygame.mouse.get_pressed()[2]:
-                    if (time == 0):
-                        time += 1
+                if pygame.mouse.get_pressed()[0]:
+                    if click_check(pygame.mouse.get_pos(), transform_scale([570, 620, 300, 50])):  #start
+                        if (time == 0):
+                            time += 1
+                            menu_action = "start"
+                    if click_check(pygame.mouse.get_pos(), transform_scale([570, 690, 300, 50])):  #option
+                        if (time == 0):
+                            time += 1
+                            menu_action = "option"
+                    if click_check(pygame.mouse.get_pos(), transform_scale([570, 760, 300, 50])):  #option
+                        if (time == 0):
+                            time += 1
+                            menu_action = "achievement"
+                    if click_check(pygame.mouse.get_pos(), transform_scale([570, 830, 300, 50])):  #exit
+                        if (time == 0):
+                            time += 1
+                            menu_action = "exit"
+                            
 
         # enter game
-        if(time > fps*2):
-            print(save["unlock"])
-            if save["unlock"][1]:
-                game_state = "select_stage"
-                time=0
+        if(time > fps*1):
+            if(menu_action == "start"):
+                print(save["unlock"])
+                if save["unlock"][1]:
+                    game_state = "select_stage"
+                    time=0
+                else:
+                    game_state = "story"
+                    story_num = 0
+                    dialog_num = 0
+                    time = 0
+            elif(menu_action == "exit"):
+                running = False
             else:
-                game_state = "story"
-                story_num = 0
-                dialog_num = 0
-                time = 0
+                game_state = menu_action
+                time=0
                     
     if game_state == "story":
         # end story
@@ -1143,21 +1170,33 @@ while running:
             pygame.draw.rect(screen, pygame.Color("#e8e8e8"), transform_scale([123, 766, 1193, 184]), border_radius=5)
             text(screen, dialog[story_num][dialog_num][1], (0, 0, 0), 48, transform_scale([153, 776]))
 
+            # back button
+            pygame.draw.rect(screen, [186, 148, 45], transform_scale([40, 40, 80, 80]), border_radius=temp)
+            pygame.draw.rect(screen, [0, 0, 0], transform_scale([40, 40, 80, 80]), temp, temp)
+            text(screen, "Back", [0, 0, 0], temp*5, transform_scale([80, 80]), "center")
+
             #  effect
             if (dialog[story_num][dialog_num][0] == 1.1):
-                if(time > 0 and time < fps*2):
-                    time += 1
-                    text_sp(screen, "あ", (120, 0, 0), 200, [WIDTH/2, HEIGHT/2], int((fps*2-time)/(fps*2)*255), "center")
-                elif(time >= fps*2):
-                    time = 0
+                if(effect_time > 0 and effect_time < fps*2):
+                    effect_time += 1
+                    text_sp(screen, "あ", (120, 0, 0), 200, [WIDTH/2, HEIGHT/2], int((fps*2-effect_time)/(fps*2)*255), "center")
+                elif(effect_time >= fps*2):
+                    effect_time = 0
             elif (dialog[story_num][dialog_num][0] == 2.1):
-                if(time > 0 and time < fps*2):
-                    time += 1
-                    text_sp(screen, "か", (120, 255, 120), 200, transform_scale([220, 520]), int((fps*2-time)/(fps*2)*255), "center")
-                elif(time >= fps*2):
-                    time = 0
-            elif time != 0:
-                time = 0
+                if(effect_time > 0 and effect_time < fps*2):
+                    effect_time += 1
+                    text_sp(screen, "か", (120, 255, 120), 200, transform_scale([220, 520]), int((fps*2-effect_time)/(fps*2)*255), "center")
+                elif(effect_time >= fps*2):
+                    effect_time = 0
+            elif (effect_time != 0):
+                effect_time = 0
+
+            if(time != 0):
+                time += 1
+                s.set_alpha(int(time/fps/1*255))
+                screen.blit(s, (0,0))
+            
+
 
             
             for event in pygame.event.get():
@@ -1170,13 +1209,22 @@ while running:
                         if click_check(pygame.mouse.get_pos(), transform_scale([1111, 35, 310, 80])):
                             # skip button
                             dialog_num = len(dialog[story_num])
+                        elif click_check(pygame.mouse.get_pos(), transform_scale([40, 40, 80, 80])):
+                            if(time == 0):
+                                time += 1
+                                menu_action = "back"
                         else:
                             # next sentence
                             dialog_num += 1
                             if dialog_num != len(dialog[story_num]):
                                 # effect list
                                 if dialog[story_num][dialog_num][0] == 1.1 or dialog[story_num][dialog_num][0] == 2.1:
-                                    time = 1
+                                    effect_time = 1
+                                    menu_action = "none"
+            # enter game
+            if(time > fps*1 and menu_action == "back"):
+                game_state = "menu"
+                time=0
 
     if game_state == "playing":
         if battle_detail[stage]["question_type"] == "MC":
@@ -1200,7 +1248,10 @@ while running:
 
             # discription
             pygame.draw.rect(screen, pygame.Color("#d9d9d9"), transform_scale([320, 0, 800, 80]))
-            text(screen, battle_detail[stage]["discription"], (20, 20, 20), transform_scale([35])[0], transform_scale([720, 48]), "center")
+            if(action == None):
+                text(screen, "選擇行動", (20, 20, 20), transform_scale([35])[0], transform_scale([720, 48]), "center")
+            else:
+                text(screen, battle_detail[stage]["discription"], (20, 20, 20), transform_scale([35])[0], transform_scale([720, 48]), "center")
 
             # Q&A box
             pygame.draw.rect(screen, pygame.Color("#d9d9d9"), transform_scale([324, 552, 791, 408]))
@@ -1341,7 +1392,7 @@ while running:
                     if(time > 0 and time < fps*1):
                         time += 1
                         text_sp(screen, battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]][0], (120, 255, 120), 200, transform_scale([1310, 520]), int((fps*1-time)/(fps*1)*255), "center")
-                        text_sp(screen, "╳", (120, 255, 120), 200, transform_scale([1310, 520]), int((fps*1-time)/(fps*1)*255), "center")
+                        text_sp(screen, "╳", (100, 0, 0), transform_scale([250])[0], transform_scale([1310, 520]), int((fps*1-time)/(fps*1)*255), "center")
                     elif(time >= fps*1):
                         time = 0
                     if time == 0:
@@ -1380,7 +1431,10 @@ while running:
 
             # discription
             pygame.draw.rect(screen, pygame.Color("#d9d9d9"), transform_scale([320, 0, 800, 80]))
-            text(screen, battle_detail[stage]["discription"], (20, 20, 20), transform_scale([35])[0], transform_scale([720, 48]), "center")
+            if(action == None):
+                text(screen, "選擇行動", (20, 20, 20), transform_scale([35])[0], transform_scale([720, 48]), "center")
+            else:
+                text(screen, battle_detail[stage]["discription"], (20, 20, 20), transform_scale([35])[0], transform_scale([720, 48]), "center")
 
             q_index = battle_detail[stage]["order"][question_num]
             current_q = battle_detail[stage]["questions"][q_index]
@@ -1480,7 +1534,6 @@ while running:
                             is_dragging = False
                             dragged_item_index = -1
 
-
             if correct == True:
                 if action == "attack":
                     if(time > 0 and time < fps*1):
@@ -1555,8 +1608,8 @@ while running:
                     if(time > 0 and time < fps*1):
                         time += 1
                         q_text = current_q["answer"]
-                        text_sp(screen, q_text, (120, 255, 120), 200, transform_scale([1310, 520]), int((fps*1-time)/(fps*1)*255), "center")
-                        text_sp(screen, "╳", (120, 255, 120), 200, transform_scale([1310, 520]), int((fps*1-time)/(fps*1)*255), "center")
+                        text_sp(screen, q_text, (120, 255, 120), transform_scale([200])[0], transform_scale([1310, 520]), int((fps*1-time)/(fps*1)*255), "center")
+                        text_sp(screen, "╳", (100, 0, 0), transform_scale([250])[0], transform_scale([1310, 520]), int((fps*1-time)/(fps*1)*255), "center")
                     elif(time >= fps*1):
                         time = 0
 
@@ -1586,7 +1639,6 @@ while running:
             text(screen, "HP", (0, 0, 0), 24, transform_scale([1158, 22]))
             pygame.draw.rect(screen, (0, 0, 0), transform_scale([1209, 34, 204, 13]))
             pygame.draw.rect(screen, (255, 0, 0), transform_scale([1209, 34, player_hp/100*204, 13]))
-                
 
             # left enemy
             screen.blit(pygame.transform.flip(images[battle_detail[stage]["enemy_surf"]], flip_x=True, flip_y=False), transform_scale([-51, 100]))
@@ -1597,10 +1649,12 @@ while running:
 
             # discription
             pygame.draw.rect(screen, pygame.Color("#d9d9d9"), transform_scale([320, 0, 800, 80]))
-            text(screen, battle_detail[stage]["discription"], (20, 20, 20), transform_scale([35])[0], transform_scale([720, 48]), "center")
+            if(action == None):
+                text(screen, "選擇行動", (20, 20, 20), transform_scale([35])[0], transform_scale([720, 48]), "center")
+            else:
+                text(screen, battle_detail[stage]["discription"], (20, 20, 20), transform_scale([35])[0], transform_scale([720, 48]), "center")
 
             pygame.draw.rect(screen, pygame.Color("#d9d9d9"), transform_scale([324, 702, 791, 258]))
-            
 
             if action == "attack" or action == "recover":
                 # quesrion
@@ -1632,6 +1686,7 @@ while running:
                                 action = "attack"
                             elif click_check(pos, transform_scale([840, 729, 194, 207])):
                                 action = "recover"
+                        
                 if event.type == pygame.KEYDOWN and time == 0:
                     if action == "attack" or action == "recover":
                         if event.type == pygame.KEYDOWN and time == 0:
@@ -1700,9 +1755,6 @@ while running:
                                     correct = True
                                 else:
                                     correct = False
-
-
-                
             
             if correct == True:
                 if action == "attack":
@@ -1780,7 +1832,7 @@ while running:
                     if(time > 0 and time < fps*1):
                         time += 1
                         text_sp(screen, verb[battle_detail[stage]["question"]][battle_detail[stage]["curr_qs"]][0], (120, 255, 120), 200, transform_scale([1310, 520]), int((fps*1-time)/(fps*1)*255), "center")
-                        text_sp(screen, "╳", (120, 255, 120), 200, transform_scale([1310, 520]), int((fps*1-time)/(fps*1)*255), "center")
+                        text_sp(screen, "╳", (100, 0, 0), transform_scale([250])[0], transform_scale([1310, 520]), int((fps*1-time)/(fps*1)*255), "center")
                     elif(time >= fps*1):
                         time = 0
                     if time == 0:
@@ -1821,9 +1873,14 @@ while running:
         elif save['star'][save['current_stage']] == 3:
             screen.blit(images[16], transform_scale([540, 139]))
 
+        # back button
+        pygame.draw.rect(screen, [186, 148, 45], transform_scale([40, 40, 80, 80]), border_radius=temp)
+        pygame.draw.rect(screen, [0, 0, 0], transform_scale([40, 40, 80, 80]), temp, temp)
+        text(screen, "Back", [0, 0, 0], temp*5, transform_scale([80, 80]), "center")
+
         if(time != 0):
             time += 1
-            s.set_alpha(int(time/fps/2*255))
+            s.set_alpha(int(time/fps/1*255))
             screen.blit(s, (0,0))
 
         for event in pygame.event.get():
@@ -1843,13 +1900,25 @@ while running:
                         if (save['unlock'][save["current_stage"]]):
                             if (time == 0):
                                 time += 1
+                                menu_action = "enter"
+                    if click_check(pygame.mouse.get_pos(), transform_scale([40, 40, 80, 80])):
+                        if(time == 0):
+                            time += 1
+                            menu_action = "back"
         # enter story
-        if(time > fps*2):
-            game_state = "story"
-            story_num = save["current_stage"]
-            stage = save["current_stage"]
-            dialog_num = 0
-            time = 0
+        if(time > fps):
+            if(menu_action =="enter"):
+                game_state = "story"
+                story_num = save["current_stage"]
+                stage = save["current_stage"]
+                dialog_num = 0
+                time = 0
+            elif(menu_action == "back"):
+                game_state = "menu"
+                story_num = save["current_stage"]
+                stage = save["current_stage"]
+                dialog_num = 0
+                time = 0
 
     # this is game state of winning the game
     if game_state == "win" or game_state == "lose":
@@ -1906,9 +1975,64 @@ while running:
             game_state = "select_stage"
             time = 0
 
+    # control the setting of game sound, game voice, full screen
+    if game_state == "option":
+        # BG image
+        screen.blit(images[0], (0, 0))
 
+        # back button
+        pygame.draw.rect(screen, [186, 148, 45], transform_scale([40, 40, 80, 80]), border_radius=temp)
+        pygame.draw.rect(screen, [0, 0, 0], transform_scale([40, 40, 80, 80]), temp, temp)
+        text(screen, "Back", [0, 0, 0], temp*5, transform_scale([80, 80]), "center")
+
+        if(time != 0):
+            time += 1
+            s.set_alpha(int(time/fps/1*255))
+            screen.blit(s, (0,0))
         
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if pygame.mouse.get_pressed()[0]:
+                    if click_check(pygame.mouse.get_pos(), transform_scale([40, 40, 80, 80])):
+                        if(time == 0):
+                            time += 1
+        
+        #  back
+        if(time > fps*1):
+            game_state = "menu"
+            time=0
+
+    # 30 achievements
+    if game_state == "achievement":
+        # BG image
+        screen.blit(images[0], (0, 0))
+
+        # back button
+        pygame.draw.rect(screen, [186, 148, 45], transform_scale([40, 40, 80, 80]), border_radius=temp)
+        pygame.draw.rect(screen, [0, 0, 0], transform_scale([40, 40, 80, 80]), temp, temp)
+        text(screen, "Back", [0, 0, 0], temp*5, transform_scale([80, 80]), "center")
+
+        if(time != 0):
+            time += 1
+            s.set_alpha(int(time/fps/1*255))
+            screen.blit(s, (0,0))
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if pygame.mouse.get_pressed()[0]:
+                    if click_check(pygame.mouse.get_pos(), transform_scale([40, 40, 80, 80])):
+                        if(time == 0):
+                            time += 1
+        
+        #  back
+        if(time > fps*1):
+            game_state = "menu"
+            time=0
+                        
 
     clock.tick(fps)
     pygame.display.update()
-
