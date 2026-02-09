@@ -6,11 +6,11 @@ pygame.init()
 pygame.font.init()
 
 new_game = True
-god_mod = False
+god_mod = True
 
 save = {
-    'unlock': [True, False, False, False, False],
-    'star': [0, 0, 0, 0, 0],
+    'unlock': [True, False, False, False, False, False],
+    'star': [0, 0, 0, 0, 0, 0],
     'current_stage': 0,
 }
 
@@ -664,6 +664,31 @@ def draw_stage_selection(n):
                 prev = 20
             else:
                 prev = 19
+        case 5:
+            # later stage can just copy from this
+            # bg image
+            bg = 10
+            # image at center, if havent unlock then will show the gray version
+            if save["unlock"][n]:
+                center = 17
+            else:
+                center = 18
+            # the title text, but in image format, Jeff can help gen
+            title = 21
+            #image of next stage
+            if n+1 < len(save["unlock"]):
+                if save["unlock"][n+1]:
+                    next = 20
+                else:
+                    next = 19
+            else:
+                next = None
+            # image of previos stage
+            if save["unlock"][n-1]:
+                prev = 27
+            else:
+                prev = 26
+
 
     screen.blit(images[bg], transform_scale([0, 0]))
     screen.blit(images[center], transform_scale([297, 198]))
@@ -690,6 +715,8 @@ def draw_story_bg(stage):
             screen.blit(images[3], (0, 0))
         case 4:
             screen.blit(images[25], (0, 0))
+        case 5:
+            screen.blit(images[3], (0, 0))
             
 
 
@@ -704,14 +731,14 @@ load()
 
 if new_game:
     save = {
-        'unlock': [True, False, False, False, False],
-        'star': [0, 0, 0, 0, 0],
+        'unlock': [True, False, False, False, False, False],
+        'star': [0, 0, 0, 0, 0, 0],
         'current_stage': 0,
     }
 if god_mod:
     save = {
-        'unlock': [True, True, True, True, True],
-        'star': [0, 0, 0, 0, 0],
+        'unlock': [True, True, True, True, True, True],
+        'star': [0, 0, 0, 0, 0, 0],
         'current_stage': 0,
     }
 # question bank: verb form convertion
@@ -895,6 +922,11 @@ dialog = [
     ],
     [
         (1, '赤真：\n好的，我試試看！'),
+    ],
+    [
+        (2, '莉子：\n接下來，我們來試試組合完整的句子吧！'),
+        (2, '莉子：\n把下面的單字拖曳到橫線上，順序也要對喔！\n完成後記得按下「詠唱」確認！'),
+        (1, '赤真：\n也就是說，這考驗我的文法能力了！沒問題！'),
     ]
 
 ]
@@ -1012,7 +1044,35 @@ battle_detail = [
         "enemy_hp": 140,
         "curr_qs": None,
         "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\nます形 → 辞書形",
+    },
+    #5 sentence order
+    {
+        "question_type": "Sentence_Order",
+        "questions": [
+            { 
+                "meaning": "我是學生 (I am a student)", 
+                "answer_order": ["わたし", "は", "がくせい", "です"], 
+                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
+            },
+            { 
+                "meaning": "這是一本書 (This is a book)", 
+                "answer_order": ["これ", "は", "ほん", "です"], 
+                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
+            },
+            { 
+                "meaning": "不吃壽司 (I do not eat sushi)", 
+                "answer_order": ["すし", "を", "たべません"], 
+                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
+            },
+        ],
+        "order": [],
+        "enemy_surf": 29,
+        "enemy_attack_word": "亂",
+        "target": [2, 3], # 3 stars criteria
+        "enemy_hp": 160,
+        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
     }
+    
     
 
 ]
@@ -1065,9 +1125,6 @@ while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            if event.type == pygame.KEYDOWN:
-                if (time == 0):
-                    time += 1
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if pygame.mouse.get_pressed()[0]:
                     if click_check(pygame.mouse.get_pos(), transform_scale([570, 620, 300, 50])):  #start
@@ -1143,6 +1200,21 @@ while running:
             elif battle_detail[stage]["question_type"] == "input":
                 action = None
                 battle_detail[stage]["curr_qs"] = random.randint(0, len(verb[battle_detail[stage]["question"]])-1)
+                correct = None
+            
+            elif battle_detail[stage]["question_type"] == "Sentence_Order":
+                battle_detail[stage]["order"] = list(range(len(battle_detail[stage]["questions"])))
+                random.shuffle(battle_detail[stage]["order"])
+                
+                # Initialize variables specific to this mode
+                draggable_rects.clear() 
+                draggable_rects_initial_pos.clear()
+                current_sentence_indices = [] # Important for the new logic
+                
+                is_dragging = False
+                dragged_item_index = -1
+                action = None 
+                question_num = 0
                 correct = None
         else:
             
@@ -1628,6 +1700,249 @@ while running:
                             if question_num >= len(battle_detail[stage]["order"]):
                                 random.shuffle(battle_detail[stage]["order"])
                                 question_num = 0
+        # ... after the elif battle_detail[stage]["question_type"] == "input": block ...
+        
+        elif battle_detail[stage]["question_type"] == "Sentence_Order":
+            # BG image
+            draw_story_bg(stage)
+
+            # right character
+            screen.blit(pygame.transform.flip(images[4], flip_x=True, flip_y=False), transform_scale([959, 263]))
+            pygame.draw.rect(screen, pygame.Color("#d9d9d9"), transform_scale([1130, 0, 310, 80]))
+            text(screen, "HP", (0, 0, 0), 24, transform_scale([1158, 22]))
+            pygame.draw.rect(screen, (0, 0, 0), transform_scale([1209, 34, 204, 13]))
+            pygame.draw.rect(screen, (255, 0, 0), transform_scale([1209, 34, player_hp/100*204, 13]))
+
+            # left enemy
+            screen.blit(pygame.transform.flip(images[battle_detail[stage]["enemy_surf"]], flip_x=True, flip_y=False), transform_scale([-51, 100]))
+            pygame.draw.rect(screen, pygame.Color("#d9d9d9"), transform_scale([0, 0, 310, 80]))
+            text(screen, "HP", (0, 0, 0), 24, transform_scale([28, 22]))
+            pygame.draw.rect(screen, (0, 0, 0), transform_scale([79, 34, 204, 13]))
+            pygame.draw.rect(screen, (255, 0, 0), transform_scale([79, 34, enemy_hp/battle_detail[stage]["enemy_hp"]*204, 13]))
+
+            # Description
+            pygame.draw.rect(screen, pygame.Color("#d9d9d9"), transform_scale([320, 0, 800, 80]))
+            if (action == None):
+                text(screen, "選擇行動", (20, 20, 20), transform_scale([35])[0], transform_scale([720, 48]), "center")
+            else:
+                text(screen, battle_detail[stage]["discription"], (20, 20, 20), transform_scale([35])[0], transform_scale([720, 48]), "center")
+
+            # Main Action Selection (Attack/Recover)
+            if action is None:
+                pygame.draw.rect(screen, pygame.Color("#d9d9d9"), transform_scale([324, 552, 791, 408]))
+                pygame.draw.rect(screen, pygame.Color("#ececec"), transform_scale([407, 729, 194, 207]))
+                pygame.draw.rect(screen, pygame.Color("#ececec"), transform_scale([840, 729, 194, 207]))
+                text(screen, "攻擊", (0, 0, 0), 64, transform_scale([504, 813]), "center")
+                text(screen, "回復", (0, 0, 0), 64, transform_scale([937, 813]), "center")
+            
+            # The Puzzle Logic
+            else:
+                q_index = battle_detail[stage]["order"][question_num]
+                current_q = battle_detail[stage]["questions"][q_index]
+                
+                # Setup Rects for the first time for this question
+                if not draggable_rects:
+                    current_sentence_indices = [] # Reset user answer
+                    options = current_q["options"]
+                    # Create generic rects, we will move them dynamically in the draw loop
+                    opt_w, opt_h = transform_scale([140, 70])
+                    for i in range(len(options)):
+                        draggable_rects.append(pygame.Rect(0, 0, opt_w, opt_h)) 
+
+                # Draw Question Meaning (The Prompt)
+                pygame.draw.rect(screen, pygame.Color("#f0f0f0"), transform_scale([200, 200, 1040, 80]), border_radius=10)
+                text(screen, current_q["meaning"], (0,0,0), 40, transform_scale([720, 240]), "center")
+
+                # Define Zones
+                answer_y = transform_scale([400])[0]
+                bank_y = transform_scale([600])[0]
+                zone_answer = pygame.Rect(transform_scale([200, 350, 1040, 170]))
+                
+                # Draw Answer Line (Visual Guide)
+                pygame.draw.line(screen, (0,0,0), transform_scale([220, 500]), transform_scale([1220, 500]), 3)
+
+                # Submit Button (Cast Spell)
+                submit_rect = pygame.Rect(transform_scale([600, 800, 240, 80]))
+                pygame.draw.rect(screen, [186, 148, 45], submit_rect, border_radius=10)
+                pygame.draw.rect(screen, [0, 0, 0], submit_rect, 3, 10)
+                text(screen, "詠唱", [0, 0, 0], 40, submit_rect.center, "center")
+
+                # Determine Positions and Draw Blocks
+                # We arrange blocks based on whether they are in 'current_sentence_indices' or not
+                
+                # 1. Arrange Answer Line
+                start_x_ans = transform_scale([220])[0]
+                gap = transform_scale([20])[0]
+                for idx_in_list, opt_idx in enumerate(current_sentence_indices):
+                    r = draggable_rects[opt_idx]
+                    # If not currently being dragged, snap to slot
+                    if not (is_dragging and dragged_item_index == opt_idx):
+                        r.topleft = (start_x_ans + idx_in_list * (r.width + gap), answer_y)
+                    
+                    # Draw Block
+                    pygame.draw.rect(screen, pygame.Color("#aaddff"), r, border_radius=8)
+                    pygame.draw.rect(screen, (0,0,0), r, 2, 8)
+                    text(screen, current_q["options"][opt_idx], (0,0,0), 32, r.center, "center")
+
+                # 2. Arrange Word Bank (Items NOT in sentence)
+                start_x_bank = transform_scale([220])[0]
+                bank_counter = 0
+                for i in range(len(current_q["options"])):
+                    if i not in current_sentence_indices:
+                        r = draggable_rects[i]
+                        # If not currently being dragged, snap to bank slot
+                        if not (is_dragging and dragged_item_index == i):
+                            # Simple wrapping logic or single line
+                            r.topleft = (start_x_bank + bank_counter * (r.width + gap), bank_y)
+                        
+                        # Draw Block (Grayish for bank)
+                        pygame.draw.rect(screen, pygame.Color("#ececec"), r, border_radius=8)
+                        pygame.draw.rect(screen, (0,0,0), r, 2, 8)
+                        text(screen, current_q["options"][i], (0,0,0), 32, r.center, "center")
+                        bank_counter += 1
+
+                # Draw the Dragged Item on TOP
+                if is_dragging and dragged_item_index != -1:
+                    r = draggable_rects[dragged_item_index]
+                    pygame.draw.rect(screen, pygame.Color("#ffd700"), r, border_radius=8)
+                    text(screen, current_q["options"][dragged_item_index], (0,0,0), 32, r.center, "center")
+
+
+            # Event Loop
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                
+                if time == 0:
+                    if action is None:
+                        # Select Attack/Recover
+                        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                            pos = pygame.mouse.get_pos()
+                            if click_check(pos, transform_scale([407, 729, 194, 207])):
+                                action = "attack"
+                            elif click_check(pos, transform_scale([840, 729, 194, 207])):
+                                action = "recover"
+                    else:
+                        # Drag Logic
+                        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                            # 1. Check Submit Button
+                            if submit_rect.collidepoint(event.pos):
+                                time = 1 # Start validation
+                                # Construct user sentence from indices
+                                user_sentence = [current_q["options"][i] for i in current_sentence_indices]
+                                if user_sentence == current_q["answer_order"]:
+                                    correct = True
+                                else:
+                                    correct = False
+                            
+                            # 2. Check Words
+                            elif not is_dragging:
+                                for i, rect in enumerate(draggable_rects):
+                                    if rect.collidepoint(event.pos):
+                                        is_dragging = True
+                                        dragged_item_index = i
+                                        drag_offset_x = event.pos[0] - rect.x
+                                        drag_offset_y = event.pos[1] - rect.y
+                                        # Temporarily remove from logic lists so it floats freely
+                                        if i in current_sentence_indices:
+                                            current_sentence_indices.remove(i)
+                                        break
+                        
+                        elif event.type == pygame.MOUSEMOTION and is_dragging:
+                            if dragged_item_index != -1:
+                                draggable_rects[dragged_item_index].x = event.pos[0] - drag_offset_x
+                                draggable_rects[dragged_item_index].y = event.pos[1] - drag_offset_y
+                        
+                        elif event.type == pygame.MOUSEBUTTONUP and event.button == 1 and is_dragging:
+                            # Drop Logic
+                            dropped_rect = draggable_rects[dragged_item_index]
+                            
+                            # If dropped in Answer Zone
+                            if zone_answer.colliderect(dropped_rect):
+                                if dragged_item_index not in current_sentence_indices:
+                                    current_sentence_indices.append(dragged_item_index)
+                            
+                            # If dropped elsewhere (Bank), it just stays out of the list 
+                            # and the draw loop will place it back in the bank automatically.
+                            
+                            is_dragging = False
+                            dragged_item_index = -1
+
+            # --- Validation & Transition Logic (Reuse logic from other modes) ---
+            if correct == True:
+                if action == "attack":
+                    if(time > 0 and time < fps*1):
+                        time += 1
+                        # Show Full Correct Sentence
+                        ans_str = "".join(current_q["answer_order"])
+                        text_sp(screen, ans_str, (120, 0, 0), 64, transform_scale([WIDTH/2, 330]), int((fps*1-time)/(fps*1)*255), "center")
+                    elif(time >= fps*1): 
+                        time = 0
+                    
+                    if time == 0:
+                        enemy_hp -= 20 if not(god_mod) else 9999
+                        correct = None 
+                        question_num += 1
+                        action = None
+                        draggable_rects.clear() # Reset for next question
+
+                        # Win Check
+                        if enemy_hp <= 0:
+                            time = -1*fps 
+                            if (question_num <= battle_detail[stage]["target"][0]):
+                                save["star"][stage] = 3
+                            elif (question_num <= battle_detail[stage]["target"][1]):
+                                save["star"][stage] = max(save["star"][stage], 2)
+                            else:
+                                save["star"][stage] = max(save["star"][stage], 1)
+                            
+                            if save["current_stage"] + 1 < len(save["unlock"]):
+                                save["unlock"][save["current_stage"]+1]=True
+                            write()
+                            game_state = "win"
+                        elif question_num >= len(battle_detail[stage]["order"]):
+                            random.shuffle(battle_detail[stage]["order"])
+                            question_num = 0
+
+                elif action == "recover":
+                    # Identical Recover logic to Drag mode
+                    if(time > 0 and time < fps*1):
+                        time += 1
+                        text_sp(screen, "回復成功", (120, 255, 120), 100, transform_scale([WIDTH/2, 520]), int((fps*1-time)/(fps*1)*255), "center")
+                    elif(time >= fps*1): time = 0
+                    if time == 0:
+                        player_hp = min(player_hp+20, 100)
+                        correct = None
+                        question_num += 1
+                        action = None
+                        draggable_rects.clear()
+                        if question_num >= len(battle_detail[stage]["order"]):
+                            random.shuffle(battle_detail[stage]["order"])
+                            question_num = 0
+
+            elif correct == False:
+                # Wrong Answer Logic
+                if(time > 0 and time < fps*1):
+                    time += 1
+                    text_sp(screen, "X", (150, 0, 0), 200, transform_scale([WIDTH/2, 520]), int((fps*1-time)/(fps*1)*255), "center")
+                elif(time >= fps*1):
+                    time = 0
+                
+                if time == 0:
+                    if action == "attack": player_hp -= 40
+                    elif action == "recover": player_hp -= 10
+                    
+                    correct = None
+                    question_num += 1
+                    action = None
+                    draggable_rects.clear()
+
+                    if player_hp <= 0:
+                        time = -1*fps
+                        game_state = "lose"
+                    elif question_num >= len(battle_detail[stage]["order"]):
+                        random.shuffle(battle_detail[stage]["order"])
+                        question_num = 0
 
         elif battle_detail[stage]["question_type"] == "input":
             # BG image
