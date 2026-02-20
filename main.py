@@ -12,6 +12,7 @@ save = {
     'unlock': [True, False, False, False, False, False],
     'star': [0, 0, 0, 0, 0, 0],
     'current_stage': 0,
+    'achievement': [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, ]
 }
 
 WIDTH  = int(pygame.display.Info().current_w * 0.65)
@@ -734,12 +735,14 @@ if new_game:
         'unlock': [True, False, False, False, False, False],
         'star': [0, 0, 0, 0, 0, 0],
         'current_stage': 0,
+        'achievement': [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, ]
     }
 if god_mod:
     save = {
         'unlock': [True, True, True, True, True, True],
         'star': [0, 0, 0, 0, 0, 0],
         'current_stage': 0,
+        'achievement': [False, True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, True, False, False, False, True, False, False, False, False, False, False, False, ]
     }
 # question bank: verb form convertion
 # size: 27
@@ -804,6 +807,138 @@ outputArr = ""
 # temptime = pygame.time.get_ticks()          
 # score = 0                                
 # prevScore = 0       
+
+achievement_data = {
+    'hidden_title': [
+        "小回復術士", 
+        "普通回復術士", 
+        "大回復術士", 
+        "滿分", 
+        "半天星", 
+        "滿天星", 
+        "無損", 
+        "根性", 
+        "超越", 
+        "努力不懈", 
+        "五十音", 
+        "次序很重要", 
+        "熟悉的字(?", 
+        "英雄級冒險者", 
+        "C級武器", 
+        "C級防", 
+        "A級武器", 
+        "A級防", 
+        "SS級武器", 
+        "SS級防", 
+        "一拳不行就多一拳", 
+        "等到天荒地老", 
+        "???", 
+        "????", 
+        "????", 
+        "再度轉生", 
+        "迎難而上", 
+        "史上最強豆腐", 
+        "一拳超人", 
+        "勇者", 
+    ],
+    'unlock_title': [
+        "小回復術士", 
+        "普通回復術士", 
+        "大回復術士", 
+        "滿分", 
+        "半天星", 
+        "滿天星", 
+        "無損", 
+        "根性", 
+        "超越", 
+        "努力不懈", 
+        "五十音", 
+        "次序很重要", 
+        "熟悉的字(?", 
+        "英雄級冒險者", 
+        "C級武器", 
+        "C級防", 
+        "A級武器", 
+        "A級防", 
+        "SS級武器", 
+        "SS級防", 
+        "一拳不行就多一拳", 
+        "等到天荒地老", 
+        "對不起", 
+        "犧牲小我", 
+        "守護一切", 
+        "再度轉生", 
+        "迎難而上", 
+        "史上最強豆腐", 
+        "一拳超人", 
+        "勇者", 
+    ],
+    'hidden_description': [
+        "在一個關卡來使用\n回復魔法的次數達5次", 
+        "在一個關卡來使用\n回復魔法的次數達15次", 
+        "在一個關卡來使用\n回復魔法的次數達30次", 
+        "在一個關卡中收集到\n3顆星星", 
+        "收集到所有星星\n的一半", 
+        "收集到所有星星", 
+        "以無被攻擊過\n的狀態下\n通過其中一關卡", 
+        "已剩餘一成血\n以下的狀態\n下通過其中一關卡", 
+        "在輸入類關卡中\n輸入的字數超出\n框架範圍", 
+        "連續挑戰同一關卡\n並獲勝5次", 
+        "已完成全部有關\n五十音的關卡", 
+        "已完成有關\n句子順序的關卡", 
+        "已完成有關\n漢字的關卡", 
+        "已完成有關\n動詞轉換的關卡", 
+        "已獲得???", 
+        "已獲得??????", 
+        "已獲得???", 
+        "已獲得???", 
+        "已獲得????", 
+        "已獲得????", 
+        "只用??點擊\n殺死魔物", 
+        "在其中一關卡內\n維持什麼都不做\n超過15分鐘", 
+        "殺死??", 
+        "已達成「????」結局", 
+        "已達成「????」結局", 
+        "開啟二周目", 
+        "不穿任何裝備\n通關最終關卡", 
+        "只用一擊擊敗魔物", 
+        "以困難模式通關遊戲", 
+        "已獲得所有成就", 
+    ],
+    'unlock_description': [
+        "在一個關卡來使用\n回復魔法的次數達5次", 
+        "在一個關卡來使用\n回復魔法的次數達15次", 
+        "在一個關卡來使用\n回復魔法的次數達30次", 
+        "在一個關卡中收集到\n3顆星星", 
+        "收集到所有星星\n的一半", 
+        "收集到所有星星", 
+        "以無被攻擊過\n的狀態下\n通過其中一關卡", 
+        "已剩餘一成血\n以下的狀態\n下通過其中一關卡", 
+        "在輸入類關卡中\n輸入的字數超出\n框架範圍", 
+        "連續挑戰同一關卡\n並獲勝5次", 
+        "已完成全部有關\n五十音的關卡", 
+        "已完成有關\n句子順序的關卡", 
+        "已完成有關\n漢字的關卡", 
+        "已完成有關\n動詞轉換的關卡", 
+        "已獲得名匠靈珠", 
+        "已獲得皇家守衛套裝", 
+        "已獲得天魔杖", 
+        "已獲得天神甲", 
+        "已獲得言靈天杖", 
+        "已獲得不滅龍鱗", 
+        "只用滑鼠點擊\n殺死魔物", 
+        "在其中一關卡內\n維持什麼都不做\n超過15分鐘",
+        "殺死莉子", 
+        "已達成「犧牲小我」結局", 
+        "已達成「守護一切」結局", 
+        "開啟二周目", 
+        "以困難模式通關遊戲", 
+        "不穿任何裝備\n通關最終關卡", 
+        "只用一擊擊敗魔物", 
+        "已獲得所有成就", 
+    ],
+}
+
 
 
 time = 0                                
@@ -1086,6 +1221,7 @@ question_num = 0
 
 s = pygame.Surface((WIDTH,HEIGHT))
 s.fill((0,0,0))
+br = transform_scale([4])[0]
 
 # main game loop
 while running: 
@@ -1099,22 +1235,21 @@ while running:
         r.center = screen.get_rect().center
         screen.blit(images[1], r)
 
-        temp = transform_scale([4])[0]
-        pygame.draw.rect(screen, [186, 148, 45], transform_scale([570, 620, 300, 50]), border_radius=temp)
-        pygame.draw.rect(screen, [0, 0, 0], transform_scale([570, 620, 300, 50]), temp, temp)
-        text(screen, "Start", [0, 0, 0], temp*10, transform_scale([570+150, 620+25]), "center")
+        pygame.draw.rect(screen, [186, 148, 45], transform_scale([570, 620, 300, 50]), border_radius=br)
+        pygame.draw.rect(screen, [0, 0, 0], transform_scale([570, 620, 300, 50]), br, br)
+        text(screen, "Start", [0, 0, 0], br*10, transform_scale([570+150, 620+25]), "center")
 
-        pygame.draw.rect(screen, [186, 148, 45], transform_scale([570, 690, 300, 50]), border_radius=temp)
-        pygame.draw.rect(screen, [0, 0, 0], transform_scale([570, 690, 300, 50]), temp, temp)
-        text(screen, "Option", [0, 0, 0], temp*10, transform_scale([570+150, 690+25]), "center")
+        pygame.draw.rect(screen, [186, 148, 45], transform_scale([570, 690, 300, 50]), border_radius=br)
+        pygame.draw.rect(screen, [0, 0, 0], transform_scale([570, 690, 300, 50]), br, br)
+        text(screen, "Option", [0, 0, 0], br*10, transform_scale([570+150, 690+25]), "center")
 
-        pygame.draw.rect(screen, [186, 148, 45], transform_scale([570, 760, 300, 50]), border_radius=temp)
-        pygame.draw.rect(screen, [0, 0, 0], transform_scale([570, 760, 300, 50]), temp, temp)
-        text(screen, "Achievements", [0, 0, 0], temp*10, transform_scale([570+150, 760+25]), "center")
+        pygame.draw.rect(screen, [186, 148, 45], transform_scale([570, 760, 300, 50]), border_radius=br)
+        pygame.draw.rect(screen, [0, 0, 0], transform_scale([570, 760, 300, 50]), br, br)
+        text(screen, "Achievements", [0, 0, 0], br*10, transform_scale([570+150, 760+25]), "center")
 
-        pygame.draw.rect(screen, [186, 148, 45], transform_scale([570, 830, 300, 50]), border_radius=temp)
-        pygame.draw.rect(screen, [0, 0, 0], transform_scale([570, 830, 300, 50]), temp, temp)
-        text(screen, "Exit", [0, 0, 0], temp*10, transform_scale([570+150, 830+25]), "center")
+        pygame.draw.rect(screen, [186, 148, 45], transform_scale([570, 830, 300, 50]), border_radius=br)
+        pygame.draw.rect(screen, [0, 0, 0], transform_scale([570, 830, 300, 50]), br, br)
+        text(screen, "Exit", [0, 0, 0], br*10, transform_scale([570+150, 830+25]), "center")
 
         
         if(time != 0):
@@ -1243,9 +1378,9 @@ while running:
             text(screen, dialog[story_num][dialog_num][1], (0, 0, 0), 48, transform_scale([153, 776]))
 
             # back button
-            pygame.draw.rect(screen, [186, 148, 45], transform_scale([40, 40, 80, 80]), border_radius=temp)
-            pygame.draw.rect(screen, [0, 0, 0], transform_scale([40, 40, 80, 80]), temp, temp)
-            text(screen, "Back", [0, 0, 0], temp*5, transform_scale([80, 80]), "center")
+            pygame.draw.rect(screen, [186, 148, 45], transform_scale([40, 40, 80, 80]), border_radius=br)
+            pygame.draw.rect(screen, [0, 0, 0], transform_scale([40, 40, 80, 80]), br, br)
+            text(screen, "Back", [0, 0, 0], br*5, transform_scale([80, 80]), "center")
 
             #  effect
             if (dialog[story_num][dialog_num][0] == 1.1):
@@ -2189,9 +2324,9 @@ while running:
             screen.blit(images[16], transform_scale([540, 139]))
 
         # back button
-        pygame.draw.rect(screen, [186, 148, 45], transform_scale([40, 40, 80, 80]), border_radius=temp)
-        pygame.draw.rect(screen, [0, 0, 0], transform_scale([40, 40, 80, 80]), temp, temp)
-        text(screen, "Back", [0, 0, 0], temp*5, transform_scale([80, 80]), "center")
+        pygame.draw.rect(screen, [186, 148, 45], transform_scale([40, 40, 80, 80]), border_radius=br)
+        pygame.draw.rect(screen, [0, 0, 0], transform_scale([40, 40, 80, 80]), br, br)
+        text(screen, "Back", [0, 0, 0], br*5, transform_scale([80, 80]), "center")
 
         if(time != 0):
             time += 1
@@ -2296,9 +2431,9 @@ while running:
         screen.blit(images[0], (0, 0))
 
         # back button
-        pygame.draw.rect(screen, [186, 148, 45], transform_scale([40, 40, 80, 80]), border_radius=temp)
-        pygame.draw.rect(screen, [0, 0, 0], transform_scale([40, 40, 80, 80]), temp, temp)
-        text(screen, "Back", [0, 0, 0], temp*5, transform_scale([80, 80]), "center")
+        pygame.draw.rect(screen, [186, 148, 45], transform_scale([40, 40, 80, 80]), border_radius=br)
+        pygame.draw.rect(screen, [0, 0, 0], transform_scale([40, 40, 80, 80]), br, br)
+        text(screen, "Back", [0, 0, 0], br*5, transform_scale([80, 80]), "center")
 
         if(time != 0):
             time += 1
@@ -2319,15 +2454,111 @@ while running:
             game_state = "menu"
             time=0
 
+    {
+#  小回復術士 
+# 在一個關卡來使用回復魔法的次數達5次
+#  普通回復術士 
+# 在一個關卡來使用回復魔法的次數達15次
+#  大回復術士 
+# 在一個關卡來使用回復魔法的次數達30次
+#  滿分 
+# 在一個關卡中收集到3顆星星
+#  半天星 
+# 收集到所有星星的一半
+#  滿天星 
+# 收集到所有星星
+#  無損 
+# 以無被攻擊過的狀態下通過其中一關卡
+#  根性 
+# 已剩餘一成血以下的狀態下通過其中一關卡
+#  超越 
+# 在輸入類關卡中輸入的字數超出框架範圍
+#  努力不懈 
+# 連續挑戰同一關卡並獲勝5次
+#  五十音 
+# 已完成全部有關五十音的關卡
+#  次序很重要 
+# 已完成有關句子順序的關卡
+#  熟悉的字(? 
+# 已完成有關漢字的關卡
+#  英雄級冒險者 
+# 已完成有關動詞轉換的關卡
+#  C級武器 
+# 已獲得名匠靈珠
+#  C級防具
+# 已獲得皇家守衛套裝
+#  A級武器 
+# 已獲得天魔杖
+#  A級防具
+# 已獲得天神甲
+#  SS級武器 
+# 已獲得言靈天杖
+#  SS級防具
+# 已獲得不滅龍鱗
+#  一拳不行就多一拳 
+# 只用滑鼠點擊殺死魔物
+#  等到天荒地老 
+# 在其中一關卡內維持什麼都不做超過15分鐘
+#  對不起 
+# 殺死莉子
+#  犧牲小我 
+# 已達成「犧牲小我」結局
+#  守護一切 
+# 已達成「守護一切」結局
+#  再度轉生 
+# 開啟二周目
+#  迎難而上 
+# 以困難模式通關遊戲
+#  史上最強豆腐 
+# 不穿任何裝備通關最終關卡
+#  一拳超人 
+# 只用一擊擊敗魔物
+#  勇者 
+# 已獲得所有成就
+    }
+
+
+
     # 30 achievements
     if game_state == "achievement":
         # BG image
         screen.blit(images[0], (0, 0))
 
         # back button
-        pygame.draw.rect(screen, [186, 148, 45], transform_scale([40, 40, 80, 80]), border_radius=temp)
-        pygame.draw.rect(screen, [0, 0, 0], transform_scale([40, 40, 80, 80]), temp, temp)
-        text(screen, "Back", [0, 0, 0], temp*5, transform_scale([80, 80]), "center")
+        pygame.draw.rect(screen, [186, 148, 45], transform_scale([40, 40, 80, 80]), border_radius=br)
+        pygame.draw.rect(screen, [0, 0, 0], transform_scale([40, 40, 80, 80]), br, br)
+        text(screen, "Back", [0, 0, 0], br*5, transform_scale([80, 80]), "center")
+
+        pygame.draw.rect(screen, [128, 128, 128], transform_scale([880, 140, 480, 680]), border_radius=br)
+        pygame.draw.rect(screen, [0, 0, 0], transform_scale([880, 140, 480, 680]), br, br)
+
+        pos = pygame.mouse.get_pos()
+        tar = transform_scale([40, 180, 120, 120])
+        for i in range(5):
+            for j in range(6):
+                if (int((pos[0]-tar[0])/tar[2])==j and int((pos[1]-tar[1])/tar[3])==i and pos[0]-tar[0]>0 and pos[1]-tar[1]>0):
+                    if(save["achievement"][i*6+j]):
+                        text(screen, achievement_data["unlock_title"][i*6+j], [0, 0, 0], br*18, transform_scale([1120, 200]), "center")
+                        text(screen, achievement_data["unlock_description"][i*6+j], [0, 0, 0], br*15, transform_scale([1120, 480]), "center")
+                        pygame.draw.rect(screen, [178, 250, 178], transform_scale([40+120*j, 180+120*i, 120, 120]), border_radius=br)
+                        pygame.draw.rect(screen, [0, 0, 0], transform_scale([40+120*j, 180+120*i, 120, 120]), br, br)
+                    else:
+                        text(screen, achievement_data["hidden_title"][i*6+j], [0, 0, 0], br*18, transform_scale([1120, 200]), "center")
+                        text(screen, achievement_data["hidden_description"][i*6+j], [0, 0, 0], br*15, transform_scale([1120, 480]), "center")
+                        pygame.draw.rect(screen, [250, 178, 178], transform_scale([40+120*j, 180+120*i, 120, 120]), border_radius=br)
+                        pygame.draw.rect(screen, [0, 0, 0], transform_scale([40+120*j, 180+120*i, 120, 120]), br, br)
+                        
+
+                else:
+                    if(save["achievement"][i*6+j]):
+                        pygame.draw.rect(screen, [128, 200, 128], transform_scale([40+120*j, 180+120*i, 120, 120]), border_radius=br)
+                        pygame.draw.rect(screen, [0, 0, 0], transform_scale([40+120*j, 180+120*i, 120, 120]), br, br)
+                    else:
+                        pygame.draw.rect(screen, [200, 128, 128], transform_scale([40+120*j, 180+120*i, 120, 120]), border_radius=br)
+                        pygame.draw.rect(screen, [0, 0, 0], transform_scale([40+120*j, 180+120*i, 120, 120]), br, br)
+        
+        
+
 
         if(time != 0):
             time += 1
