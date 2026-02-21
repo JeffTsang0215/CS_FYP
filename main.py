@@ -12,11 +12,16 @@ save = {
     'unlock': [True, False, False, False, False, False],
     'star': [0, 0, 0, 0, 0, 0],
     'current_stage': 0,
-    'achievement': [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, ]
+    'achievement': [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, ],
+    'sound': 100,
+    'music': 100,
+    'full_screen': False
 }
 
 WIDTH  = int(pygame.display.Info().current_w * 0.65)
 HEIGHT = int(WIDTH/1440*960)
+# WIDTH_switch = pygame.display.Info().current_w
+# HEIGHT_switch = pygame.display.Info().current_h
 
 def transform_scale(arr):
     return [int(n*WIDTH/1440) for n in arr]
@@ -721,7 +726,9 @@ def draw_story_bg(stage):
             
 
 
-os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % ((pygame.display.get_desktop_sizes()[0][0]-WIDTH)/2, 20)
+# os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % ((pygame.display.get_desktop_sizes()[0][0]-WIDTH)/2, 20)
+os.environ['SDL_VIDEO_CENTERED'] = '1'
+
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Learn Japanese!")
@@ -735,14 +742,20 @@ if new_game:
         'unlock': [True, False, False, False, False, False],
         'star': [0, 0, 0, 0, 0, 0],
         'current_stage': 0,
-        'achievement': [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, ]
+        'achievement': [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, ],
+        'sound': 100,
+        'music': 100,
+        'full_screen': False,
     }
 if god_mod:
     save = {
         'unlock': [True, True, True, True, True, True],
         'star': [0, 0, 0, 0, 0, 0],
         'current_stage': 0,
-        'achievement': [False, True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, True, False, False, False, True, False, False, False, False, False, False, False, ]
+        'achievement': [True, True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, True, True, False, False, False, True, False, False, False, False, False, False, False, ],
+        'sound': 100,
+        'music': 100,
+        'full_screen': False,
     }
 # question bank: verb form convertion
 # size: 27
@@ -796,17 +809,7 @@ running = True
 
 inputArr = ""
 outputArr = ""
-# no_of_qs = 3
-# no_of_heart = 3
-# heart = pygame.image.load("media/heart.png").convert_alpha()
-# heart = pygame.transform.scale(heart, transform_scale([32, 32]))
-# kara = "masu"                               
-# made = "masu"                               
-# verb = ""                                   
-# pause = False                               
-# temptime = pygame.time.get_ticks()          
-# score = 0                                
-# prevScore = 0       
+     
 
 achievement_data = {
     'icon':[
@@ -976,7 +979,7 @@ achievement_data = {
 time = 0                                
 effect_time = 0                        
 win_lose_effect_timer = 0    
-
+changing = None
 
 images = [
     pygame.transform.scale(pygame.image.load("media/dungeon_crystal_1.png"), [WIDTH, HEIGHT]),                   # 0
@@ -2466,12 +2469,45 @@ while running:
         pygame.draw.rect(screen, [186, 148, 45], transform_scale([40, 40, 80, 80]), border_radius=br)
         pygame.draw.rect(screen, [0, 0, 0], transform_scale([40, 40, 80, 80]), br, br)
         text(screen, "Back", [0, 0, 0], br*5, transform_scale([80, 80]), "center")
+        
+
+
+        pygame.draw.rect(screen, [220, 220, 220], transform_scale([80, 140, 1280, 680]), border_radius=br)
+        text(screen, "設定", [0, 0, 0], br*25, transform_scale([720, 190]), "center")
+        text(screen, "    音樂:", [0, 0, 0], br*20, transform_scale([100, 160+100]), "left")
+        text(screen, "    音效:", [0, 0, 0], br*20, transform_scale([100, 160+100+br*22]), "left")
+        text(screen, "全螢幕:", [0, 0, 0], br*20, transform_scale([100, 160+100+br*44]), "left")
+
+
+        # adjust bar for music
+        pygame.draw.rect(screen, [128, 128, 128], transform_scale([320, 170+100, 800*save['music']/100, br*20]), border_radius=br)
+        pygame.draw.rect(screen, [200, 200, 200], transform_scale([320+800*save['music']/100, 170+100, 800-800*save['music']/100, br*20]), border_radius=br)
+        pygame.draw.rect(screen, [0, 0, 0], transform_scale([320, 170+100, 800, br*20]), br, br)
+        pygame.draw.rect(screen, [255, 255, 255], transform_scale([380+680*save['music']/100-60, 170+100, 120, br*20]), border_radius=br)
+        pygame.draw.rect(screen, [0, 0, 0], transform_scale([380+680*save['music']/100-60, 170+100, 120, br*20]), br, br)
+        text(screen, str(save['music']), [0, 0, 0], br*20, transform_scale([1220, 160+100]), "left")
+
+        # adjust bar for sound
+        pygame.draw.rect(screen, [128, 128, 128], transform_scale([320, 170+100+br*22, 800*save['sound']/100, br*20]), border_radius=br)
+        pygame.draw.rect(screen, [200, 200, 200], transform_scale([320+800*save['sound']/100, 170+100+br*22, 800-800*save['sound']/100, br*20]), border_radius=br)
+        pygame.draw.rect(screen, [0, 0, 0], transform_scale([320, 170+100+br*22, 800, br*20]), br, br)
+        pygame.draw.rect(screen, [255, 255, 255], transform_scale([380+680*save['sound']/100-60, 170+100+br*22, 120, br*20]), border_radius=br)
+        pygame.draw.rect(screen, [0, 0, 0], transform_scale([380+680*save['sound']/100-60, 170+100+br*22, 120, br*20]), br, br)
+        text(screen, str(save['sound']), [0, 0, 0], br*20, transform_scale([1220, 160+100+br*22]), "left")
+
+        # check box for full screen
+        pygame.draw.rect(screen, [128, 128, 128], transform_scale([320, 170+100+br*44, br*20, br*20]), border_radius=br)
+        pygame.draw.rect(screen, [200, 200, 200], transform_scale([320, 170+100+br*44, br*20, br*20]), br, br)
+        text(screen, "X" if save["full_screen"] else "", [0, 0, 0], br*15, transform_scale([320+br*10, 170+100+br*44+br*10]), "center")
+
+        
 
         if(time != 0):
             time += 1
             s.set_alpha(int(time/fps/1*255))
             screen.blit(s, (0,0))
         
+        pos = pygame.mouse.get_pos()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -2480,6 +2516,32 @@ while running:
                     if click_check(pygame.mouse.get_pos(), transform_scale([40, 40, 80, 80])):
                         if(time == 0):
                             time += 1
+                    if click_check(pos, transform_scale([380+680*save['music']/100-60, 170+100, 120, br*20])):
+                        changing = 'music'
+                    if click_check(pos, transform_scale([380+680*save['sound']/100-60, 170+100+br*22, 120, br*20])):
+                        changing = 'sound'
+                    if click_check(pos, transform_scale([320, 170+100+br*44, br*20, br*20])):
+                        save["full_screen"] = not(save["full_screen"])
+                        # WIDTH, WIDTH_switch, HEIGHT, HEIGHT_switch = WIDTH_switch, WIDTH, HEIGHT_switch, HEIGHT
+                        if save["full_screen"]:
+                            screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN | pygame.SCALED)
+                        else:
+                            # os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (int((pygame.display.get_desktop_sizes()[0][0]-WIDTH)/2), int((pygame.display.get_desktop_sizes()[0][1]-HEIGHT)/2))
+                            screen = pygame.display.set_mode((WIDTH, HEIGHT))
+            if event.type == pygame.MOUSEBUTTONUP:
+                if event.button == 1:
+                    changing=None
+                    write()
+
+        print(save['full_screen'])
+
+        if(changing == 'music'):
+            a, b, r = transform_scale([380, 380+680, 680])
+            save["music"] = min(max(0, int((pos[0]-a)/r*100)), 100)
+        elif(changing == 'sound'):
+            a, b, r = transform_scale([380, 380+680, 680])
+            save["sound"] = min(max(0, int((pos[0]-a)/r*100)), 100)
+
         
         #  back
         if(time > fps*1):
