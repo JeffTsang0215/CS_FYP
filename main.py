@@ -6,7 +6,7 @@ pygame.init()
 pygame.font.init()
 
 new_game = True
-god_mod = False
+god_mod = True
 stage_per_world = 5
 current_world = 0
 
@@ -2582,16 +2582,20 @@ while running:
                                 draggable_rects[dragged_item_index].y = event.pos[1] - drag_offset_y
                         
                         elif event.type == pygame.MOUSEBUTTONUP and event.button == 1 and is_dragging:
-                            # Drop Logic
+
                             dropped_rect = draggable_rects[dragged_item_index]
                             
-                            # If dropped in Answer Zone
                             if zone_answer.colliderect(dropped_rect):
-                                if dragged_item_index not in current_sentence_indices:
-                                    current_sentence_indices.append(dragged_item_index)
-                            
-                            # If dropped elsewhere (Bank), it just stays out of the list 
-                            # and the draw loop will place it back in the bank automatically.
+                                insert_pos = len(current_sentence_indices)
+                                
+                                for list_index, option_index in enumerate(current_sentence_indices):
+                                    existing_rect = draggable_rects[option_index]
+                                    
+                                    if dropped_rect.centerx < existing_rect.centerx:
+                                        insert_pos = list_index
+                                        break
+
+                                current_sentence_indices.insert(insert_pos, dragged_item_index)
                             
                             is_dragging = False
                             dragged_item_index = -1
