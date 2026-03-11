@@ -6,15 +6,15 @@ pygame.init()
 pygame.font.init()
 
 new_game = False
-god_mod = False
-stage_per_world = 5
-current_world = 0
+god_mod = True
+chapter_ranges =[(0, 8), (9, 19), (20, 28), (29, 38)] # (Start Stage, End Stage) for Ch 1, 2, 3, 4
+current_chapter = 0
 
 save = {
-    'unlock': [True, False, False, False, False, False, False, False, False, False, False, False, False, False, False],
-    'star': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    'unlock': [True] + [False]*38,
+    'star': [0]*39,
     'current_stage': 0,
-    'achievement': [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, ],
+    'achievement': [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False],
     'sound': 100,
     'music': 100,
     'full_screen': False
@@ -566,9 +566,9 @@ def load():
         with open('udata.sf') as load_file:
             save = deepcopy(json.load(load_file))
             # try to ensure save fiel is complitable with new stages
-            if len(save['unlock']) < 15:
-                save['unlock'].extend([False] * (15 - len(save['unlock'])))
-                save['star'].extend([0] * (15 - len(save['star'])))
+            if len(save['unlock']) < 39:
+                save['unlock'].extend([False] * (39 - len(save['unlock'])))
+                save['star'].extend([0] * (39 - len(save['star'])))
                 write()
             print("Loaded data:", save)
     except:
@@ -581,6 +581,9 @@ def write():
         json.dump(save, store_data)
 
 def draw_stage_selection(n):
+
+
+
     match n:
         case 0:
             bg = 10
@@ -696,16 +699,12 @@ def draw_stage_selection(n):
             else:
                 prev = 26
         case 6:
-            #require changing
-            bg = 10
-            # image at center, if havent unlock then will show the gray version
+            bg = 25
             if save["unlock"][n]:
-                center = 17
+                center = 27
             else:
-                center = 18
-            # the title text, but in image format, Jeff can help gen
-            title = 21
-            #image of next stage
+                center = 26
+            title = 28
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
                     next = 20
@@ -713,11 +712,10 @@ def draw_stage_selection(n):
                     next = 19
             else:
                 next = None
-            # image of previos stage
             if save["unlock"][n-1]:
-                prev = 27
+                prev = 20
             else:
-                prev = 26
+                prev = 19
         case 7:
             #require changing
             bg = 10
@@ -754,9 +752,9 @@ def draw_stage_selection(n):
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
-                    next = 20
+                    next = None
                 else:
-                    next = 19
+                    next = None
             else:
                 next = None
             # image of previos stage
@@ -784,9 +782,9 @@ def draw_stage_selection(n):
                 next = None
             # image of previos stage
             if save["unlock"][n-1]:
-                prev = 27
+                prev = None
             else:
-                prev = 26
+                prev = None
         case 10:
             #require changing
             bg = 10
@@ -925,7 +923,536 @@ def draw_stage_selection(n):
                 prev = 27
             else:
                 prev = 26
-
+        case 16:
+            #require changing
+            bg = 10
+            # image at center, if havent unlock then will show the gray version
+            if save["unlock"][n]:
+                center = 17
+            else:
+                center = 18
+            # the title text, but in image format, Jeff can help gen
+            title = 21
+            #image of next stage
+            if n+1 < len(save["unlock"]):
+                if save["unlock"][n+1]:
+                    next = 20
+                else:
+                    next = 19
+            else:
+                next = None
+            # image of previos stage
+            if save["unlock"][n-1]:
+                prev = 27
+            else:
+                prev = 26
+        case 17:
+            #require changing
+            bg = 10
+            # image at center, if havent unlock then will show the gray version
+            if save["unlock"][n]:
+                center = 17
+            else:
+                center = 18
+            # the title text, but in image format, Jeff can help gen
+            title = 21
+            #image of next stage
+            if n+1 < len(save["unlock"]):
+                if save["unlock"][n+1]:
+                    next = 20
+                else:
+                    next = 19
+            else:
+                next = None
+            # image of previos stage
+            if save["unlock"][n-1]:
+                prev = 27
+            else:
+                prev = 26
+        case 18:
+            #require changing
+            bg = 10
+            # image at center, if havent unlock then will show the gray version
+            if save["unlock"][n]:
+                center = 17
+            else:
+                center = 18
+            # the title text, but in image format, Jeff can help gen
+            title = 21
+            #image of next stage
+            if n+1 < len(save["unlock"]):
+                if save["unlock"][n+1]:
+                    next = 20
+                else:
+                    next = 19
+            else:
+                next = None
+            # image of previos stage
+            if save["unlock"][n-1]:
+                prev = 27
+            else:
+                prev = 26
+        case 19:
+            #require changing
+            bg = 10
+            # image at center, if havent unlock then will show the gray version
+            if save["unlock"][n]:
+                center = 17
+            else:
+                center = 18
+            # the title text, but in image format, Jeff can help gen
+            title = 21
+            #image of next stage
+            if n+1 < len(save["unlock"]):
+                if save["unlock"][n+1]:
+                    next = None
+                else:
+                    next = None
+            else:
+                next = None
+            # image of previos stage
+            if save["unlock"][n-1]:
+                prev = 27
+            else:
+                prev = 26
+        case 20:
+            #require changing
+            bg = 10
+            # image at center, if havent unlock then will show the gray version
+            if save["unlock"][n]:
+                center = 17
+            else:
+                center = 18
+            # the title text, but in image format, Jeff can help gen
+            title = 21
+            #image of next stage
+            if n+1 < len(save["unlock"]):
+                if save["unlock"][n+1]:
+                    next = 20
+                else:
+                    next = 19
+            else:
+                next = None
+            # image of previos stage
+            if save["unlock"][n-1]:
+                prev = None
+            else:
+                prev = None
+        case 21:
+            #require changing
+            bg = 10
+            # image at center, if havent unlock then will show the gray version
+            if save["unlock"][n]:
+                center = 17
+            else:
+                center = 18
+            # the title text, but in image format, Jeff can help gen
+            title = 21
+            #image of next stage
+            if n+1 < len(save["unlock"]):
+                if save["unlock"][n+1]:
+                    next = 20
+                else:
+                    next = 19
+            else:
+                next = None
+            # image of previos stage
+            if save["unlock"][n-1]:
+                prev = 27
+            else:
+                prev = 26
+        case 22:
+            #require changing
+            bg = 10
+            # image at center, if havent unlock then will show the gray version
+            if save["unlock"][n]:
+                center = 17
+            else:
+                center = 18
+            # the title text, but in image format, Jeff can help gen
+            title = 21
+            #image of next stage
+            if n+1 < len(save["unlock"]):
+                if save["unlock"][n+1]:
+                    next = 20
+                else:
+                    next = 19
+            else:
+                next = None
+            # image of previos stage
+            if save["unlock"][n-1]:
+                prev = 27
+            else:
+                prev = 26
+        case 23:
+            #require changing
+            bg = 10
+            # image at center, if havent unlock then will show the gray version
+            if save["unlock"][n]:
+                center = 17
+            else:
+                center = 18
+            # the title text, but in image format, Jeff can help gen
+            title = 21
+            #image of next stage
+            if n+1 < len(save["unlock"]):
+                if save["unlock"][n+1]:
+                    next = 20
+                else:
+                    next = 19
+            else:
+                next = None
+            # image of previos stage
+            if save["unlock"][n-1]:
+                prev = 27
+            else:
+                prev = 26
+        case 24:
+            #require changing
+            bg = 10
+            # image at center, if havent unlock then will show the gray version
+            if save["unlock"][n]:
+                center = 17
+            else:
+                center = 18
+            # the title text, but in image format, Jeff can help gen
+            title = 21
+            #image of next stage
+            if n+1 < len(save["unlock"]):
+                if save["unlock"][n+1]:
+                    next = 20
+                else:
+                    next = 19
+            else:
+                next = None
+            # image of previos stage
+            if save["unlock"][n-1]:
+                prev = 27
+            else:
+                prev = 26
+        case 25:
+            #require changing
+            bg = 10
+            # image at center, if havent unlock then will show the gray version
+            if save["unlock"][n]:
+                center = 17
+            else:
+                center = 18
+            # the title text, but in image format, Jeff can help gen
+            title = 21
+            #image of next stage
+            if n+1 < len(save["unlock"]):
+                if save["unlock"][n+1]:
+                    next = 20
+                else:
+                    next = 19
+            else:
+                next = None
+            # image of previos stage
+            if save["unlock"][n-1]:
+                prev = 27
+            else:
+                prev = 26
+        case 26:
+            #require changing
+            bg = 10
+            # image at center, if havent unlock then will show the gray version
+            if save["unlock"][n]:
+                center = 17
+            else:
+                center = 18
+            # the title text, but in image format, Jeff can help gen
+            title = 21
+            #image of next stage
+            if n+1 < len(save["unlock"]):
+                if save["unlock"][n+1]:
+                    next = 20
+                else:
+                    next = 19
+            else:
+                next = None
+            # image of previos stage
+            if save["unlock"][n-1]:
+                prev = 27
+            else:
+                prev = 26
+        case 27:
+            #require changing
+            bg = 10
+            # image at center, if havent unlock then will show the gray version
+            if save["unlock"][n]:
+                center = 17
+            else:
+                center = 18
+            # the title text, but in image format, Jeff can help gen
+            title = 21
+            #image of next stage
+            if n+1 < len(save["unlock"]):
+                if save["unlock"][n+1]:
+                    next = 20
+                else:
+                    next = 19
+            else:
+                next = None
+            # image of previos stage
+            if save["unlock"][n-1]:
+                prev = 27
+            else:
+                prev = 26
+        case 28:
+            #require changing
+            bg = 10
+            # image at center, if havent unlock then will show the gray version
+            if save["unlock"][n]:
+                center = 17
+            else:
+                center = 18
+            # the title text, but in image format, Jeff can help gen
+            title = 21
+            #image of next stage
+            if n+1 < len(save["unlock"]):
+                if save["unlock"][n+1]:
+                    next = None
+                else:
+                    next = None
+            else:
+                next = None
+            # image of previos stage
+            if save["unlock"][n-1]:
+                prev = 27
+            else:
+                prev = 26
+        case 29:
+            #require changing
+            bg = 10
+            # image at center, if havent unlock then will show the gray version
+            if save["unlock"][n]:
+                center = 17
+            else:
+                center = 18
+            # the title text, but in image format, Jeff can help gen
+            title = 21
+            #image of next stage
+            if n+1 < len(save["unlock"]):
+                if save["unlock"][n+1]:
+                    next = 20
+                else:
+                    next = 19
+            else:
+                next = None
+            # image of previos stage
+            if save["unlock"][n-1]:
+                prev = None
+            else:
+                prev = None
+        case 30:
+            #require changing
+            bg = 10
+            # image at center, if havent unlock then will show the gray version
+            if save["unlock"][n]:
+                center = 17
+            else:
+                center = 18
+            # the title text, but in image format, Jeff can help gen
+            title = 21
+            #image of next stage
+            if n+1 < len(save["unlock"]):
+                if save["unlock"][n+1]:
+                    next = 27
+                else:
+                    next = 19
+            else:
+                next = None
+            # image of previos stage
+            if save["unlock"][n-1]:
+                prev = 27
+            else:
+                prev = 26
+        case 31:
+            #require changing
+            bg = 10
+            # image at center, if havent unlock then will show the gray version
+            if save["unlock"][n]:
+                center = 17
+            else:
+                center = 18
+            # the title text, but in image format, Jeff can help gen
+            title = 21
+            #image of next stage
+            if n+1 < len(save["unlock"]):
+                if save["unlock"][n+1]:
+                    next = 20
+                else:
+                    next = 19
+            else:
+                next = None
+            # image of previos stage
+            if save["unlock"][n-1]:
+                prev = 27
+            else:
+                prev = 26
+        case 32:
+            #require changing
+            bg = 10
+            # image at center, if havent unlock then will show the gray version
+            if save["unlock"][n]:
+                center = 17
+            else:
+                center = 18
+            # the title text, but in image format, Jeff can help gen
+            title = 21
+            #image of next stage
+            if n+1 < len(save["unlock"]):
+                if save["unlock"][n+1]:
+                    next = 20
+                else:
+                    next = 19
+            else:
+                next = None
+            # image of previos stage
+            if save["unlock"][n-1]:
+                prev = 27
+            else:
+                prev = 26
+        case 33:
+            #require changing
+            bg = 10
+            # image at center, if havent unlock then will show the gray version
+            if save["unlock"][n]:
+                center = 17
+            else:
+                center = 18
+            # the title text, but in image format, Jeff can help gen
+            title = 21
+            #image of next stage
+            if n+1 < len(save["unlock"]):
+                if save["unlock"][n+1]:
+                    next = None
+                else:
+                    next = None
+            else:
+                next = None
+            # image of previos stage
+            if save["unlock"][n-1]:
+                prev = 27
+            else:
+                prev = 26
+        case 34:
+            #require changing
+            bg = 10
+            # image at center, if havent unlock then will show the gray version
+            if save["unlock"][n]:
+                center = 17
+            else:
+                center = 18
+            # the title text, but in image format, Jeff can help gen
+            title = 21
+            #image of next stage
+            if n+1 < len(save["unlock"]):
+                if save["unlock"][n+1]:
+                    next = 20
+                else:
+                    next = 19
+            else:
+                next = None
+            # image of previos stage
+            if save["unlock"][n-1]:
+                prev = None
+            else:
+                prev = None
+        case 35:
+            #require changing
+            bg = 10
+            # image at center, if havent unlock then will show the gray version
+            if save["unlock"][n]:
+                center = 17
+            else:
+                center = 18
+            # the title text, but in image format, Jeff can help gen
+            title = 21
+            #image of next stage
+            if n+1 < len(save["unlock"]):
+                if save["unlock"][n+1]:
+                    next = 20
+                else:
+                    next = 19
+            else:
+                next = None
+            # image of previos stage
+            if save["unlock"][n-1]:
+                prev = 27
+            else:
+                prev = 26
+        case 36:
+            #require changing
+            bg = 10
+            # image at center, if havent unlock then will show the gray version
+            if save["unlock"][n]:
+                center = 17
+            else:
+                center = 18
+            # the title text, but in image format, Jeff can help gen
+            title = 21
+            #image of next stage
+            if n+1 < len(save["unlock"]):
+                if save["unlock"][n+1]:
+                    next = 20
+                else:
+                    next = 19
+            else:
+                next = None
+            # image of previos stage
+            if save["unlock"][n-1]:
+                prev = 27
+            else:
+                prev = 26
+        case 37:
+            #require changing
+            bg = 10
+            # image at center, if havent unlock then will show the gray version
+            if save["unlock"][n]:
+                center = 17
+            else:
+                center = 18
+            # the title text, but in image format, Jeff can help gen
+            title = 21
+            #image of next stage
+            if n+1 < len(save["unlock"]):
+                if save["unlock"][n+1]:
+                    next = 20
+                else:
+                    next = 19
+            else:
+                next = None
+            # image of previos stage
+            if save["unlock"][n-1]:
+                prev = 27
+            else:
+                prev = 26
+        case 38:
+            #require changing
+            bg = 10
+            # image at center, if havent unlock then will show the gray version
+            if save["unlock"][n]:
+                center = 17
+            else:
+                center = 18
+            # the title text, but in image format, Jeff can help gen
+            title = 21
+            #image of next stage
+            if n+1 < len(save["unlock"]):
+                if save["unlock"][n+1]:
+                    next = None
+                else:
+                    next = None
+            else:
+                next = None
+            # image of previos stage
+            if save["unlock"][n-1]:
+                prev = 27
+            else:
+                prev = 26
+        
 
     screen.blit(images[bg], transform_scale([0, 0]))
     screen.blit(images[center], transform_scale([297, 198]))
@@ -1024,8 +1551,8 @@ load()
 
 if new_game:
     save = {
-        'unlock': [True, False, False, False, False, False, False, False, False, False, False, False, False, False, False],
-        'star': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        'unlock': [True] + [False]*38,
+        'star': [0]*39,
         'current_stage': 0,
         'achievement': [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, ],
         'sound': 100,
@@ -1034,8 +1561,8 @@ if new_game:
     }
 if god_mod:
     save = {
-        'unlock': [True, True, True, True, True, True, True, True, True, True, True, True, True, True, True],
-        'star': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        'unlock': [True]*39,
+        'star': [0]*39,
         'current_stage': 0,
         'achievement': [True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, ],
         'sound': 100,
@@ -1051,7 +1578,7 @@ if god_mod:
 if save["full_screen"]:
     screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN | pygame.SCALED)
 else:
-    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.SCALED)
 pygame.display.set_caption("Learn Japanese!")
 clock = pygame.time.Clock()
 fps = 60
@@ -1314,6 +1841,7 @@ images = [
 
 # 基礎言靈魔法表示: <あ>
 dialog = [
+    #stage 0
     [
         (2, "？？？：\nおいおい！起[お]きろ！"),
         (1, "？？？：\n什麼？我在哪裡？那個女孩在說什麼？"),
@@ -1348,6 +1876,7 @@ dialog = [
         (2, "莉子：\n準備好了嗎？"),
         (1, "赤真：\n準備好了！來吧！")
     ],
+    #stage 1
     [
         (2, '莉子：\n不錯不錯！你成為一個合格的冒險者了！'),
         (1, '赤真：\n呼～（好險'),
@@ -1371,64 +1900,248 @@ dialog = [
         (1, '赤真：\n點頭(滴汗...'),
         (2.1, '莉子：\n<か>！'),
         (1, '赤真：\n身上的疼痛疲勞都消失了！'),
-        (2, '莉子：\n正好，前面有另一隻史萊姆，試試吧！'),
+        (2, '莉子：\n正好，前面有另一隻史萊姆，用新學的10個音試試吧！'),
         (1, '赤真：\n好，來吧！')
     ],
+    #stage 2
     [
-        (2, '莉子：\n你越來越熟練了呢！'),
-        (1, '赤真：\n這都多虧了莉子小姐的教導。'),
-        (2, '莉子：\n哼哼，那是當然的！'),
-        (2, '莉子：\n接下來，我們要學習如何將單字組成句子。'),
-        (1, '赤真：\n喔喔！'),
-        (2, '莉子：\n看看這個句子，然後把正確的詞語拖到空格裡吧！'),
-        (1, '赤真：\n好的，我試試看！'),
+        (2, '莉子：\n最近魔物出現的頻率很不正常，\n連低階區域都出現了高階怪！'),
+        (1, '赤真：\n難怪工會發布了緊急調查任務...'),
+        (2, '莉子：\n沒錯！而且工會還派了C級冒險者陪同我們一起去呢。'),
+        (2, '莉子：\n在出發前，我們來學『さ』行跟它的濁音『ざ』行吧！\n「さ」sa、「し」shi、「す」su、「せ」se、「そ」so'),
+        (2, '莉子：\n「ざ」za、「じ」ji、「ず」zu、「ぜ」ze、「ぞ」zo'),
+        (1, '赤真：\n好！有C級前輩在，我們剛好可以安心練習新魔法！'),
+        (2, '莉子：\n很好，那邊出現了幾隻魔物，拿它們練練手吧！')
     ],
+    #stage 3
     [
-        (1, '赤真：\n好的，我試試看！'),
+        (1, '赤真：\n等一下... 前面那股強大的氣息是什麼？'),
+        (2, '莉子：\n糟了！是幻影虎，還有哥布林王！'),
+        (1, '赤真：\n幻影虎派哥布林王攻擊我們了！牠為什麼只盯著我們？！'),
+        (2, '莉子：\n因為我們看起來最弱啊！\n天啊，連C級冒險者都被幻影虎自己打敗了！'),
+        (1, '赤真：\n那我們還等什麼，快逃回城裡啊！'),
+        (2, '莉子：\n逃跑的時候也不能忘記詠唱魔法！快記住\n『な』行、『は』行、濁音『ば』和半濁音『ぱ』！'),
+        (2, '莉子：\n「な」na、「に」ni、「ぬ」nu、「ね」ne、「の」no\n「は」ha、「ひ」hi、「ふ」fu、「へ」he、「ほ」ho\n'),
+        (2, '莉子：\n「ば」ba、「び」bi、「ぶ」bu、「べ」be、「ぼ」bo\n「ぱ」pa、「ぴ」pi、「ぷ」pu、「ぺ」pe、「ぽ」po'),
+        (1, '赤真：\n這種時候就別上課了啊啊啊！拼了！')
     ],
+    #stage 4
     [
-        (1, '赤真：\n好的，我試試看！'),
+        (0, '系統：\n【警告】發現小Boss幻影虎與精英怪哥布林王！'),
+        (1, '赤真：\n糟了！連C級前輩都被那隻幻影虎瞬間打敗了！'),
+        (2, '莉子：\n牠們為什麼只盯著我們？！\n快，用『な』行魔法牽制牠們！\n「な」na、「に」ni、「ぬ」nu、「ね」ne、「の」no！'),
+        (2, '「な」na、「に」ni、「ぬ」nu、「ね」ne、「の」no！'),
+        (1, '赤真：\n這種時候就別上課了啊啊啊！快逃啊！！'),
+        (2, '莉子：\n邊逃跑邊詠唱！我們撤回城裡！')
     ],
+    #stage 5
     [
-        (2, '莉子：\n接下來，我們來試試組合完整的句子吧！'),
-        (2, '莉子：\n把下面的單字拖曳到橫線上，順序也要對喔！\n完成後記得按下「詠唱」確認！'),
-        (1, '赤真：\n也就是說，這考驗我的文法能力了！沒問題！'),
+        (1, '赤真：\n呼... 呼... 終於逃回城了，好險。'),
+        (2, '莉子：\n工會知道幻影虎出現後，已經準備全面進攻了！\n國王陛下甚至賜予了我們『皇家守衛套裝』！'),
+        (1, '赤真：\n有了這套護甲裝備，我們的防禦力大增了！'),
+        (2, '莉子：\n趁現在，快把『は』行、濁音\n『ば』和半濁音『ぱ』行學起來！'),
+        (2, '莉子：「は、ひ、ふ、へ、ほ」、「ば、び、ぶ、べ、ぼ」、\n「ぱ、ぴ、ぷ、ぺ、ぽ」！'),
+        (1, '赤真：\n我記住了！這次我們絕對不能再逃跑！')
     ],
+    #stage 6
     [
-        (1, '赤真：\n新的挑戰開始了！（這是通用對話）'),
-        (2, '莉子：\n加油！'),
+        (2, '莉子：\n全面進攻馬上就要開始了！我把剩下的基本音全部教給你！\n『や』行、『ら』行、『わ』、『を』和『ん』！'),
+        (2, '莉子：\n「や」ya、「ゆ」yu、「よ」\n「ら」ra、「り」ri、「る」ru、「れ」re、「ろ」ro'),
+        (2, '莉子：\n最後是「わ」wa、「を」wo、「ん」n！'),
+        (1, '赤真：\n好！我已經把五十音全都學會了，魔力感覺源源不絕！'),
+        (2, '莉子：\n準備出發，我們去討伐那隻幻影虎！')
     ],
+    #stage 7
     [
-        (1, '赤真：\n新的挑戰開始了！（這是通用對話）'),
-        (2, '莉子：\n加油！'),
+        (0, '系統：\n【決戰】遭遇 幻影虎 與 哥布林王！'),
+        (1, '赤真：\n又是你們這兩隻怪物！這次我們可不會再退縮了！'),
+        (2, '莉子：\n赤真，用你學會的五十音魔法，給牠們致命一擊！'),
+        (1, '赤真：\n看我的！言靈魔法全開！！')
     ],
+    #stage 8
     [
-        (1, '赤真：\n新的挑戰開始了！（這是通用對話）'),
-        (2, '莉子：\n加油！'),
+        (1, '赤真：\n我們贏了！終於打敗幻影虎了！'),
+        (2, '莉子：\n太棒了！我們還用幻影虎的素材，\n請城內工匠打造了武器『名匠靈珠』！'),
+        (1, '赤真：\n裝備大升級！有了它，接下來的冒險就更有把握了。'),
+        (2, '莉子：\n為了發揮新武器的威力，我現在把最後的發音規則\n「拗音」教給你！'),
+        (2, '莉子：\n「きゃ」kya、「きゅ」kyu、「きょ」kyo\n「しゃ」sha、「しゅ」shu、「しょ」sho\n「ちゃ」cha、「ちゅ」chu、「ちょ」cho\n「にゃ」nya、「にゅ」nyu、「にょ」nyo\n「ひゃ」hya、「ひゅ」hyu、「ひょ」hyo\n「みゃ」mya、「みゅ」myu、「みょ」myo\n「りゃ」rya、「りゅ」ryu、「りょ」ryo！'),
+        (1, '赤真：\n原來是把字拼在一起發音啊！我準備好迎接第二章的挑戰了！')
     ],
+    #stage 9
     [
-        (1, '赤真：\n新的挑戰開始了！（這是通用對話）'),
-        (2, '莉子：\n加油！'),
+        (2, '莉子：\n工會發現幻影虎只是魔族派來的探子，經過一段冷靜期，\n魔族開始派更強大的魔物試探了。'),
+        (2, '莉子：\n從今天開始，我們要學習漢字（Kanji），這是更高階的魔法！'),
+        (1, '赤真：\n莉子，你臉色不太好，沒事吧？'),
+        (2, '莉子：\n不知道為什麼，我的記憶中開始出現精靈族言靈魔法的傳承...\n (但我明明是人類啊...)'),
     ],
+    #stage 10
     [
-        (1, '赤真：\n新的挑戰開始了！（這是通用對話）'),
-        (2, '莉子：\n加油！'),
+        (2, '莉子：\n嗚... 頭好痛！'),
+        (1, '赤真：\n莉子！你怎麼了？！'),
+        (2, '莉子：\n我體內的血脈好像發生了衝突，施展新覺醒的魔法就會劇痛...'),
+        (1, '赤真：\n既然如此，你別勉強了！接下來的漢字魔法全部交給我來施展！')
     ],
+    #stage 11
     [
-        (1, '赤真：\n新的挑戰開始了！（這是通用對話）'),
-        (2, '莉子：\n加油！'),
+         (2, '莉子：\n謝謝你，赤真。我們繼續練習漢字的讀音辨識吧。'),
+        (1, '赤真：\n你好好休息，看我把這些魔物全部清掉！')
     ],
+    #stage 12
     [
-        (1, '赤真：\n新的挑戰開始了！（這是通用對話）'),
-        (2, '莉子：\n加油！'),
+        (1, '赤真：\n魔族的入侵越來越頻繁了，這樣下去不是辦法。'),
+        (2, '莉子：\n嗯，我的傳承記憶也越來越清晰... 我隱約對自己的身分產生懷疑了。'),
+        (1, '赤真：\n等這波魔物清理完，我們分開調查一下吧，或許能找到線索。')
     ],
+    #stage 13
     [
-        (1, '赤真：\n新的挑戰開始了！（這是通用對話）'),
-        (2, '莉子：\n加油！'),
+        (1, '赤真：\n漢字的數量真多，但我能感覺到法術的威力正在倍增。'),
+        (2, '莉子：\n加油，只要把這些字詞深深印在腦海裡，詠唱速度就會變快！')
     ],
+    #stage 14
     [
-        (1, '赤真：\n新的挑戰開始了！（這是通用對話）'),
-        (2, '莉子：\n加油！'),
+        (1, '赤真：\n這附近的瘴氣越來越重了。'),
+        (2, '莉子：\n大家都要小心，魔族的前鋒部隊隨時會出現。')
+     ],
+    #stage 15
+    [
+        (1, '赤真：\n漢字魔法不僅能攻擊，還能用來防禦和干擾，真是博大精深。'),
+        (2, '莉子：\n沒錯，所以你要完全掌握它們！')
+    ],
+    #stage 16
+    [
+         (2, '莉子：\n赤真，你有沒有覺得地面的震動越來越明顯了？'),
+        (1, '赤真：\n看來有什麼大傢伙要來了，我先用漢字魔法把周圍的小怪清空！')
+    ],
+    #stage 17
+    [
+        (1, '赤真：\n呼... 終於清得差不多了。'), #add more dialogue here
+        (2, '莉子：\n別鬆懈！真正的考驗才剛要開始。')
+    ],
+    #stage 18
+    [
+        (1, '赤真：\n莉子，小心！前面那個傢伙的氣息跟之前的魔物完全不同！'),
+        (2, '莉子：\n那是中級Boss... 我們必須全力以赴！')
+    ],
+    #stage 19
+    [
+        (0, '系統：\n【警告】中級Boss『天魔』降臨！攻擊力極高！'),
+        (1, '赤真：\n可惡！天魔的血量明明已經見底了，怎麼還不倒下！\n（天魔 HP 下限被鎖定在 1）'),
+        (2, '莉子：\n赤真，退後！讓我來！\n啊啊啊啊——（忍痛詠唱最強咒文）『天神之力』！'),
+        (3, '高空出現一個巨大的魔法陣，一道強光彈出，瞬間擊殺了天魔。\n莉子召喚出護甲『天神甲』，天魔掉落武器『天魔杖』。'),
+        (2, '莉子：\n赤真，傳承記憶讓我明白了我的身世... 我的血脈能衍生出另一個作用。'),
+        (2, '莉子：\n我可以成為別人的武器，但代價是...失去生命。'),
+        (1, '赤真：\n開什麼玩笑！我絕對不允許這種事發生！！')
+     ],
+    #stage 20
+    [
+        (1, '赤真：\n（我必須變得更強，強到不需要莉子犧牲！）'),
+        (2, '莉子：\n赤真... 接下來我們要學習基礎的句子結構（Sentence Structure）。\n把單字拖曳到正確的位置組成完整的句子。'),
+        (1, '赤真：\n交給我吧，不管多複雜的文法我都能學會！')
+    ],
+    #stage 21
+    [
+        (2, '莉子：\n注意東瀛語的助詞「は」、「を」、「に」的用法喔！'),
+        (1, '赤真：\n主詞、受詞和動詞的順序跟中文不一樣，但我已經抓到訣竅了。')
+    ],
+    #stage 22
+    [
+        (1, '赤真：\n有了完整的句子，言靈魔法的範圍和精準度都提升了！'),
+        (2, '莉子：\n這就是語言的力量，繼續保持這個氣勢！')
+    ],
+    #stage 23
+    [
+        (2, '莉子：\n這是最後一組基礎句型訓練了，把它們完美組合起來吧！'),
+        (1, '赤真：\n沒問題，這些魔物根本撐不住我的一句完整詠唱！')
+    ],
+    #stage 24
+    [
+        (2, '莉子：\n句子結構掌握後，最核心的就是動詞變化（Verb form）了！\n先從『ます形』變換成『辞書形』開始吧！'),
+        (1, '赤真：\n動詞變化？聽起來能讓魔法產生不同的型態變化！')
+    ],
+    #stage 25
+    [
+        (2, '莉子：\n接下來是『て形』和『た形』，這在連續施法時非常重要！'),
+        (1, '赤真：\n變化規則有點多，但我會在實戰中記住它們的！')
+    ],
+    #stage 26
+    [
+        (2, '莉子：\n別忘了『ない形』，這是否定型態，能用來消除敵人的增益狀態！'),
+        (1, '赤真：\n這招實用！看我把它們的護盾全部消除！')
+    ],
+    #stage 27
+    [
+        (2, '莉子：\n你已經學會了所有的動詞變化，你現在是一名非常出色的言靈使了！'),
+        (1, '赤真：\n這都多虧了你的教導，莉子。我們一定能一起活著終結這場戰爭。')
+    ],
+    #stage 28
+    [
+        (3, '天空突然一暗，四周空氣瞬間凝結，一頭毀天滅地的魔龍出現。'),
+        (1, '赤真：\n好可怕的壓迫感... 這絕不是我們能抗衡的等級！牠發現我們了！'),
+        (2, '莉子：\n赤真！在生死存亡之際，你必須作出抉擇！\n殺了我！你就能得到『混血靈心』，往後的攻擊力會翻倍！'),
+        (1, '赤真：\n我說過，我絕對不會犧牲你！！'),
+        (2, '莉子：\n不這樣做，我們都會被魔龍殺死！求求你，動手吧！'),
+        (3, '系統：\n【命運的分歧點】\n接下來的戰鬥表現/選擇將決定莉子的生死，並導向完全不同的結局。')
+    ],
+     #stage 29
+    [
+        (1, '赤真：\n......莉子。'),
+        (3, '為了生存，赤真被迫殺死了莉子，獲得了『混血靈心』。\n他強勢討伐了魔龍，獨自一人殺入魔族領地。'),
+        (0, '東方大將：\n愚蠢的人類，竟敢單槍匹馬闖入這裡！'),
+        (1, '赤真：\n...擋路者，死。力量源源不絕湧上來，但心裡卻空無一物。')
+    ],
+    #stage 30
+    [
+        (0, '南方大將：\n東方大將居然敗給了你這滿身煞氣的小子！'),
+        (1, '赤真：\n太弱了。下一個。')
+    ],
+    #stage 31
+    [
+        (0, '西方大將：\n你的魔法充滿了絕望與悲憤，你到底經歷了什麼？'),
+        (1, '赤真：\n閉嘴！言靈·滅！')
+    ],
+    #stage 32
+    [
+        (0, '北方大將：\n魔王大人就在前方，我絕不會讓你過去！'),
+        (1, '赤真：\n連同這個世界，一起毀滅吧。')    ],
+    #stage 33
+    [
+        (0, '魔王：\n沒想到你能走到這裡。你的眼神...比我們魔族還要冰冷。'),
+        (1, '赤真：\n...廢話少說，去死吧。'),
+        (3, '一番苦戰後，赤真將魔王擊敗。但他獨自一人，無人可分享勝利的喜悅。'),
+        (1, '赤真：\n回想殺死莉子的那一刻... 我真是悔不當初。'),
+        (3, '【結局：忘我】\n主角憎恨這個殘酷的世界，最終取代了王座成為新的魔王，\n在萬年後被新出現的勇者討伐而死。')
+    ], 
+    #stage 34 (choice B)
+    [
+        (1, '赤真：\n哈啊... 哈啊... 我們做到了！沒有犧牲你，我們也打倒魔龍了！'),
+        (2, '莉子：\n太好了！而且我們還獲得了極品素材『不滅龍鱗』！'),
+        (3, '此時，一名老者急速趕來，他正是因為發明言靈魔法而被天神抹除存在的\n傳說中的『言靈大法師』。'),
+        (0, '言靈大法師：\n你寧死不屈守護同伴的行為打動了我。通過我的考驗，\n這把專屬武器『言靈天杖』就傳授給你！'),
+        (1, '赤真：\n好強大的力量！莉子，我們殺入魔族領地，去擊敗東方大將吧！')
+    ],
+    #stage 35
+    [
+        (0, '南方大將：\n東方大將居然敗了！你們這對人類與精靈的組合不簡單！'),
+        (2, '莉子：\n赤真，用我們新學會的動詞變化配合言靈天杖的威力！'),
+        (1, '赤真：\n看我的！')
+    ],
+    #stage 36
+    [
+        (0, '西方大將：\n別太得意忘形了，人類！'),
+        (1, '赤真：\n只要有莉子在我身邊，我的言靈就不會迷惘！')
+    ],
+    #stage 37
+    [
+        (0, '北方大將：\n魔王大人的王座就在前方，我會誓死守衛！'),
+        (2, '莉子：\n赤真，這是最後的將領了，突破他！')
+    ],
+    #stage 38
+    [
+        (0, '魔王：\n勇者啊，你們以為憑藉那點力量就能阻止我嗎？'),
+        (1, '赤真：\n我們一路走來，克服了無數難關，絕不是為了屈服於你！'),
+        (2, '莉子：\n赤真，我們一起上！用你最強的言靈魔法！'),
+        (1, '赤真：\n為了守護莉子，守護這個世界！接招吧，魔王！！'),
+        (3, '【結局：勇者】\n赤真擊殺魔王凱旋而歸，成為世間傳頌的勇者。\n其後與女主角莉子共度餘生，直至二人壽終正寢。')
     ]
 
 ]
@@ -1820,6 +2533,627 @@ battle_detail = [
         "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
     },
     #15
+    {
+        "question_type": "Sentence_Order",
+        "questions": [
+            { 
+                "meaning": "我是學生 (I am a student)", 
+                "answer_order": ["わたし", "は", "がくせい", "です"], 
+                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
+            },
+            { 
+                "meaning": "這是一本書 (This is a book)", 
+                "answer_order": ["これ", "は", "ほん", "です"], 
+                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
+            },
+            { 
+                "meaning": "不吃壽司 (I do not eat sushi)", 
+                "answer_order": ["すし", "を", "たべません"], 
+                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
+            },
+        ],
+        "order": [],
+        "enemy_surf": 29,
+        "enemy_attack_word": "亂",
+        "target": [2, 3], # 3 stars criteria
+        "enemy_hp": 160,
+        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+    },
+    #16
+    {
+        "question_type": "Sentence_Order",
+        "questions": [
+            { 
+                "meaning": "我是學生 (I am a student)", 
+                "answer_order": ["わたし", "は", "がくせい", "です"], 
+                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
+            },
+            { 
+                "meaning": "這是一本書 (This is a book)", 
+                "answer_order": ["これ", "は", "ほん", "です"], 
+                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
+            },
+            { 
+                "meaning": "不吃壽司 (I do not eat sushi)", 
+                "answer_order": ["すし", "を", "たべません"], 
+                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
+            },
+        ],
+        "order": [],
+        "enemy_surf": 29,
+        "enemy_attack_word": "亂",
+        "target": [2, 3], # 3 stars criteria
+        "enemy_hp": 160,
+        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+    },
+    #17
+    {
+        "question_type": "Sentence_Order",
+        "questions": [
+            { 
+                "meaning": "我是學生 (I am a student)", 
+                "answer_order": ["わたし", "は", "がくせい", "です"], 
+                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
+            },
+            { 
+                "meaning": "這是一本書 (This is a book)", 
+                "answer_order": ["これ", "は", "ほん", "です"], 
+                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
+            },
+            { 
+                "meaning": "不吃壽司 (I do not eat sushi)", 
+                "answer_order": ["すし", "を", "たべません"], 
+                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
+            },
+        ],
+        "order": [],
+        "enemy_surf": 29,
+        "enemy_attack_word": "亂",
+        "target": [2, 3], # 3 stars criteria
+        "enemy_hp": 160,
+        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+    },
+    #18
+    {
+        "question_type": "Sentence_Order",
+        "questions": [
+            { 
+                "meaning": "我是學生 (I am a student)", 
+                "answer_order": ["わたし", "は", "がくせい", "です"], 
+                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
+            },
+            { 
+                "meaning": "這是一本書 (This is a book)", 
+                "answer_order": ["これ", "は", "ほん", "です"], 
+                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
+            },
+            { 
+                "meaning": "不吃壽司 (I do not eat sushi)", 
+                "answer_order": ["すし", "を", "たべません"], 
+                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
+            },
+        ],
+        "order": [],
+        "enemy_surf": 29,
+        "enemy_attack_word": "亂",
+        "target": [2, 3], # 3 stars criteria
+        "enemy_hp": 160,
+        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+    },
+    #19
+    {
+        "question_type": "Sentence_Order",
+        "questions": [
+            { 
+                "meaning": "我是學生 (I am a student)", 
+                "answer_order": ["わたし", "は", "がくせい", "です"], 
+                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
+            },
+            { 
+                "meaning": "這是一本書 (This is a book)", 
+                "answer_order": ["これ", "は", "ほん", "です"], 
+                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
+            },
+            { 
+                "meaning": "不吃壽司 (I do not eat sushi)", 
+                "answer_order": ["すし", "を", "たべません"], 
+                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
+            },
+        ],
+        "order": [],
+        "enemy_surf": 29,
+        "enemy_attack_word": "亂",
+        "target": [2, 3], # 3 stars criteria
+        "enemy_hp": 160,
+        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+    },
+    #20
+    {
+        "question_type": "Sentence_Order",
+        "questions": [
+            { 
+                "meaning": "我是學生 (I am a student)", 
+                "answer_order": ["わたし", "は", "がくせい", "です"], 
+                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
+            },
+            { 
+                "meaning": "這是一本書 (This is a book)", 
+                "answer_order": ["これ", "は", "ほん", "です"], 
+                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
+            },
+            { 
+                "meaning": "不吃壽司 (I do not eat sushi)", 
+                "answer_order": ["すし", "を", "たべません"], 
+                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
+            },
+        ],
+        "order": [],
+        "enemy_surf": 29,
+        "enemy_attack_word": "亂",
+        "target": [2, 3], # 3 stars criteria
+        "enemy_hp": 160,
+        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+    },
+    #21
+    {
+        "question_type": "Sentence_Order",
+        "questions": [
+            { 
+                "meaning": "我是學生 (I am a student)", 
+                "answer_order": ["わたし", "は", "がくせい", "です"], 
+                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
+            },
+            { 
+                "meaning": "這是一本書 (This is a book)", 
+                "answer_order": ["これ", "は", "ほん", "です"], 
+                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
+            },
+            { 
+                "meaning": "不吃壽司 (I do not eat sushi)", 
+                "answer_order": ["すし", "を", "たべません"], 
+                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
+            },
+        ],
+        "order": [],
+        "enemy_surf": 29,
+        "enemy_attack_word": "亂",
+        "target": [2, 3], # 3 stars criteria
+        "enemy_hp": 160,
+        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+    },
+    #22
+    {
+        "question_type": "Sentence_Order",
+        "questions": [
+            { 
+                "meaning": "我是學生 (I am a student)", 
+                "answer_order": ["わたし", "は", "がくせい", "です"], 
+                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
+            },
+            { 
+                "meaning": "這是一本書 (This is a book)", 
+                "answer_order": ["これ", "は", "ほん", "です"], 
+                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
+            },
+            { 
+                "meaning": "不吃壽司 (I do not eat sushi)", 
+                "answer_order": ["すし", "を", "たべません"], 
+                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
+            },
+        ],
+        "order": [],
+        "enemy_surf": 29,
+        "enemy_attack_word": "亂",
+        "target": [2, 3], # 3 stars criteria
+        "enemy_hp": 160,
+        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+    },
+    #23
+    {
+        "question_type": "Sentence_Order",
+        "questions": [
+            { 
+                "meaning": "我是學生 (I am a student)", 
+                "answer_order": ["わたし", "は", "がくせい", "です"], 
+                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
+            },
+            { 
+                "meaning": "這是一本書 (This is a book)", 
+                "answer_order": ["これ", "は", "ほん", "です"], 
+                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
+            },
+            { 
+                "meaning": "不吃壽司 (I do not eat sushi)", 
+                "answer_order": ["すし", "を", "たべません"], 
+                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
+            },
+        ],
+        "order": [],
+        "enemy_surf": 29,
+        "enemy_attack_word": "亂",
+        "target": [2, 3], # 3 stars criteria
+        "enemy_hp": 160,
+        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+    },
+    #24
+    {
+        "question_type": "Sentence_Order",
+        "questions": [
+            { 
+                "meaning": "我是學生 (I am a student)", 
+                "answer_order": ["わたし", "は", "がくせい", "です"], 
+                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
+            },
+            { 
+                "meaning": "這是一本書 (This is a book)", 
+                "answer_order": ["これ", "は", "ほん", "です"], 
+                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
+            },
+            { 
+                "meaning": "不吃壽司 (I do not eat sushi)", 
+                "answer_order": ["すし", "を", "たべません"], 
+                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
+            },
+        ],
+        "order": [],
+        "enemy_surf": 29,
+        "enemy_attack_word": "亂",
+        "target": [2, 3], # 3 stars criteria
+        "enemy_hp": 160,
+        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+    },
+    #25
+    {
+        "question_type": "Sentence_Order",
+        "questions": [
+            { 
+                "meaning": "我是學生 (I am a student)", 
+                "answer_order": ["わたし", "は", "がくせい", "です"], 
+                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
+            },
+            { 
+                "meaning": "這是一本書 (This is a book)", 
+                "answer_order": ["これ", "は", "ほん", "です"], 
+                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
+            },
+            { 
+                "meaning": "不吃壽司 (I do not eat sushi)", 
+                "answer_order": ["すし", "を", "たべません"], 
+                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
+            },
+        ],
+        "order": [],
+        "enemy_surf": 29,
+        "enemy_attack_word": "亂",
+        "target": [2, 3], # 3 stars criteria
+        "enemy_hp": 160,
+        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+    },
+    #26
+    {
+        "question_type": "Sentence_Order",
+        "questions": [
+            { 
+                "meaning": "我是學生 (I am a student)", 
+                "answer_order": ["わたし", "は", "がくせい", "です"], 
+                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
+            },
+            { 
+                "meaning": "這是一本書 (This is a book)", 
+                "answer_order": ["これ", "は", "ほん", "です"], 
+                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
+            },
+            { 
+                "meaning": "不吃壽司 (I do not eat sushi)", 
+                "answer_order": ["すし", "を", "たべません"], 
+                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
+            },
+        ],
+        "order": [],
+        "enemy_surf": 29,
+        "enemy_attack_word": "亂",
+        "target": [2, 3], # 3 stars criteria
+        "enemy_hp": 160,
+        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+    },
+    #27
+    {
+        "question_type": "Sentence_Order",
+        "questions": [
+            { 
+                "meaning": "我是學生 (I am a student)", 
+                "answer_order": ["わたし", "は", "がくせい", "です"], 
+                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
+            },
+            { 
+                "meaning": "這是一本書 (This is a book)", 
+                "answer_order": ["これ", "は", "ほん", "です"], 
+                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
+            },
+            { 
+                "meaning": "不吃壽司 (I do not eat sushi)", 
+                "answer_order": ["すし", "を", "たべません"], 
+                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
+            },
+        ],
+        "order": [],
+        "enemy_surf": 29,
+        "enemy_attack_word": "亂",
+        "target": [2, 3], # 3 stars criteria
+        "enemy_hp": 160,
+        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+    },
+    #28
+    {
+        "question_type": "Sentence_Order",
+        "questions": [
+            { 
+                "meaning": "我是學生 (I am a student)", 
+                "answer_order": ["わたし", "は", "がくせい", "です"], 
+                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
+            },
+            { 
+                "meaning": "這是一本書 (This is a book)", 
+                "answer_order": ["これ", "は", "ほん", "です"], 
+                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
+            },
+            { 
+                "meaning": "不吃壽司 (I do not eat sushi)", 
+                "answer_order": ["すし", "を", "たべません"], 
+                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
+            },
+        ],
+        "order": [],
+        "enemy_surf": 29,
+        "enemy_attack_word": "亂",
+        "target": [2, 3], # 3 stars criteria
+        "enemy_hp": 160,
+        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+    },
+    #29
+    {
+        "question_type": "Sentence_Order",
+        "questions": [
+            { 
+                "meaning": "我是學生 (I am a student)", 
+                "answer_order": ["わたし", "は", "がくせい", "です"], 
+                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
+            },
+            { 
+                "meaning": "這是一本書 (This is a book)", 
+                "answer_order": ["これ", "は", "ほん", "です"], 
+                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
+            },
+            { 
+                "meaning": "不吃壽司 (I do not eat sushi)", 
+                "answer_order": ["すし", "を", "たべません"], 
+                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
+            },
+        ],
+        "order": [],
+        "enemy_surf": 29,
+        "enemy_attack_word": "亂",
+        "target": [2, 3], # 3 stars criteria
+        "enemy_hp": 160,
+        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+    },
+    #30
+    {
+        "question_type": "Sentence_Order",
+        "questions": [
+            { 
+                "meaning": "我是學生 (I am a student)", 
+                "answer_order": ["わたし", "は", "がくせい", "です"], 
+                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
+            },
+            { 
+                "meaning": "這是一本書 (This is a book)", 
+                "answer_order": ["これ", "は", "ほん", "です"], 
+                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
+            },
+            { 
+                "meaning": "不吃壽司 (I do not eat sushi)", 
+                "answer_order": ["すし", "を", "たべません"], 
+                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
+            },
+        ],
+        "order": [],
+        "enemy_surf": 29,
+        "enemy_attack_word": "亂",
+        "target": [2, 3], # 3 stars criteria
+        "enemy_hp": 160,
+        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+    },
+    #31
+    {
+        "question_type": "Sentence_Order",
+        "questions": [
+            { 
+                "meaning": "我是學生 (I am a student)", 
+                "answer_order": ["わたし", "は", "がくせい", "です"], 
+                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
+            },
+            { 
+                "meaning": "這是一本書 (This is a book)", 
+                "answer_order": ["これ", "は", "ほん", "です"], 
+                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
+            },
+            { 
+                "meaning": "不吃壽司 (I do not eat sushi)", 
+                "answer_order": ["すし", "を", "たべません"], 
+                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
+            },
+        ],
+        "order": [],
+        "enemy_surf": 29,
+        "enemy_attack_word": "亂",
+        "target": [2, 3], # 3 stars criteria
+        "enemy_hp": 160,
+        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+    },
+    #32
+    {
+        "question_type": "Sentence_Order",
+        "questions": [
+            { 
+                "meaning": "我是學生 (I am a student)", 
+                "answer_order": ["わたし", "は", "がくせい", "です"], 
+                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
+            },
+            { 
+                "meaning": "這是一本書 (This is a book)", 
+                "answer_order": ["これ", "は", "ほん", "です"], 
+                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
+            },
+            { 
+                "meaning": "不吃壽司 (I do not eat sushi)", 
+                "answer_order": ["すし", "を", "たべません"], 
+                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
+            },
+        ],
+        "order": [],
+        "enemy_surf": 29,
+        "enemy_attack_word": "亂",
+        "target": [2, 3], # 3 stars criteria
+        "enemy_hp": 160,
+        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+    },
+    #33
+    {
+        "question_type": "Sentence_Order",
+        "questions": [
+            { 
+                "meaning": "我是學生 (I am a student)", 
+                "answer_order": ["わたし", "は", "がくせい", "です"], 
+                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
+            },
+            { 
+                "meaning": "這是一本書 (This is a book)", 
+                "answer_order": ["これ", "は", "ほん", "です"], 
+                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
+            },
+            { 
+                "meaning": "不吃壽司 (I do not eat sushi)", 
+                "answer_order": ["すし", "を", "たべません"], 
+                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
+            },
+        ],
+        "order": [],
+        "enemy_surf": 29,
+        "enemy_attack_word": "亂",
+        "target": [2, 3], # 3 stars criteria
+        "enemy_hp": 160,
+        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+    },
+    #34
+    {
+        "question_type": "Sentence_Order",
+        "questions": [
+            { 
+                "meaning": "我是學生 (I am a student)", 
+                "answer_order": ["わたし", "は", "がくせい", "です"], 
+                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
+            },
+            { 
+                "meaning": "這是一本書 (This is a book)", 
+                "answer_order": ["これ", "は", "ほん", "です"], 
+                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
+            },
+            { 
+                "meaning": "不吃壽司 (I do not eat sushi)", 
+                "answer_order": ["すし", "を", "たべません"], 
+                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
+            },
+        ],
+        "order": [],
+        "enemy_surf": 29,
+        "enemy_attack_word": "亂",
+        "target": [2, 3], # 3 stars criteria
+        "enemy_hp": 160,
+        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+    },
+    #35
+    {
+        "question_type": "Sentence_Order",
+        "questions": [
+            { 
+                "meaning": "我是學生 (I am a student)", 
+                "answer_order": ["わたし", "は", "がくせい", "です"], 
+                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
+            },
+            { 
+                "meaning": "這是一本書 (This is a book)", 
+                "answer_order": ["これ", "は", "ほん", "です"], 
+                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
+            },
+            { 
+                "meaning": "不吃壽司 (I do not eat sushi)", 
+                "answer_order": ["すし", "を", "たべません"], 
+                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
+            },
+        ],
+        "order": [],
+        "enemy_surf": 29,
+        "enemy_attack_word": "亂",
+        "target": [2, 3], # 3 stars criteria
+        "enemy_hp": 160,
+        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+    },
+    #36
+    {
+        "question_type": "Sentence_Order",
+        "questions": [
+            { 
+                "meaning": "我是學生 (I am a student)", 
+                "answer_order": ["わたし", "は", "がくせい", "です"], 
+                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
+            },
+            { 
+                "meaning": "這是一本書 (This is a book)", 
+                "answer_order": ["これ", "は", "ほん", "です"], 
+                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
+            },
+            { 
+                "meaning": "不吃壽司 (I do not eat sushi)", 
+                "answer_order": ["すし", "を", "たべません"], 
+                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
+            },
+        ],
+        "order": [],
+        "enemy_surf": 29,
+        "enemy_attack_word": "亂",
+        "target": [2, 3], # 3 stars criteria
+        "enemy_hp": 160,
+        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+    },
+    #37
+    {
+        "question_type": "Sentence_Order",
+        "questions": [
+            { 
+                "meaning": "我是學生 (I am a student)", 
+                "answer_order": ["わたし", "は", "がくせい", "です"], 
+                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
+            },
+            { 
+                "meaning": "這是一本書 (This is a book)", 
+                "answer_order": ["これ", "は", "ほん", "です"], 
+                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
+            },
+            { 
+                "meaning": "不吃壽司 (I do not eat sushi)", 
+                "answer_order": ["すし", "を", "たべません"], 
+                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
+            },
+        ],
+        "order": [],
+        "enemy_surf": 29,
+        "enemy_attack_word": "亂",
+        "target": [2, 3], # 3 stars criteria
+        "enemy_hp": 160,
+        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+    },
+    #38
     {
         "question_type": "Sentence_Order",
         "questions": [
@@ -2567,8 +3901,7 @@ while running:
                 text(screen, "攻擊", (0, 0, 0), 64, transform_scale([504, 813]), "center")
                 text(screen, "回復", (0, 0, 0), 64, transform_scale([937, 813]), "center")
         
-            if(len(achievement_stack)>0):
-                draw_achievemet_stack()
+            
             
             # The Puzzle Logic
             else:
@@ -2642,6 +3975,8 @@ while running:
                     pygame.draw.rect(screen, pygame.Color("#ffd700"), r, border_radius=8)
                     text(screen, current_q["options"][dragged_item_index], (0,0,0), 32, r.center, "center")
 
+                if(len(achievement_stack)>0):
+                    draw_achievemet_stack()
 
             # Event Loop
             for event in pygame.event.get():
@@ -3011,31 +4346,38 @@ while running:
     if game_state == "select_world":
         screen.blit(images[0], (0, 0))
 
-        # World 1(stage 1-5)
-        text(screen, "Select World", [0, 0, 0], 40, transform_scale([WIDTH/2, 50]), "center")
-        w1_rect = transform_scale([400, 200, 640, 100])
-        pygame.draw.rect(screen, [186, 148, 45], w1_rect, border_radius=10)
+        text(screen, "Select Chapter", [255, 255, 255], 40, transform_scale([WIDTH/2, 50]), "center")
+
+        # Chapter 1 (Stages 0-8)
+        w1_rect = transform_scale([400, 150, 640, 100])
+        pygame.draw.rect(screen,[186, 148, 45], w1_rect, border_radius=10)
         pygame.draw.rect(screen, [0, 0, 0], w1_rect, 3, 10)
-        text(screen, "World 1: Hirigana", [0, 0, 0], 40, (w1_rect[0] + w1_rect[2]/2, w1_rect[1] + w1_rect[3]/2), "center")
+        text(screen, "Chapter 1: Hiragana", [0, 0, 0], 40, (w1_rect[0] + w1_rect[2]/2, w1_rect[1] + w1_rect[3]/2), "center")
 
-        # world 2(stage 6-10)
-        w2_rect = transform_scale([400, 350, 640, 100])
-        color_w2 = [186, 148, 45] if save['unlock'][5] else [100, 100, 100]
+        # Chapter 2 (Stages 9-19)
+        w2_rect = transform_scale([400, 300, 640, 100])
+        color_w2 =[186, 148, 45] if save['unlock'][9] else[100, 100, 100]
         pygame.draw.rect(screen, color_w2, w2_rect, border_radius=10)
-        pygame.draw.rect(screen, [0, 0, 0], w2_rect, 3, 10)
-        text(screen, "World 2: Advanced", [0, 0, 0], 40, (w2_rect[0] + w2_rect[2]/2, w2_rect[1] + w2_rect[3]/2), "center")
+        pygame.draw.rect(screen,[0, 0, 0], w2_rect, 3, 10)
+        text(screen, "Chapter 2: Kanji", [0, 0, 0], 40, (w2_rect[0] + w2_rect[2]/2, w2_rect[1] + w2_rect[3]/2), "center")
 
-        # world 3(stage 11-15)
-        w3_rect = transform_scale([400, 500, 640, 100])
-        color_w3 = [186, 148, 45] if save['unlock'][10] else [100, 100, 100]
+        # Chapter 3 (Stages 20-28)
+        w3_rect = transform_scale([400, 450, 640, 100])
+        color_w3 =[186, 148, 45] if save['unlock'][20] else [100, 100, 100]
         pygame.draw.rect(screen, color_w3, w3_rect, border_radius=10)
-        pygame.draw.rect(screen, [0, 0, 0], w3_rect, 3, 10)
-        text(screen, "World 3: Master", [0, 0, 0], 40, (w3_rect[0] + w3_rect[2]/2, w3_rect[1] + w3_rect[3]/2), "center")
+        pygame.draw.rect(screen,[0, 0, 0], w3_rect, 3, 10)
+        text(screen, "Chapter 3: Grammar & Verbs", [0, 0, 0], 40, (w3_rect[0] + w3_rect[2]/2, w3_rect[1] + w3_rect[3]/2), "center")
+
+        # Chapter 4 (Stages 29-33 OR 34-38)
+        w4_rect = transform_scale([400, 600, 640, 100])
+        color_w4 =[186, 148, 45] if (save['unlock'][29] or save['unlock'][34]) else[100, 100, 100]
+        pygame.draw.rect(screen, color_w4, w4_rect, border_radius=10)
+        pygame.draw.rect(screen, [0, 0, 0], w4_rect, 3, 10)
+        text(screen, "Chapter 4: Final Battle", [0, 0, 0], 40, (w4_rect[0] + w4_rect[2]/2, w4_rect[1] + w4_rect[3]/2), "center")
 
         pygame.draw.rect(screen, [186, 148, 45], transform_scale([40, 40, 80, 80]), border_radius=br)
         pygame.draw.rect(screen, [0, 0, 0], transform_scale([40, 40, 80, 80]), br, br)
-        text(screen, "Back", [0, 0, 0], br*5, transform_scale([80, 80]), "center")
-
+        text(screen, "Back",[0, 0, 0], br*5, transform_scale([80, 80]), "center")
 
         if(time != 0):
             time += 1
@@ -3052,25 +4394,37 @@ while running:
                     pos = pygame.mouse.get_pos()
                     if click_check(pos, w1_rect) and time == 0:
                         time += 1; menu_action = "w1"
-                    elif click_check(pos, w2_rect) and save['unlock'][5] and time == 0:
+                    elif click_check(pos, w2_rect) and save['unlock'][9] and time == 0:
                         time += 1; menu_action = "w2"
-                    elif click_check(pos, w3_rect) and save['unlock'][10] and time == 0:
+                    elif click_check(pos, w3_rect) and save['unlock'][20] and time == 0:
                         time += 1; menu_action = "w3"
+                    elif click_check(pos, w4_rect) and (save['unlock'][29] or save['unlock'][34]) and time == 0:
+                        time += 1; menu_action = "w4"
                     elif click_check(pos, transform_scale([40, 40, 80, 80])) and time == 0:
                         time += 1; menu_action = "back"
 
         if(time > fps):
             if menu_action == "w1":
-                current_world = 0
-                save['current_stage'] = 0 # Index 0
+                current_chapter = 0
+                save['current_stage'] = chapter_ranges[0][0]
                 game_state = "select_stage"
             elif menu_action == "w2":
-                current_world = 1
-                save['current_stage'] = 5 # Index 5
+                current_chapter = 1
+                save['current_stage'] = chapter_ranges[1][0]
                 game_state = "select_stage"
             elif menu_action == "w3":
-                current_world = 2
-                save['current_stage'] = 10 # Index 10
+                current_chapter = 2
+                save['current_stage'] = chapter_ranges[2][0]
+                game_state = "select_stage"
+            elif menu_action == "w4":
+                current_chapter = 3
+                # Dynamic branching validation
+                if save['unlock'][34]: # True Ending Path unlocked
+                    chapter_ranges[3] = (34, 38)
+                    save['current_stage'] = 34
+                else:                  # Sacrifice Path unlocked
+                    chapter_ranges[3] = (29, 33)
+                    save['current_stage'] = 29
                 game_state = "select_stage"
             elif menu_action == "back":
                 game_state = "menu"
@@ -3084,8 +4438,7 @@ while running:
         # bg image, text, center image, nearby image
         draw_stage_selection(save['current_stage'])
         
-        min_stage = current_world * stage_per_world
-        max_stage = (current_world + 1) * stage_per_world - 1
+        min_stage, max_stage = chapter_ranges[current_chapter]
 
         # left right arrow
         #if (save['current_stage'] != 0):
