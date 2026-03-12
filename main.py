@@ -5,7 +5,7 @@ from copy import deepcopy
 pygame.init()
 pygame.font.init()
 
-new_game = False
+new_game = True
 god_mod = True
 chapter_ranges =[(0, 8), (9, 19), (20, 28), (29, 38)] # (Start Stage, End Stage) for Ch 1, 2, 3, 4
 current_chapter = 0
@@ -1523,7 +1523,7 @@ def end_stage_achievement_check(recover_times, damage_taken_times, player_hp, id
         save["achievement"][7] = True
         write()
         achievement_stack.append([7, fps])
-    if (idle_times <= fps*60*15 and not(save["achievement"][21])):
+    if (idle_times >= fps*60*15 and not(save["achievement"][21])):
         save["achievement"][21] = True
         write()
         achievement_stack.append([21, fps])
@@ -1564,7 +1564,8 @@ if god_mod:
         'unlock': [True]*39,
         'star': [0]*39,
         'current_stage': 0,
-        'achievement': [True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, ],
+        # 'achievement': [True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, ],
+        'achievement': [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, ],
         'sound': 100,
         'music': 100,
         'full_screen': False,
@@ -4770,7 +4771,7 @@ while running:
 
         if(time != 0):
             time += 1
-            s.set_alpha(int(time/fps/1*255))
+            s.set_alpha(int(time/fps*255))
             screen.blit(s, (0,0))
 
         if(len(achievement_stack)>0):
@@ -4786,7 +4787,7 @@ while running:
                             time += 1
         
         #  back
-        if(time > fps*1):
+        if(time > fps):
             game_state = "menu"
             time=0
                         
