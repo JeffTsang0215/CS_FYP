@@ -1,9 +1,15 @@
-import pygame, random, os, math, json
+import pygame, random, os, math, json, sys
 from copy import deepcopy
 
 #basic set up for pygame
 pygame.init()
 pygame.font.init()
+
+# this is for running python main.py
+path = os.path.dirname(os.path.abspath(__file__)) + '/'
+
+# this is for running the executable file
+# path = os.path.dirname(os.path.realpath(sys.executable)) + '/'
 
 new_game = True
 god_mod = True
@@ -15,6 +21,10 @@ save = {
     'star': [0]*39,
     'current_stage': 0,
     'achievement': [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False],
+    'obtain': [False, False, False, False, False, False, False],  # C_weapon, C_equiptment, A_weapon, A_equiptment, SS_weapon, SS_equiptment, ex_weapon
+    'equipt': [99, 99],  # weapon, equiptment. 99 mean empty. number follow 'obtain' index
+    'obtain_w_n': 0,
+    'obtain_e_n': 0,
     'sound': 100,
     'music': 100,
     'full_screen': False
@@ -1555,6 +1565,10 @@ if new_game:
         'star': [0]*39,
         'current_stage': 0,
         'achievement': [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, ],
+        'obtain': [False, False, False, False, False, False, False],  # C_weapon, C_equiptment, A_weapon, A_equiptment, SS_weapon, SS_equiptment, ex_weapon
+        'equipt': [99, 99],  # weapon, equiptment. 99 mean empty. number follow 'obtain' index
+        'obtain_w_n': 0,
+        'obtain_e_n': 0,
         'sound': 100,
         'music': 100,
         'full_screen': False,
@@ -1566,6 +1580,10 @@ if god_mod:
         'current_stage': 0,
         # 'achievement': [True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, ],
         'achievement': [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, ],
+        'obtain': [True, True, True, True, True, True, True],  # C_weapon, C_equiptment, A_weapon, A_equiptment, SS_weapon, SS_equiptment, ex_weapon
+        'equipt': [99, 99],  # weapon, equiptment. 99 mean empty. number follow 'obtain' index
+        'obtain_w_n': 4,
+        'obtain_e_n': 4,
         'sound': 100,
         'music': 100,
         'full_screen': False,
@@ -1651,12 +1669,12 @@ achievement_data = {
         ["順", [27, 54, 97]], 
         ["漢", [168, 79, 0]], 
         ["換", [227, 176, 36]], 
-        ["防", [255, 255, 255]], 
         ["武", [255, 255, 255]], 
-        ["防", [128, 128, 128]], 
+        ["防", [255, 255, 255]], 
         ["武", [128, 128, 128]], 
-        ["防", [0, 0, 0]], 
+        ["防", [128, 128, 128]], 
         ["武", [0, 0, 0]], 
+        ["防", [0, 0, 0]], 
         ["點", [156, 156, 156]], 
         ["石", [92, 92, 92]], 
         ["魔", [108, 0, 128]], 
@@ -1806,37 +1824,37 @@ win_lose_effect_timer = 0
 changing = None
 
 images = [
-    pygame.transform.scale(pygame.image.load("media/dungeon_crystal_1.png"), [WIDTH, HEIGHT]),                   # 0
-    pygame.transform.scale(pygame.image.load("media/title_text.png"), transform_scale([816, 144])),              # 1
-    pygame.transform.scale(pygame.image.load("media/press_to_start.png"), transform_scale([269, 36])),           # 2
-    pygame.transform.scale(pygame.image.load("media/forest_1.png"), [WIDTH, HEIGHT]),                            # 3
-    pygame.transform.scale(pygame.image.load("media/main_char.png"), transform_scale([640, 768])),               # 4
-    pygame.transform.scale(pygame.image.load("media/teacher_no_glasses.png"), transform_scale([517, 680])),      # 5
-    pygame.transform.scale(pygame.image.load("media/skip.png"), transform_scale([310, 80])),                     # 6
-    pygame.transform.scale(pygame.image.load("media/main_char_gray.png"), transform_scale([640, 768])),          # 7
-    pygame.transform.scale(pygame.image.load("media/teacher_no_glasses_gray.png"), transform_scale([517, 680])), # 8
-    pygame.transform.scale(pygame.image.load("media/purple_slime_1.png"),transform_scale([532, 572])),           # 9
-    pygame.transform.scale(pygame.image.load("media/forest_river_sky.png"),transform_scale([1440, 1080])),       #10
-    pygame.transform.scale(pygame.image.load("media/stage_arrow.png"),transform_scale([75, 110])),               #11
-    pygame.transform.scale(pygame.image.load("media/stage1_title.png"),transform_scale([200, 60])),              #12
-    pygame.transform.scale(pygame.image.load("media/star0.png"),transform_scale([360, 100])),                    #13
-    pygame.transform.scale(pygame.image.load("media/star1.png"),transform_scale([360, 100])),                    #14
-    pygame.transform.scale(pygame.image.load("media/star2.png"),transform_scale([360, 100])),                    #15
-    pygame.transform.scale(pygame.image.load("media/star3.png"),transform_scale([360, 100])),                    #16
-    pygame.transform.scale(pygame.image.load("media/stage_type_1_img_light.png"),transform_scale([847, 635])),   #17
-    pygame.transform.scale(pygame.image.load("media/stage_type_1_img_dark.png"),transform_scale([847, 635])),    #18
-    pygame.transform.scale(pygame.image.load("media/stage_type_2_img_dark.png"),transform_scale([847, 635])),    #19
-    pygame.transform.scale(pygame.image.load("media/stage_type_2_img_light.png"),transform_scale([847, 635])),   #20
-    pygame.transform.scale(pygame.image.load("media/stage2_title.png"),transform_scale([185, 60])),              #21
-    pygame.transform.scale(pygame.image.load("media/continue.png"),transform_scale([520, 110])),                 #22
-    pygame.transform.scale(pygame.image.load("media/stage3_title.png"), transform_scale([186, 60])),             #23
-    pygame.transform.scale(pygame.image.load("media/stage4_title.png"), transform_scale([187, 60])),             #24
-    pygame.transform.scale(pygame.image.load("media/hell_bg.png"), [WIDTH, HEIGHT]),                             #25
-    pygame.transform.scale(pygame.image.load("media/hell_bg_dark.png"),transform_scale([847, 635])),             #26
-    pygame.transform.scale(pygame.image.load("media/hell_bg_light.png"),transform_scale([847, 635])),            #27
-    pygame.transform.scale(pygame.image.load("media/finalstage1_title.png"),transform_scale([299, 60])),         #28
-    pygame.transform.scale(pygame.image.load("media/demon_1.png"), transform_scale([685, 400])),                 #29
-    pygame.transform.scale(pygame.image.load("media/high_demon_1.png"), transform_scale([187, 60])),  # unused
+    pygame.transform.scale(pygame.image.load(path+"media/dungeon_crystal_1.png"), [WIDTH, HEIGHT]),                   # 0
+    pygame.transform.scale(pygame.image.load(path+"media/title_text.png"), transform_scale([816, 144])),              # 1
+    pygame.transform.scale(pygame.image.load(path+"media/press_to_start.png"), transform_scale([269, 36])),           # 2
+    pygame.transform.scale(pygame.image.load(path+"media/forest_1.png"), [WIDTH, HEIGHT]),                            # 3
+    pygame.transform.scale(pygame.image.load(path+"media/main_char.png"), transform_scale([640, 768])),               # 4
+    pygame.transform.scale(pygame.image.load(path+"media/teacher_no_glasses.png"), transform_scale([517, 680])),      # 5
+    pygame.transform.scale(pygame.image.load(path+"media/skip.png"), transform_scale([310, 80])),                     # 6
+    pygame.transform.scale(pygame.image.load(path+"media/main_char_gray.png"), transform_scale([640, 768])),          # 7
+    pygame.transform.scale(pygame.image.load(path+"media/teacher_no_glasses_gray.png"), transform_scale([517, 680])), # 8
+    pygame.transform.scale(pygame.image.load(path+"media/purple_slime_1.png"),transform_scale([532, 572])),           # 9
+    pygame.transform.scale(pygame.image.load(path+"media/forest_river_sky.png"),transform_scale([1440, 1080])),       #10
+    pygame.transform.scale(pygame.image.load(path+"media/stage_arrow.png"),transform_scale([75, 110])),               #11
+    pygame.transform.scale(pygame.image.load(path+"media/stage1_title.png"),transform_scale([200, 60])),              #12
+    pygame.transform.scale(pygame.image.load(path+"media/star0.png"),transform_scale([360, 100])),                    #13
+    pygame.transform.scale(pygame.image.load(path+"media/star1.png"),transform_scale([360, 100])),                    #14
+    pygame.transform.scale(pygame.image.load(path+"media/star2.png"),transform_scale([360, 100])),                    #15
+    pygame.transform.scale(pygame.image.load(path+"media/star3.png"),transform_scale([360, 100])),                    #16
+    pygame.transform.scale(pygame.image.load(path+"media/stage_type_1_img_light.png"),transform_scale([847, 635])),   #17
+    pygame.transform.scale(pygame.image.load(path+"media/stage_type_1_img_dark.png"),transform_scale([847, 635])),    #18
+    pygame.transform.scale(pygame.image.load(path+"media/stage_type_2_img_dark.png"),transform_scale([847, 635])),    #19
+    pygame.transform.scale(pygame.image.load(path+"media/stage_type_2_img_light.png"),transform_scale([847, 635])),   #20
+    pygame.transform.scale(pygame.image.load(path+"media/stage2_title.png"),transform_scale([185, 60])),              #21
+    pygame.transform.scale(pygame.image.load(path+"media/continue.png"),transform_scale([520, 110])),                 #22
+    pygame.transform.scale(pygame.image.load(path+"media/stage3_title.png"), transform_scale([186, 60])),             #23
+    pygame.transform.scale(pygame.image.load(path+"media/stage4_title.png"), transform_scale([187, 60])),             #24
+    pygame.transform.scale(pygame.image.load(path+"media/hell_bg.png"), [WIDTH, HEIGHT]),                             #25
+    pygame.transform.scale(pygame.image.load(path+"media/hell_bg_dark.png"),transform_scale([847, 635])),             #26
+    pygame.transform.scale(pygame.image.load(path+"media/hell_bg_light.png"),transform_scale([847, 635])),            #27
+    pygame.transform.scale(pygame.image.load(path+"media/finalstage1_title.png"),transform_scale([299, 60])),         #28
+    pygame.transform.scale(pygame.image.load(path+"media/demon_1.png"), transform_scale([685, 400])),                 #29
+    pygame.transform.scale(pygame.image.load(path+"media/high_demon_1.png"), transform_scale([187, 60])),  # unused
 
 ]                                                              
 
@@ -3267,6 +3285,8 @@ while running:
                 print(save["unlock"])
                 if save["unlock"][1]:
                     game_state = "select_world"
+                    selecting_weapon = False
+                    selecting_equiptment = False
                     time=0
                 else:
                     game_state = "story"
@@ -4344,6 +4364,7 @@ while running:
                         outputArr = ""
         if(len(achievement_stack)>0):
             draw_achievemet_stack()
+    
     if game_state == "select_world":
         screen.blit(images[0], (0, 0))
 
@@ -4380,6 +4401,23 @@ while running:
         pygame.draw.rect(screen, [0, 0, 0], transform_scale([40, 40, 80, 80]), br, br)
         text(screen, "Back",[0, 0, 0], br*5, transform_scale([80, 80]), "center")
 
+        if(save["obtain"][0]):
+            pygame.draw.rect(screen, [153, 116, 41], transform_scale([620, 860, 80, 80]), border_radius=br)
+            pygame.draw.rect(screen, [69, 46, 0], transform_scale([620, 860, 80, 80]), br, br)
+        
+        if(selecting_weapon):
+            pygame.draw.rect(screen, [153, 116, 41], transform_scale([620, 860-80*save["obtain_w_n"], 80, 80*save["obtain_w_n"]]), border_radius=br)
+            pygame.draw.rect(screen, [69, 46, 0], transform_scale([620, 860-80*save["obtain_w_n"], 80, 80*save["obtain_w_n"]]), br, br)
+
+        if(save["obtain"][1]):
+            pygame.draw.rect(screen, [153, 116, 41], transform_scale([740, 860, 80, 80]), border_radius=br)
+            pygame.draw.rect(screen, [69, 46, 0], transform_scale([740, 860, 80, 80]), br, br)
+
+        if(selecting_equiptment):
+            pygame.draw.rect(screen, [153, 116, 41], transform_scale([740, 860-80*save["obtain_e_n"], 80, 80*save["obtain_e_n"]]), border_radius=br)
+            pygame.draw.rect(screen, [69, 46, 0], transform_scale([740, 860-80*save["obtain_e_n"], 80, 80*save["obtain_e_n"]]), br, br)
+
+
         if(time != 0):
             time += 1
             s.set_alpha(int(time/fps/1*255))
@@ -4393,7 +4431,15 @@ while running:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if pygame.mouse.get_pressed()[0]:
                     pos = pygame.mouse.get_pos()
-                    if click_check(pos, w1_rect) and time == 0:
+                    
+
+                    if click_check(pos, transform_scale([620, 860, 80, 80])) and time == 0:
+                        selecting_weapon = not(selecting_weapon)
+                        selecting_equiptment = False
+                    elif click_check(pos, transform_scale([740, 860, 80, 80])) and time == 0:
+                        selecting_equiptment = not(selecting_equiptment)
+                        selecting_weapon = False
+                    elif click_check(pos, w1_rect) and time == 0:
                         time += 1; menu_action = "w1"
                     elif click_check(pos, w2_rect) and save['unlock'][9] and time == 0:
                         time += 1; menu_action = "w2"
@@ -4403,6 +4449,9 @@ while running:
                         time += 1; menu_action = "w4"
                     elif click_check(pos, transform_scale([40, 40, 80, 80])) and time == 0:
                         time += 1; menu_action = "back"
+                    else:
+                        selecting_weapon = False
+                        selecting_equiptment = False
 
         if(time > fps):
             if menu_action == "w1":
@@ -4508,6 +4557,8 @@ while running:
                 time = 0
             elif(menu_action == "back"):
                 game_state = "select_world"
+                selecting_weapon = False
+                selecting_equiptment = False
                 story_num = save["current_stage"]
                 stage = save["current_stage"]
                 dialog_num = 0
@@ -4723,8 +4774,6 @@ while running:
 #  勇者 
 # 已獲得所有成就
     }
-
-
 
     # 30 achievements
     if game_state == "achievement":
