@@ -25,6 +25,7 @@ save = {
     'equipt': [99, 99],  # weapon, equiptment. 99 mean empty. number follow 'obtain' index
     'obtain_w_n': 0,
     'obtain_e_n': 0,
+    'last_play': [0, 0], # stage_number, continus_times
     'sound': 100,
     'music': 100,
     'full_screen': False
@@ -32,8 +33,6 @@ save = {
 
 WIDTH  = int(pygame.display.Info().current_w * 0.65)
 HEIGHT = int(WIDTH/1440*960)
-# WIDTH_switch = pygame.display.Info().current_w
-# HEIGHT_switch = pygame.display.Info().current_h
 
 def transform_scale(arr):
     return [int(n*WIDTH/1440) for n in arr]
@@ -1512,31 +1511,77 @@ def draw_story_bg(stage):
         case 15:
             screen.blit(images[3], (0, 0))               
 
-def end_stage_achievement_check(recover_times, damage_taken_times, player_hp, idle_times):
+def end_stage_achievement_check(recover_times, damage_taken_times, player_hp, idle_times, stage):
+    if(sum(save["star"]) >= int(len(battle_detail)*3/2) and not(save["achievement"][4])):
+        save["achievement"][4] = True
+        achievement_stack.append([4, fps])
+    if(sum(save["star"]) >= int(len(battle_detail)*3) and not(save["achievement"][5])):
+        save["achievement"][5] = True
+        achievement_stack.append([5, fps])
+
     if (recover_times > 5 and not(save["achievement"][0])):
         save["achievement"][0] = True
-        write()
         achievement_stack.append([0, fps])
     if (recover_times > 15 and not(save["achievement"][1])):
         save["achievement"][1] = True
-        write()
         achievement_stack.append([1, fps])
     if (recover_times > 30 and not(save["achievement"][2])):
         save["achievement"][2] = True
-        write()
         achievement_stack.append([2, fps])
     if (damage_taken_times == 0 and not(save["achievement"][6])):
         save["achievement"][6] = True
-        write()
         achievement_stack.append([6, fps])
     if (player_hp <= 100*0.1 and not(save["achievement"][7])):
         save["achievement"][7] = True
-        write()
         achievement_stack.append([7, fps])
     if (idle_times >= fps*60*15 and not(save["achievement"][21])):
         save["achievement"][21] = True
-        write()
         achievement_stack.append([21, fps])
+
+    if(stage == save['last_play'][0]):
+        save['last_play'][1] += 1
+        if(save['last_play'][1] >= 5 and not(save["achievement"][9])):
+            save["achievement"][9] = True
+            achievement_stack.append([9, fps])
+    else:
+        save['last_play'] = [stage, 1]
+
+    if(stage == 8 and not(save["achievement"][10])):
+        save["achievement"][10] = True
+        achievement_stack.append([10, fps])
+    elif(stage == 23 and not(save["achievement"][11])):
+        save["achievement"][11] = True
+        achievement_stack.append([11, fps])
+    elif(stage == 19 and not(save["achievement"][12])):
+        save["achievement"][12] = True
+        achievement_stack.append([12, fps])
+    elif(stage == 28 and not(save["achievement"][13])):
+        save["achievement"][13] = True
+        achievement_stack.append([13, fps])
+
+    elif(stage == 8 and not(save["achievement"][14])):
+        save["achievement"][14] = True
+        achievement_stack.append([14, fps])
+    elif(stage == 5 and not(save["achievement"][15])):
+        save["achievement"][15] = True
+        achievement_stack.append([15, fps])
+    elif(stage == 19 and not(save["achievement"][16])):
+        save["achievement"][16] = True
+        achievement_stack.append([16, fps])
+    elif(stage == 19 and not(save["achievement"][17])):
+        save["achievement"][17] = True
+        achievement_stack.append([17, fps])
+    elif(stage == 34 and not(save["achievement"][18])):
+        save["achievement"][18] = True
+        achievement_stack.append([18, fps])
+    elif(stage == 28 and not(save["achievement"][19])):
+        save["achievement"][19] = True
+        achievement_stack.append([19, fps])
+    elif(stage == 28 and not(save["achievement"][22])):
+        save["achievement"][22] = True
+        achievement_stack.append([22, fps])
+    write()
+
 
 def draw_achievemet_stack():
     if(achievement_stack[0][1] > 0):
@@ -1569,6 +1614,7 @@ if new_game:
         'equipt': [99, 99],  # weapon, equiptment. 99 mean empty. number follow 'obtain' index
         'obtain_w_n': 0,
         'obtain_e_n': 0,
+        'last_play': [0, 0], # stage_number, continus_times
         'sound': 100,
         'music': 100,
         'full_screen': False,
@@ -1584,6 +1630,7 @@ if god_mod:
         'equipt': [99, 99],  # weapon, equiptment. 99 mean empty. number follow 'obtain' index
         'obtain_w_n': 4,
         'obtain_e_n': 4,
+        'last_play': [0, 0], # stage_number, continus_times
         'sound': 100,
         'music': 100,
         'full_screen': False,
@@ -1783,29 +1830,29 @@ achievement_data = {
         "已獲得所有成就", 
     ],
     'unlock_description': [
-        "在一個關卡來使用\n回復魔法的次數達5次",     # recover_times done  <-- this 3 seems too easy
-        "在一個關卡來使用\n回復魔法的次數達15次",    # recover_times done
-        "在一個關卡來使用\n回復魔法的次數達30次",    # recover_times done
-        "在一個關卡中收集到\n3顆星星",              # done
-        "收集到所有星星\n的一半",                  # ready then done
-        "收集到所有星星",                          # ready then done
-        "以無被攻擊過\n的狀態下\n通過其中一關卡",    # damage_taken_times done
-        "已剩餘一成血\n以下的狀態\n下通過其中一關卡", # done
-        "在輸入類關卡中\n輸入的字數超出\n框架範圍", 
-        "連續挑戰同一關卡\n並獲勝5次", 
-        "已完成全部有關\n五十音的關卡", 
-        "已完成有關\n句子順序的關卡", 
-        "已完成有關\n漢字的關卡", 
-        "已完成有關\n動詞轉換的關卡", 
-        "已獲得名匠靈珠", 
-        "已獲得皇家守衛套裝", 
-        "已獲得天魔杖", 
-        "已獲得天神甲", 
-        "已獲得言靈天杖", 
-        "已獲得不滅龍鱗", 
+        "在一個關卡來使用\n回復魔法的次數達5次",        # recover_times done  <-- this 3 seems too easy
+        "在一個關卡來使用\n回復魔法的次數達15次",       # recover_times done
+        "在一個關卡來使用\n回復魔法的次數達30次",       # recover_times done
+        "在一個關卡中收集到\n3顆星星",                 # done
+        "收集到所有星星\n的一半",                      # ready then done
+        "收集到所有星星",                             # ready then done
+        "以無被攻擊過\n的狀態下\n通過其中一關卡",       # damage_taken_times done
+        "已剩餘一成血\n以下的狀態\n下通過其中一關卡",   # done
+        "在輸入類關卡中\n輸入的字數超出\n框架範圍",     # done
+        "連續挑戰同一關卡\n並獲勝5次",                  # done
+        "已完成全部有關\n五十音的關卡",                 # done 
+        "已完成有關\n句子順序的關卡",                   # done
+        "已完成有關\n漢字的關卡",                       # done
+        "已完成有關\n動詞轉換的關卡",                   # done
+        "已獲得名匠靈珠",                               # done
+        "已獲得皇家守衛套裝",                           # done
+        "已獲得天魔杖",                                 # done
+        "已獲得天神甲",                                 # done
+        "已獲得言靈天杖",                               # done
+        "已獲得不滅龍鱗",                               # done
         "只用滑鼠點擊\n殺死魔物", 
         "在其中一關卡內\n維持什麼都不做\n超過15分鐘",    # idle_times done
-        "殺死莉子", 
+        "殺死莉子",                                     # done
         "已達成\n「犧牲小我」\n結局", 
         "已達成\n「守護一切」\n結局", 
         "開啟二周目", 
@@ -3561,7 +3608,6 @@ while running:
                                 save["star"][stage] = 3
                                 if(not(save["achievement"][3])):
                                     save["achievement"][3] = True
-                                    write()
                                     achievement_stack.append([3, fps])
                             elif (len(battle_detail[stage]["order"]) <= battle_detail[stage]["target"][1]):
                                 if save["star"][stage] < 2:
@@ -3571,7 +3617,7 @@ while running:
                                     save["star"][stage] = 1
                             if len(save["unlock"])>save["current_stage"]+1:
                                 save["unlock"][save["current_stage"]+1]=True
-                            end_stage_achievement_check(recover_times, damage_taken_times, player_hp, idle_times)
+                            end_stage_achievement_check(recover_times, damage_taken_times, player_hp, idle_times, stage)
                             # if(sum(save["star"]) >= int(total_stage*3/2) and not(save["achievement"][4])):                !!! ADD THIS WHEN TOTAL STAGE NUMBER IS CONFIRMED !!!
                             #     save["achievement"][4] = True
 
@@ -3621,7 +3667,7 @@ while running:
                         question_num += 1
                         if player_hp <= 0:
                             time = -1*fps
-                            end_stage_achievement_check(recover_times, damage_taken_times, player_hp, idle_times)
+                            end_stage_achievement_check(recover_times, damage_taken_times, player_hp, idle_times, stage)
                             game_state = "lose"
                         else:
                             temp = random.randint(0, len(battle_detail[stage]["question"])-1)
@@ -3644,7 +3690,7 @@ while running:
                         question_num += 1
                         if player_hp <= 0:
                             time = -1*fps
-                            end_stage_achievement_check(recover_times, damage_taken_times, player_hp, idle_times)
+                            end_stage_achievement_check(recover_times, damage_taken_times, player_hp, idle_times, stage)
                             game_state = "lose"
                         else:
                             temp = random.randint(0, len(battle_detail[stage]["question"])-1)
@@ -3813,7 +3859,6 @@ while running:
                             save["star"][stage] = 3
                             if(not(save["achievement"][3])):
                                 save["achievement"][3] = True
-                                write()
                                 achievement_stack.append([3, fps])
                         elif (question_num <= battle_detail[stage]["target"][1]):
                             save["star"][stage] = max(save["star"][stage], 2)
@@ -3822,14 +3867,8 @@ while running:
                         
                         if save["current_stage"] + 1 < len(save["unlock"]):
                             save["unlock"][save["current_stage"]+1]=True
-                        end_stage_achievement_check(recover_times, damage_taken_times, player_hp, idle_times)
-                        # if(sum(save["star"]) >= int(total_stage*3/2) and not(save["achievement"][4])):
-                        #     save["achievement"][4] = True
-                        #     achievement_stack.append([4, fps])
-                        # if(sum(save["star"]) >= int(total_stage*3) and not(save["achievement"][4])):
-                        #     save["achievement"][5] = True
-                        #     achievement_stack.append([5, fps])
                         write()
+                        end_stage_achievement_check(recover_times, damage_taken_times, player_hp, idle_times, stage)
                         game_state = "win"
                     else: 
                         draggable_rects.clear() 
@@ -3854,7 +3893,7 @@ while running:
                         
                         if player_hp <= 0:
                             time = -1*fps
-                            end_stage_achievement_check(recover_times, damage_taken_times, player_hp, idle_times)
+                            end_stage_achievement_check(recover_times, damage_taken_times, player_hp, idle_times, stage)
                             game_state = "lose"
                         else: 
                             draggable_rects.clear()
@@ -3879,7 +3918,7 @@ while running:
                         
                         if player_hp <= 0:
                             time = -1*fps
-                            end_stage_achievement_check(recover_times, damage_taken_times, player_hp, idle_times)
+                            end_stage_achievement_check(recover_times, damage_taken_times, player_hp, idle_times, stage)
                             game_state = "lose"
                         else: 
                             draggable_rects.clear()
@@ -4086,6 +4125,9 @@ while running:
                             time = -1*fps 
                             if (question_num <= battle_detail[stage]["target"][0]):
                                 save["star"][stage] = 3
+                                if(not(save["achievement"][3])):
+                                    save["achievement"][3] = True
+                                    achievement_stack.append([3, fps])
                             elif (question_num <= battle_detail[stage]["target"][1]):
                                 save["star"][stage] = max(save["star"][stage], 2)
                             else:
@@ -4094,6 +4136,7 @@ while running:
                             if save["current_stage"] + 1 < len(save["unlock"]):
                                 save["unlock"][save["current_stage"]+1]=True
                             write()
+                            end_stage_achievement_check(recover_times, damage_taken_times, player_hp, idle_times, stage)
                             game_state = "win"
                         elif question_num >= len(battle_detail[stage]["order"]):
                             random.shuffle(battle_detail[stage]["order"])
@@ -4134,6 +4177,7 @@ while running:
 
                     if player_hp <= 0:
                         time = -1*fps
+                        end_stage_achievement_check(recover_times, damage_taken_times, player_hp, idle_times, stage)
                         game_state = "lose"
                     elif question_num >= len(battle_detail[stage]["order"]):
                         random.shuffle(battle_detail[stage]["order"])
@@ -4260,6 +4304,14 @@ while running:
                                 if event.key == pygame.K_BACKSPACE:
                                     inputArr = inputArr[:-1]
                                 outputArr = textinput(inputArr)
+                                if not(save["achievement"][8]):
+                                    try:
+                                        my_font = pygame.font.Font('media/LXGWMarkerGothic-Regular.ttf', transform_scale([64])[0])
+                                    except Exception:
+                                        my_font = pygame.font.Font(pygame.font.get_default_font(), transform_scale([64])[0])
+                                    if(my_font.size(outputArr)[0]>660):
+                                        save["achievement"][8] = True
+                                        achievement_stack.append([8, fps])
                             else:
                                 # event after pressing Enter key
                                 time = 1
@@ -4284,6 +4336,9 @@ while running:
                             time = -1*fps
                             if (battle_detail[stage]["counter"] <= battle_detail[stage]["target"][0]):
                                 save["star"][stage] = 3
+                                if(not(save["achievement"][3])):
+                                    save["achievement"][3] = True
+                                    achievement_stack.append([3, fps])
                             elif (battle_detail[stage]["counter"] <= battle_detail[stage]["target"][1]):
                                 if save["star"][stage] < 2:
                                     save["star"][stage] = 2
@@ -4293,6 +4348,7 @@ while running:
                             if len(save["unlock"])>save["current_stage"]+1:
                                 save["unlock"][save["current_stage"]+1]=True
                             write()
+                            end_stage_achievement_check(recover_times, damage_taken_times, player_hp, idle_times, stage)
                             game_state = "win"
                         else:
                             temp = random.randint(0, len(verb[battle_detail[stage]["question"]])-1)
@@ -4333,6 +4389,7 @@ while running:
                             action = None
                         if player_hp <= 0:
                             time = -1*fps
+                            end_stage_achievement_check(recover_times, damage_taken_times, player_hp, idle_times, stage)
                             game_state = "lose"
                         else:
                             temp = random.randint(0, len(verb[battle_detail[stage]["question"]])-1)
@@ -4354,6 +4411,7 @@ while running:
                         action = None
                         if player_hp <= 0:
                             time = -1*fps
+                            end_stage_achievement_check(recover_times, damage_taken_times, player_hp, idle_times, stage)
                             game_state = "lose"
                         else:
                             temp = random.randint(0, len(verb[battle_detail[stage]["question"]])-1)
