@@ -1509,7 +1509,53 @@ def draw_story_bg(stage):
         case 14:
             screen.blit(images[3], (0, 0))
         case 15:
-            screen.blit(images[3], (0, 0))               
+            screen.blit(images[3], (0, 0))
+        case 16:
+            screen.blit(images[3], (0, 0))
+        case 17:
+            screen.blit(images[3], (0, 0))
+        case 18:
+            screen.blit(images[3], (0, 0))
+        case 19:
+            screen.blit(images[3], (0, 0))
+        case 20:
+            screen.blit(images[3], (0, 0))
+        case 21:
+            screen.blit(images[3], (0, 0))
+        case 22:
+            screen.blit(images[3], (0, 0))
+        case 23:
+            screen.blit(images[3], (0, 0))
+        case 24:
+            screen.blit(images[3], (0, 0))
+        case 25:
+            screen.blit(images[3], (0, 0))
+        case 26:
+            screen.blit(images[3], (0, 0))
+        case 27:
+            screen.blit(images[3], (0, 0))
+        case 28:
+            screen.blit(images[3], (0, 0))
+        case 29:
+            screen.blit(images[3], (0, 0))
+        case 30:
+            screen.blit(images[3], (0, 0))
+        case 31:
+            screen.blit(images[3], (0, 0))
+        case 32:
+            screen.blit(images[3], (0, 0))
+        case 33:
+            screen.blit(images[3], (0, 0))
+        case 34:
+            screen.blit(images[3], (0, 0))
+        case 35:
+            screen.blit(images[3], (0, 0))
+        case 36:
+            screen.blit(images[3], (0, 0))
+        case 37:
+            screen.blit(images[3], (0, 0))  
+        case 38:
+            screen.blit(images[3], (0, 0))             
 
 def end_stage_achievement_check(recover_times, damage_taken_times, player_hp, idle_times, stage):
     if(sum(save["star"]) >= int(len(battle_detail)*3/2) and not(save["achievement"][4])):
@@ -1902,6 +1948,7 @@ images = [
     pygame.transform.scale(pygame.image.load(path+"media/finalstage1_title.png"),transform_scale([299, 60])),         #28
     pygame.transform.scale(pygame.image.load(path+"media/demon_1.png"), transform_scale([685, 400])),                 #29
     pygame.transform.scale(pygame.image.load(path+"media/high_demon_1.png"), transform_scale([187, 60])),  # unused
+    pygame.transform.scale(pygame.image.load(path+"media/world_map.png"), transform_scale([WIDTH, HEIGHT]))           #31
 
 ]                                                              
 
@@ -2227,7 +2274,8 @@ drag_offset_x = 0
 drag_offset_y = 0
 drop_target_rect = pygame.Rect(0,0,0,0) # Initialize with a dummy rect
 parts = []
-
+hover_insertion_index = -1
+block_offsets = {}
 
 # question type: MC, Drag, input
 battle_detail = [
@@ -3955,6 +4003,8 @@ while running:
 
             # Main Action Selection (Attack/Recover)
             if action is None:
+                #draggable_rects.clear() 
+                #draggable_rects_initial_pos.clear()
                 pygame.draw.rect(screen, pygame.Color("#d9d9d9"), transform_scale([324, 552, 791, 408]))
                 pygame.draw.rect(screen, pygame.Color("#ececec"), transform_scale([407, 729, 194, 207]))
                 pygame.draw.rect(screen, pygame.Color("#ececec"), transform_scale([840, 729, 194, 207]))
@@ -3985,9 +4035,64 @@ while running:
                 answer_y = transform_scale([400])[0]
                 bank_y = transform_scale([600])[0]
                 zone_answer = pygame.Rect(transform_scale([200, 350, 1040, 170]))
-                
-                # Draw Answer Line (Visual Guide)
+                gap = transform_scale([20])[0]
+                block_w = draggable_rects[0].width
+                hover_insertion_index = -1
+                if is_dragging and dragged_item_index != -1:
+                    dragged_rect = draggable_rects[dragged_item_index]
+                    if zone_answer.colliderect(dragged_rect):
+                        # Calculate where the block WOULD go
+                        hover_insertion_index = len(current_sentence_indices)
+                        for idx, opt_idx in enumerate(current_sentence_indices):
+                            if dragged_rect.centerx < draggable_rects[opt_idx].centerx:
+                                hover_insertion_index = idx
+                                break
+
+                 # Drawing Answer Line
                 pygame.draw.line(screen, (0,0,0), transform_scale([220, 500]), transform_scale([1220, 500]), 3)
+
+                # --- DRAW BLOCKS WITH SPREADING ANIMATION ---
+                start_x_ans = transform_scale([220])[0]
+                
+                for idx_in_list, opt_idx in enumerate(current_sentence_indices):
+                    r = draggable_rects[opt_idx]
+                    if not (is_dragging and dragged_item_index == opt_idx):
+                        # If we are dragging something over the answer zone, shift blocks to the right
+                        visual_idx = idx_in_list
+                        if hover_insertion_index != -1 and idx_in_list >= hover_insertion_index:
+                            visual_idx += 1 # Make room
+                        
+                        target_x = start_x_ans + visual_idx * (block_w + gap)
+                        # Smooth sliding animation (Linear Interpolation)
+                        r.x += (target_x - r.x) * 0.2 
+                        r.y += (answer_y - r.y) * 0.2
+                    
+                    pygame.draw.rect(screen, pygame.Color("#aaddff"), r, border_radius=8)
+                    pygame.draw.rect(screen, (0,0,0), r, 2, 8)
+                    text(screen, current_q["options"][opt_idx], (0,0,0), 32, r.center, "center")
+
+                # Word Bank Drawing
+                start_x_bank = transform_scale([220])[0]
+                bank_counter = 0
+                for i in range(len(current_q["options"])):
+                    if i not in current_sentence_indices:
+                        r = draggable_rects[i]
+                        if not (is_dragging and dragged_item_index == i):
+                            target_x = start_x_bank + bank_counter * (block_w + gap)
+                            r.x += (target_x - r.x) * 0.2
+                            r.y += (bank_y - r.y) * 0.2
+                        
+                        pygame.draw.rect(screen, pygame.Color("#ececec"), r, border_radius=8)
+                        pygame.draw.rect(screen, (0,0,0), r, 2, 8)
+                        text(screen, current_q["options"][i], (0,0,0), 32, r.center, "center")
+                        bank_counter += 1
+
+                # Dragged Item on top
+                if is_dragging and dragged_item_index != -1:
+                    r = draggable_rects[dragged_item_index]
+                    pygame.draw.rect(screen, pygame.Color("#ffd700"), r, border_radius=8)
+                    pygame.draw.rect(screen, (0,0,0), r, 2, 8)
+                    text(screen, current_q["options"][dragged_item_index], (0,0,0), 32, r.center, "center")
 
                 # Submit Button (Cast Spell)
                 submit_rect = pygame.Rect(transform_scale([600, 800, 240, 80]))
@@ -3997,44 +4102,6 @@ while running:
 
                 # Determine Positions and Draw Blocks
                 # We arrange blocks based on whether they are in 'current_sentence_indices' or not
-                
-                # 1. Arrange Answer Line
-                start_x_ans = transform_scale([220])[0]
-                gap = transform_scale([20])[0]
-                for idx_in_list, opt_idx in enumerate(current_sentence_indices):
-                    r = draggable_rects[opt_idx]
-                    # If not currently being dragged, snap to slot
-                    if not (is_dragging and dragged_item_index == opt_idx):
-                        r.topleft = (start_x_ans + idx_in_list * (r.width + gap), answer_y)
-                    
-                    # Draw Block
-                    pygame.draw.rect(screen, pygame.Color("#aaddff"), r, border_radius=8)
-                    pygame.draw.rect(screen, (0,0,0), r, 2, 8)
-                    text(screen, current_q["options"][opt_idx], (0,0,0), 32, r.center, "center")
-
-                # 2. Arrange Word Bank (Items NOT in sentence)
-                start_x_bank = transform_scale([220])[0]
-                bank_counter = 0
-                for i in range(len(current_q["options"])):
-                    if i not in current_sentence_indices:
-                        r = draggable_rects[i]
-                        # If not currently being dragged, snap to bank slot
-                        if not (is_dragging and dragged_item_index == i):
-                            # Simple wrapping logic or single line
-                            r.topleft = (start_x_bank + bank_counter * (r.width + gap), bank_y)
-                        
-                        # Draw Block (Grayish for bank)
-                        pygame.draw.rect(screen, pygame.Color("#ececec"), r, border_radius=8)
-                        pygame.draw.rect(screen, (0,0,0), r, 2, 8)
-                        text(screen, current_q["options"][i], (0,0,0), 32, r.center, "center")
-                        bank_counter += 1
-
-                # Draw the Dragged Item on TOP
-                if is_dragging and dragged_item_index != -1:
-                    r = draggable_rects[dragged_item_index]
-                    pygame.draw.rect(screen, pygame.Color("#ffd700"), r, border_radius=8)
-                    text(screen, current_q["options"][dragged_item_index], (0,0,0), 32, r.center, "center")
-
                 if(len(achievement_stack)>0):
                     draw_achievemet_stack()
 
@@ -4079,25 +4146,17 @@ while running:
                                         break
                         
                         elif event.type == pygame.MOUSEMOTION and is_dragging:
-                            if dragged_item_index != -1:
-                                draggable_rects[dragged_item_index].x = event.pos[0] - drag_offset_x
-                                draggable_rects[dragged_item_index].y = event.pos[1] - drag_offset_y
+                            #if dragged_item_index != -1:
+                            draggable_rects[dragged_item_index].x = event.pos[0] - drag_offset_x
+                            draggable_rects[dragged_item_index].y = event.pos[1] - drag_offset_y
                         
                         elif event.type == pygame.MOUSEBUTTONUP and event.button == 1 and is_dragging:
-
-                            dropped_rect = draggable_rects[dragged_item_index]
+                            if zone_answer.colliderect(draggable_rects[dragged_item_index]):
+                                if hover_insertion_index != -1:
+                                    current_sentence_indices.insert(hover_insertion_index, dragged_item_index)
+                            else:
+                                current_sentence_indices.append(dragged_item_index)
                             
-                            if zone_answer.colliderect(dropped_rect):
-                                insert_pos = len(current_sentence_indices)
-                                
-                                for list_index, option_index in enumerate(current_sentence_indices):
-                                    existing_rect = draggable_rects[option_index]
-                                    
-                                    if dropped_rect.centerx < existing_rect.centerx:
-                                        insert_pos = list_index
-                                        break
-
-                                current_sentence_indices.insert(insert_pos, dragged_item_index)
                             
                             is_dragging = False
                             dragged_item_index = -1
@@ -4424,40 +4483,50 @@ while running:
             draw_achievemet_stack()
     
     if game_state == "select_world":
-        screen.blit(images[0], (0, 0))
+        screen.blit(pygame.transform.scale(images[31], (WIDTH, HEIGHT)), (0, 0))
+        mouse_pos = pygame.mouse.get_pos()
 
-        text(screen, "Select Chapter", [255, 255, 255], 40, transform_scale([WIDTH/2, 50]), "center")
+        text(screen, "選擇章節", [255, 255, 255], 40, transform_scale([WIDTH/2, 50]), "center")
+        
+        w1_rect = transform_scale([900, 240, 380, 70]) # Forest
+        w2_rect = transform_scale([80, 240, 380, 70]) # Kingdom
+        w3_rect = transform_scale([80, 650, 500, 70]) # Road
+        w4_rect = transform_scale([850, 630, 420, 70]) # Demon Castle
 
-        # Chapter 1 (Stages 0-8)
-        w1_rect = transform_scale([400, 150, 640, 100])
-        pygame.draw.rect(screen,[186, 148, 45], w1_rect, border_radius=10)
-        pygame.draw.rect(screen, [0, 0, 0], w1_rect, 3, 10)
-        text(screen, "Chapter 1: Hiragana", [0, 0, 0], 40, (w1_rect[0] + w1_rect[2]/2, w1_rect[1] + w1_rect[3]/2), "center")
+        chapters = [
+            (w1_rect, True, "第一章: 五十音"),
+            (w2_rect, save['unlock'][9], "第二章: 漢字魔法"),
+            (w3_rect, save['unlock'][20], "第三章: 文法與動詞變化"),
+            (w4_rect, (save['unlock'][29] or save['unlock'][34]), "最終章: 命運的對決")
+        ]
+        
+        for rect, is_unlocked, title in chapters:
+            is_hover = click_check(mouse_pos, rect)
+            
+            if is_unlocked:
+                if is_hover:
+                    # GLOW EFFECT: Draw a bright white/yellow blurred-look border first
+                    glow_rect = [rect[0]-5, rect[1]-5, rect[2]+10, rect[3]+10]
+                    pygame.draw.rect(screen, [255, 255, 200], glow_rect, border_radius=15)
+                    button_color = [255, 215, 0] # Bright Gold
+                else:
+                    button_color = [186, 148, 45] # Normal Gold
+            else:
+                button_color = [100, 100, 100] # Gray (Locked)
 
-        # Chapter 2 (Stages 9-19)
-        w2_rect = transform_scale([400, 300, 640, 100])
-        color_w2 =[186, 148, 45] if save['unlock'][9] else[100, 100, 100]
-        pygame.draw.rect(screen, color_w2, w2_rect, border_radius=10)
-        pygame.draw.rect(screen,[0, 0, 0], w2_rect, 3, 10)
-        text(screen, "Chapter 2: Kanji", [0, 0, 0], 40, (w2_rect[0] + w2_rect[2]/2, w2_rect[1] + w2_rect[3]/2), "center")
+            pygame.draw.rect(screen, button_color, rect, border_radius=10)
+            pygame.draw.rect(screen, [0, 0, 0], rect, 3, 10) # Black outline
+            # Draw text
+            text_color = [0, 0, 0] if is_unlocked else [50, 50, 50]
+            text(screen, title, text_color, 28, (rect[0] + rect[2]/2, rect[1] + rect[3]/2), "center")
 
-        # Chapter 3 (Stages 20-28)
-        w3_rect = transform_scale([400, 450, 640, 100])
-        color_w3 =[186, 148, 45] if save['unlock'][20] else [100, 100, 100]
-        pygame.draw.rect(screen, color_w3, w3_rect, border_radius=10)
-        pygame.draw.rect(screen,[0, 0, 0], w3_rect, 3, 10)
-        text(screen, "Chapter 3: Grammar & Verbs", [0, 0, 0], 40, (w3_rect[0] + w3_rect[2]/2, w3_rect[1] + w3_rect[3]/2), "center")
+        back_rect = transform_scale([40, 40, 100, 50])
+        back_hover = click_check(mouse_pos, back_rect)
+        back_color = [255, 255, 255] if back_hover else [186, 148, 45]
+        pygame.draw.rect(screen, back_color, back_rect, border_radius=br)
+        pygame.draw.rect(screen, [0, 0, 0], back_rect, br, br)
+        text(screen, "返回", [0, 0, 0], 25, transform_scale([90, 65]), "center")
 
-        # Chapter 4 (Stages 29-33 OR 34-38)
-        w4_rect = transform_scale([400, 600, 640, 100])
-        color_w4 =[186, 148, 45] if (save['unlock'][29] or save['unlock'][34]) else[100, 100, 100]
-        pygame.draw.rect(screen, color_w4, w4_rect, border_radius=10)
-        pygame.draw.rect(screen, [0, 0, 0], w4_rect, 3, 10)
-        text(screen, "Chapter 4: Final Battle", [0, 0, 0], 40, (w4_rect[0] + w4_rect[2]/2, w4_rect[1] + w4_rect[3]/2), "center")
-
-        pygame.draw.rect(screen, [186, 148, 45], transform_scale([40, 40, 80, 80]), border_radius=br)
-        pygame.draw.rect(screen, [0, 0, 0], transform_scale([40, 40, 80, 80]), br, br)
-        text(screen, "Back",[0, 0, 0], br*5, transform_scale([80, 80]), "center")
 
         if(save["obtain"][0]):
             pygame.draw.rect(screen, [153, 116, 41], transform_scale([620, 860, 80, 80]), border_radius=br)
