@@ -2033,18 +2033,19 @@ dialog = [
         (1, '赤真：\n幻影虎派哥布林王攻擊我們了！牠為什麼只盯著我們？！'),
         (2, '莉子：\n因為我們看起來最弱啊！\n天啊，連C級冒險者都被幻影虎自己打敗了！'),
         (1, '赤真：\n那我們還等什麼，快逃回城裡啊！'),
-        (2, '莉子：\n逃跑的時候也不能忘記詠唱魔法！快記住\n『な』行、『は』行、濁音『ば』和半濁音『ぱ』！'),
-        (2, '莉子：\n「な」na、「に」ni、「ぬ」nu、「ね」ne、「の」no\n「は」ha、「ひ」hi、「ふ」fu、「へ」he、「ほ」ho\n'),
-        (2, '莉子：\n「ば」ba、「び」bi、「ぶ」bu、「べ」be、「ぼ」bo\n「ぱ」pa、「ぴ」pi、「ぷ」pu、「ぺ」pe、「ぽ」po'),
+        (2, '莉子：\n逃跑的時候也不能忘記詠唱魔法！快記住\n『た』行跟它的濁音『だ』行！'),
+        (2, '莉子：\n「た」ta、「ち」chi、「つ」tsu、「て」te、「と」to\n '),
+        (2, '莉子：\n「だ」da、「ぢ」ji、「づ」zu、「で」de、「ど」do'),
         (1, '赤真：\n這種時候就別上課了啊啊啊！拼了！')
     ],
     #stage 4
     [
         (0, '系統：\n【警告】發現小Boss幻影虎與精英怪哥布林王！'),
         (1, '赤真：\n糟了！連C級前輩都被那隻幻影虎瞬間打敗了！'),
-        (2, '莉子：\n牠們為什麼只盯著我們？！\n快，用『な』行魔法牽制牠們！\n「な」na、「に」ni、「ぬ」nu、「ね」ne、「の」no！'),
-        (2, '「な」na、「に」ni、「ぬ」nu、「ね」ne、「の」no！'),
+        (2, '莉子：\n牠們為什麼只盯著我們？！快，用『な』行魔法牽制牠們！\n「な」na、「に」ni、「ぬ」nu、「ね」ne、「の」no！'),
         (1, '赤真：\n這種時候就別上課了啊啊啊！快逃啊！！'),
+        (2, '莉子：\n邊逃跑邊詠唱！還有『ま』行，能製造迷霧掩護我們！\n「ま」ma、「み」mi、「む」mu、「め」me、「も」mo！'),
+        (1, '赤真：\n等等，「ぬ」跟「め」長得也太像了吧！\n不管了，拼了！！'),
         (2, '莉子：\n邊逃跑邊詠唱！我們撤回城裡！')
     ],
     #stage 5
@@ -2320,9 +2321,311 @@ battle_detail = [
         "enemy_attack_word": "む" ,
         "target": [10, 14],
         "enemy_hp": 200,
+        "discription": "以滑, 鼠點擊正確的選項",
+    },
+    # 2
+    {
+        "question_type": "MC",
+        "question":["さ","し","す","せ","そ", "ざ","じ","ず","ぜ","ぞ"],
+        "answer": {
+            "さ": ("sa", ["sa", "za", "chi", "ki"]),
+            "し": ("shi", ["shi", "ji", "chi", "tsu"]),
+            "す": ("su", ["su", "zu", "tsu", "ku"]),
+            "せ": ("se",["se", "ze", "te", "ne"]),
+            "そ": ("so",["so", "zo", "to", "ko"]),
+            "ざ": ("za",["za", "sa", "da", "ga"]),
+            "じ": ("ji", ["ji", "shi", "gi", "zi"]),
+            "ず": ("zu", ["zu", "su", "dzu", "gu"]),
+            "ぜ": ("ze", ["ze", "se", "de", "ge"]),
+            "ぞ": ("zo", ["zo", "so", "do", "go"])
+        },
+        "word_size": 64,
+        "order":[],
+        "enemy_surf": 9,
+        "enemy_attack_word": "や" ,
+        "target": [10, 14],
+        "enemy_hp": 200,
         "discription": "以滑鼠點擊正確的選項",
     },
-    #2
+    # 3
+    {
+        "question_type": "MC",
+        "question":["た","ち","つ","て","と", "だ","ぢ","づ","で","ど"],
+        "answer": {
+            "た": ("ta",["ta", "da", "ka", "na"]),
+            "ち": ("chi", ["chi", "shi", "ti", "ji"]),
+            "つ": ("tsu", ["tsu", "su", "tu", "du"]),
+            "て": ("te", ["te", "de", "se", "he"]),
+            "と": ("to", ["to", "do", "ko", "so"]),
+            "だ": ("da",["da", "ta", "ba", "ga"]),
+            "ぢ": ("di",["di", "ji", "chi", "zi"]),
+            "づ": ("du",["du", "zu", "tsu", "dzu"]),
+            "で": ("de", ["de", "te", "ge", "be"]),
+            "ど": ("do", ["do", "to", "go", "bo"])
+        },
+        "word_size": 64,
+        "order":[],
+        "enemy_surf": 9,
+        "enemy_attack_word": "爪", 
+        "target":[10, 14],
+        "enemy_hp": 220,
+        "discription": "以滑鼠點擊正確的選項",
+    },
+    # 4
+    {
+        "question_type": "MC",
+        "question":["な","に","ぬ","ね","の", "ま","み","む","め","も"],
+        "answer": {
+            "な": ("na",["na", "ma", "ta", "ha"]),
+            "に": ("ni",["ni", "mi", "ri", "chi"]),
+            "ぬ": ("nu", ["nu", "mu", "me", "ne"]),  # Tests visual similarity with me/ne
+            "ね": ("ne",["ne", "re", "wa", "nu"]),  # Tests visual similarity with re/wa
+            "の": ("no",["no", "mo", "so", "ro"]),
+            "ま": ("ma",["ma", "na", "ha", "ho"]),  # Tests visual similarity with ha/ho
+            "み": ("mi",["mi", "ni", "ri", "hi"]),
+            "む": ("mu",["mu", "su", "nu", "fu"]),  # Tests visual similarity with su
+            "め": ("me",["me", "nu", "ne", "no"]),  # Tests visual similarity with nu/ne
+            "も": ("mo",["mo", "ma", "to", "yo"])
+        },
+        "word_size": 64,
+        "order":[],
+        "enemy_surf": 29, 
+        "enemy_attack_word": "吼", 
+        "target":[10, 14],
+        "enemy_hp": 240,
+        "discription": "以滑鼠點擊正確的選項",
+    },
+    # 5
+    {
+        "question_type": "MC",
+        "question":["は","ひ","ふ","へ","ほ", "ば","び","ぶ","べ","ぼ", "ぱ","ぴ","ぷ","ぺ","ぽ"],
+        "answer": {
+            "は": ("ha",["ha", "ba", "pa", "ho"]), # Tests visual similarity with ho
+            "ひ": ("hi", ["hi", "bi", "pi", "ni"]),
+            "ふ": ("fu",["fu", "bu", "pu", "nu"]),
+            "へ": ("he",["he", "be", "pe", "te"]),
+            "ほ": ("ho",["ho", "bo", "po", "ha"]), # Tests visual similarity with ha
+            "ば": ("ba",["ba", "ha", "pa", "da"]),
+            "び": ("bi", ["bi", "hi", "pi", "ji"]),
+            "ぶ": ("bu", ["bu", "fu", "pu", "zu"]),
+            "べ": ("be", ["be", "he", "pe", "de"]),
+            "ぼ": ("bo",["bo", "ho", "po", "do"]),
+            "ぱ": ("pa",["pa", "ha", "ba", "ya"]),
+            "ぴ": ("pi",["pi", "hi", "bi", "ri"]),
+            "ぷ": ("pu", ["pu", "fu", "bu", "mu"]),
+            "ぺ": ("pe", ["pe", "he", "be", "re"]),
+            "ぽ": ("po", ["po", "ho", "bo", "so"])
+        },
+        "word_size": 64,
+        "order":[],
+        "enemy_surf": 9, 
+        "enemy_attack_word": "擊",
+        "target": [15, 18],
+        "enemy_hp": 260,
+        "discription": "以滑鼠點擊正確的選項",
+    },
+    # 6
+    {
+        "question_type": "MC",
+        "question":["や","ゆ","よ", "ら","り","る","れ","ろ", "わ","を","ん"],
+        "answer": {
+            "や": ("ya", ["ya", "ka", "yo", "wa"]),
+            "ゆ": ("yu", ["yu", "yo", "nu", "me"]),
+            "よ": ("よ",["yo", "ma", "ha", "ro"]),
+            "ら": ("ra",["ra", "chi", "u", "ro"]),  # Tests similarity with chi (ち) and u (う)
+            "り": ("ri", ["ri", "i", "ni", "re"]),   # Tests similarity with i (い)
+            "る": ("ru", ["ru", "ro", "su", "tsu"]), # Tests similarity with ro (ろ)
+            "れ": ("re", ["re", "ne", "wa", "nu"]),  # Tests similarity with ne (ね) and wa (わ)
+            "ろ": ("ro",["ro", "ru", "so", "tsu"]), # Tests similarity with ru (る)
+            "わ": ("wa", ["wa", "re", "ne", "wo"]),  # Tests similarity with re (れ) and ne (ね)
+            "を": ("wo",["wo", "o", "wa", "n"]),    # Tests phonetic similarity with o (お)
+            "ん": ("n",["n", "m", "h", "so"])
+        },
+        "word_size": 64,
+        "order":[],
+        "enemy_surf": 9,
+        "enemy_attack_word": "突", 
+        "target": [11, 15], # Adjusted for 11 questions
+        "enemy_hp": 280,
+        "discription": "以滑鼠點擊正確的選項",
+    },
+    # 7
+    {
+        "question_type": "MC",
+        "question":[
+            "あ","い","う","え","お", "か","き","く","け","こ", "が","ぎ","ぐ","げ","ご",
+            "さ","し","す","せ","そ", "ざ","じ","ず","ぜ","ぞ", "た","ち","つ","て","と",
+            "だ","ぢ","づ","で","ど", "な","に","ぬ","ね","の", "ま","み","む","め","も",
+            "は","ひ","ふ","へ","ほ", "ば","び","ぶ","べ","ぼ", "ぱ","ぴ","ぷ","ぺ","ぽ",
+            "や","ゆ","よ", "ら","り","る","れ","ろ", "わ","を","ん"
+        ],
+        "answer": {
+            "あ": ("a",["a", "i", "u", "e"]),
+            "い": ("i",["i", "u", "e", "o"]),
+            "う": ("u",["u", "e", "o", "a"]),
+            "え": ("e", ["e", "o", "a", "i"]),
+            "お": ("o", ["o", "a", "i", "u"]),
+            "か": ("ka", ["ka", "ga", "ha", "wa"]),
+            "き": ("ki",["ki", "sa", "chi", "gi"]),
+            "く": ("ku",["ka", "ga", "ku", "su"]),
+            "け": ("ke",["ke", "ka", "ki", "gi"]),
+            "こ": ("ko", ["ko", "go", "wo", "ka"]),
+            "が": ("ga", ["ga", "ka", "na", "ra"]),
+            "ぎ": ("gi", ["gi", "ki", "shi", "bi"]),
+            "ぐ": ("gu",["gu", "ku", "su", "bu"]),
+            "げ": ("ge",["ge", "ke", "ko", "go"]),
+            "ご": ("go",["go", "ko", "so", "ga"]),
+            "さ": ("sa", ["sa", "za", "chi", "ki"]),
+            "し": ("shi", ["shi", "ji", "chi", "tsu"]),
+            "す": ("su", ["su", "zu", "tsu", "ku"]),
+            "せ": ("se",["se", "ze", "te", "ne"]),
+            "そ": ("so",["so", "zo", "to", "ko"]),
+            "ざ": ("za",["za", "sa", "da", "ga"]),
+            "じ": ("ji", ["ji", "shi", "gi", "zi"]),
+            "ず": ("zu", ["zu", "su", "dzu", "gu"]),
+            "ぜ": ("ze", ["ze", "se", "de", "ge"]),
+            "ぞ": ("zo", ["zo", "so", "do", "go"]),
+            "た": ("ta",["ta", "da", "ka", "na"]),
+            "ち": ("chi",["chi", "shi", "ti", "ji"]),
+            "つ": ("tsu",["tsu", "su", "tu", "du"]),
+            "て": ("te", ["te", "de", "se", "he"]),
+            "と": ("to", ["to", "do", "ko", "so"]),
+            "だ": ("da", ["da", "ta", "ba", "ga"]),
+            "ぢ": ("di",["di", "ji", "chi", "zi"]),
+            "づ": ("du",["du", "zu", "tsu", "dzu"]),
+            "で": ("de",["de", "te", "ge", "be"]),
+            "ど": ("do", ["do", "to", "go", "bo"]),
+            "な": ("na", ["na", "ma", "ta", "ha"]),
+            "に": ("ni", ["ni", "mi", "ri", "chi"]),
+            "ぬ": ("nu", ["nu", "mu", "me", "ne"]),
+            "ね": ("ne",["ne", "re", "wa", "nu"]),
+            "の": ("no",["no", "mo", "so", "ro"]),
+            "ま": ("ma", ["ma", "na", "ha", "ho"]),
+            "み": ("mi", ["mi", "ni", "ri", "hi"]),
+            "む": ("mu", ["mu", "su", "nu", "fu"]),
+            "め": ("me", ["me", "nu", "ne", "no"]),
+            "も": ("mo",["mo", "ma", "to", "yo"]),
+            "は": ("ha",["ha", "ba", "pa", "ho"]),
+            "ひ": ("hi", ["hi", "bi", "pi", "ni"]),
+            "ふ": ("fu", ["fu", "bu", "pu", "nu"]),
+            "へ": ("he", ["he", "be", "pe", "te"]),
+            "ほ": ("ho", ["ho", "bo", "po", "ha"]),
+            "ば": ("ba",["ba", "ha", "pa", "da"]),
+            "び": ("bi",["bi", "hi", "pi", "ji"]),
+            "ぶ": ("bu", ["bu", "fu", "pu", "zu"]),
+            "べ": ("be", ["be", "he", "pe", "de"]),
+            "ぼ": ("bo", ["bo", "ho", "po", "do"]),
+            "ぱ": ("pa", ["pa", "ha", "ba", "ya"]),
+            "ぴ": ("pi",["pi", "hi", "bi", "ri"]),
+            "ぷ": ("pu",["pu", "fu", "bu", "mu"]),
+            "ぺ": ("pe", ["pe", "he", "be", "re"]),
+            "ぽ": ("po", ["po", "ho", "bo", "so"]),
+            "や": ("ya", ["ya", "ka", "yo", "wa"]),
+            "ゆ": ("yu", ["yu", "yo", "nu", "me"]),
+            "よ": ("yo",["yo", "ma", "ha", "ro"]),
+            "ら": ("ra",["ra", "chi", "u", "ro"]),
+            "り": ("ri", ["ri", "i", "ni", "re"]),
+            "る": ("ru", ["ru", "ro", "su", "tsu"]),
+            "れ": ("re", ["re", "ne", "wa", "nu"]),
+            "ろ": ("ro", ["ro", "ru", "so", "tsu"]),
+            "わ": ("wa",["wa", "re", "ne", "wo"]),
+            "を": ("wo",["wo", "o", "wa", "n"]),
+            "ん": ("n",["n", "m", "h", "so"])
+        },
+        "word_size": 64,
+        "order":[],
+        "enemy_surf": 29, 
+        "enemy_attack_word": "滅", 
+        "target": [20, 25], 
+        "enemy_hp": 400,
+        "discription": "以滑鼠點擊正確的選項",
+    },
+    # 8
+    {
+        "question_type": "MC",
+        "question":[
+            "きゃ","きゅ","きょ", "しゃ","しゅ","しょ", "ちゃ","ちゅ","ちょ", 
+            "にゃ","にゅ","にょ", "ひゃ","ひゅ","ひょ", "みゃ","みゅ","みょ", "りゃ","りゅ","りょ"
+        ],
+        "answer": {
+            "きゃ": ("kya", ["kya", "kiya", "kuyo", "gya"]),
+            "きゅ": ("kyu", ["kyu", "kiyu", "kya", "gyu"]),
+            "きょ": ("kyo", ["kyo", "kiyo", "kyu", "gyo"]),
+            "しゃ": ("sha", ["sha", "shiya", "shu", "ja"]),
+            "しゅ": ("shu", ["shu", "shiyu", "sho", "ju"]),
+            "しょ": ("sho", ["sho", "shiyo", "sha", "jo"]),
+            "ちゃ": ("cha",["cha", "chiya", "chu", "sha"]),
+            "ちゅ": ("chu",["chu", "chiyu", "cho", "shu"]),
+            "ちょ": ("cho",["cho", "chiyo", "cha", "sho"]),
+            "にゃ": ("nya",["nya", "niya", "nyu", "mya"]),
+            "にゅ": ("nyu",["nyu", "niyu", "nyo", "myu"]),
+            "にょ": ("nyo",["nyo", "niyo", "nya", "myo"]),
+            "ひゃ": ("hya",["hya", "hiya", "hyu", "pya"]),
+            "ひゅ": ("hyu",["hyu", "hiyu", "hyo", "pyu"]),
+            "ひょ": ("hyo",["hyo", "hiyo", "hya", "pyo"]),
+            "みゃ": ("mya",["mya", "miya", "myu", "nya"]),
+            "みゅ": ("myu",["myu", "miyu", "myo", "nyu"]),
+            "みょ": ("myo", ["myo", "miyo", "mya", "nyo"]),
+            "りゃ": ("rya", ["rya", "riya", "ryu", "mya"]),
+            "りゅ": ("ryu", ["ryu", "riyu", "ryo", "myu"]),
+            "りょ": ("ryo", ["ryo", "riyo", "rya", "myo"])
+        },
+        "word_size": 64,
+        "order":[],
+        "enemy_surf": 9,
+        "enemy_attack_word": "咬", 
+        "target":[12, 16],
+        "enemy_hp": 240,
+        "discription": "以滑鼠點擊正確的選項",
+    },
+    # 9 (Kanji - Numbers)
+    {
+        "question_type": "MC",
+        "question":["一", "二", "三", "四", "五", "六", "七", "八", "九", "十"],
+        "answer": {
+            "一": ("いち", ["いち", "に", "さん", "し"]),
+            "二": ("に", ["に", "いち", "さん", "よん"]),
+            "三": ("さん", ["さん", "に", "し", "ご"]),
+            "四": ("よん", ["よん", "さん", "ご", "ろく"]),
+            "五": ("ご", ["ご", "よん", "ろく", "なな"]),
+            "六": ("ろく",["ろく", "ご", "なな", "はち"]),
+            "七": ("なな",["なな", "ろく", "はち", "きゅう"]),
+            "八": ("はち", ["はち", "なな", "きゅう", "じゅう"]),
+            "九": ("きゅう", ["きゅう", "はち", "じゅう", "いち"]),
+            "十": ("じゅう", ["じゅう", "きゅう", "いち", "に"]),
+            "百": ("ひゃく", ["ひゃく", "せん", "まん", "ひやく"]),
+            "千": ("せん", ["せん", "ひゃく", "まん", "ぜん"])  
+        },
+        "word_size": 48,
+        "order":[],
+        "enemy_surf": 9,
+        "enemy_attack_word": "算",
+        "target": [10, 12],
+        "enemy_hp": 200,
+        "discription": "以滑鼠點擊漢字正確的平假名讀音",
+    },
+    # 10 (Kanji - Elements)
+    {
+        "question_type": "MC",
+        "question":["日", "月", "火", "水", "木", "金", "土"],
+        "answer": {
+            "日": ("ひ/にち",["ひ/にち", "つき", "みず", "き"]),
+            "月": ("つき",["つき", "ひ/にち", "つち", "きん"]),
+            "火": ("ひ/か",["ひ/か", "みず", "つち", "き"]),
+            "水": ("みず",["みず", "つき", "つち", "ひ/か"]),
+            "木": ("き",["き", "きん", "ひ/にち", "みず"]),
+            "金": ("きん",["きん", "ぎん", "き", "つち"]), # ぎん (Gin/Silver) is a common trap for きん (Kin/Gold)
+            "土": ("つち",["つち", "みず", "つき", "ひ/にち"])
+        },
+        "word_size": 40,
+        "order":[],
+        "enemy_surf": 9,
+        "enemy_attack_word": "素",
+        "target": [6, 7],
+        "enemy_hp": 140,
+        "discription": "以滑鼠點擊漢字正確的平假名讀音",
+    },
+    # 11 (kanji - Animals & Objects)
     {
         "question_type": "Drag",
          "questions": [
@@ -2330,7 +2633,7 @@ battle_detail = [
             { "sentence": "狗_", "answer": "いぬ", "options": ["いぬ", "ねこ", "うさぎ", "へび"] },
             { "sentence": "書_", "answer": "ほん", "options": ["ほん", "えんぴつ", "かばん", "とけい"] },
             { "sentence": "水_", "answer": "みず", "options": ["みず", "おちゃ", "ごはん", "ぱん"] },
-            { "sentence": "人_", "answer": "ひと", "options": ["ひと", "おとこ", "おんな", "こども"] },
+            #{ "sentence": "人_", "answer": "ひと", "options": ["ひと", "おとこ", "おんな", "こども"] },
         ],
         "order": [],
         "enemy_surf": 9,
@@ -2339,7 +2642,114 @@ battle_detail = [
         "enemy_hp": 140,
         "discription": "以滑鼠拖拉正確的選項至空格內",
     },
-    #3 (kanji to hiragana 1 )
+    # 12 (kanji - Nature)
+    {
+        "question_type": "MC",
+        "question":["山", "川", "空", "天", "雨", "石", "花", "森"],
+        "answer": {
+            "山": ("やま", ["やま", "かわ", "そら", "てん"]),
+            "川": ("かわ", ["かわ", "やま", "うみ", "あめ"]),
+            "空": ("そら", ["そら", "てん", "あめ", "いし"]),
+            "天": ("てん", ["てん", "そら", "やま", "もり"]),
+            "雨": ("あめ", ["あめ", "かわ", "はな", "そら"]),
+            "石": ("いし",["いし", "やま", "はな", "もり"]),
+            "花": ("はな",["はな", "あめ", "そら", "いし"]),
+            "森": ("もり",["もり", "やま", "かわ", "てん"])
+        },
+        "word_size": 48,
+        "order":[],
+        "enemy_surf": 9,
+        "enemy_attack_word": "震",
+        "target": [9, 12],
+        "enemy_hp": 180,
+        "discription": "以滑鼠點擊漢字正確的平假名讀音",
+    },
+    # 13 (kanji - Directions)
+    {
+        "question_type": "Drag",
+        "questions":[
+            { "sentence": "上面_", "answer": "上", "options": ["上", "下", "左", "右"] },
+            { "sentence": "下面_", "answer": "下", "options": ["下", "上", "前", "後"] },
+            { "sentence": "左邊_", "answer": "左", "options":["左", "右", "中", "外"] },
+            { "sentence": "右邊_", "answer": "右", "options": ["右", "左", "前", "中"] },
+            { "sentence": "中間_", "answer": "中", "options": ["中", "外", "上", "下"] },
+            { "sentence": "外面_", "answer": "外", "options":["外", "中", "左", "右"] },
+            { "sentence": "前方_", "answer": "前", "options":["前", "後", "上", "外"] },
+            { "sentence": "後方_", "answer": "後", "options": ["後", "前", "下", "中"] },
+        ],
+        "order":[],
+        "enemy_surf": 9,
+        "enemy_attack_word": "轉",
+        "target": [9, 12],
+        "enemy_hp": 180,
+        "discription": "將正確的方向漢字拖拉至對應的中文意思旁",
+    },
+    # 14 (MC - Body & People)
+    {
+        "question_type": "MC",
+        "question":["人", "目", "口", "耳", "手", "足", "体", "男", "女"],
+        "answer": {
+            "人": ("ひと", ["ひと", "おとこ", "おんな", "め"]),
+            "目": ("め", ["め", "みみ", "くち", "て"]),
+            "口": ("くち",["くち", "め", "みみ", "あし"]),
+            "耳": ("みみ",["みみ", "め", "くち", "からだ"]),
+            "手": ("て",["て", "あし", "め", "ひと"]),
+            "足": ("あし",["あし", "て", "みみ", "おとこ"]),
+            "体": ("からだ",["からだ", "ひと", "おんな", "くち"]),
+            "男": ("おとこ",["おとこ", "おんな", "ひと", "からだ"]),
+            "女": ("おんな",["おんな", "おとこ", "ひと", "て"])
+        },
+        "word_size": 48,
+        "order":[],
+        "enemy_surf": 9,
+        "enemy_attack_word": "抓",
+        "target": [10, 13],
+        "enemy_hp": 200,
+        "discription": "以滑鼠點擊漢字正確的平假名讀音",
+    },
+    # 15 (Drag - Time & Periods)
+    {
+        "question_type": "Drag",
+        "questions":[
+            { "sentence": "現在_", "answer": "今", "options": ["今", "時", "分", "半"] },
+            { "sentence": "小時_", "answer": "時", "options":["時", "今", "年", "朝"] },
+            { "sentence": "分鐘_", "answer": "分", "options":["分", "半", "時", "昼"] },
+            { "sentence": "一半_", "answer": "半", "options": ["半", "分", "今", "夜"] },
+            { "sentence": "年份_", "answer": "年", "options":["年", "時", "半", "朝"] },
+            { "sentence": "早上_", "answer": "朝", "options":["朝", "昼", "夜", "今"] },
+            { "sentence": "中午_", "answer": "昼", "options": ["昼", "朝", "夜", "時"] },
+            { "sentence": "夜晚_", "answer": "夜", "options": ["夜", "昼", "朝", "年"] },
+        ],
+        "order":[],
+        "enemy_surf": 9,
+        "enemy_attack_word": "遲",
+        "target": [10, 13],
+        "enemy_hp": 200,
+        "discription": "將正確的時間漢字拖拉至對應的中文意思旁",
+    },
+    # 16 (MC - Adjectives)
+    {
+        "question_type": "MC",
+        "question":["大きい", "小さい", "高い", "低い", "新しい", "古い", "多い", "少ない"],
+        "answer": {
+            "大きい": ("おおきい",["おおきい", "ちいさい", "たかい", "ひくい"]),
+            "小さい": ("ちいさい", ["ちいさい", "おおきい", "あたらしい", "ふるい"]),
+            "高い": ("たかい", ["たかい", "ひくい", "おおきい", "おおい"]),
+            "低い": ("ひくい", ["ひくい", "たかい", "ちいさい", "すくない"]),
+            "新しい": ("あたらしい", ["あたらしい", "ふるい", "おおきい", "おおい"]),
+            "古い": ("ふるい",["ふるい", "あたらしい", "ちいさい", "ひくい"]),
+            "多い": ("おおい",["おおい", "すくない", "たかい", "あたらしい"]),
+            "少ない": ("すくない",["すくない", "おおい", "ひくい", "ふるい"])
+        },
+        "word_size": 40,
+        "order":[],
+        "enemy_surf": 9,
+        "enemy_attack_word": "幻",
+        "target": [11, 14],
+        "enemy_hp": 220,
+        "discription": "以滑鼠點擊形容詞正確的平假名讀音",
+    },
+    # 17 (kanji to hiragana 1 )
     {
         "question_type": "MC",
         "question": ["行きます","来ます", "帰ります", "出掛けます","食べます", "飲みます", "見ます", "読みます", "書きます", "聞きます"],
@@ -2363,7 +2773,68 @@ battle_detail = [
         "enemy_hp": 100,
         "discription": "以滑鼠點擊正確的選項",
     },
-    #4 (masu to ru)
+    # 18 (kanji - Days of the week)
+    {
+        "question_type": "Drag",
+        "questions":[
+            { "sentence": "星期一_", "answer": "月曜日", "options":["月曜日", "火曜日", "水曜日", "日曜日"] },
+            { "sentence": "星期二_", "answer": "火曜日", "options":["火曜日", "木曜日", "金曜日", "土曜日"] },
+            { "sentence": "星期三_", "answer": "水曜日", "options":["水曜日", "火曜日", "木曜日", "月曜日"] },
+            { "sentence": "星期四_", "answer": "木曜日", "options": ["木曜日", "水曜日", "金曜日", "土曜日"] },
+            { "sentence": "星期五_", "answer": "金曜日", "options":["金曜日", "月曜日", "火曜日", "日曜日"] },
+            { "sentence": "星期六_", "answer": "土曜日", "options": ["土曜日", "日曜日", "水曜日", "木曜日"] },
+            { "sentence": "星期日_", "answer": "日曜日", "options":["日曜日", "月曜日", "金曜日", "土曜日"] },
+        ],
+        "order":[],
+        "enemy_surf": 29, 
+        "enemy_attack_word": "壓",
+        "target":[6, 7],
+        "enemy_hp": 140,
+        "discription": "將正確的星期拖拉至對應的中文意思旁",
+    },
+    # 19 (MC - Mid Boss "Tenma" - Grand Kanji Exam)
+    {
+        "question_type": "MC",
+        "question":[
+            "一", "日", "火", "山", "空", "上", "前", "人", "目", "今", 
+            "時", "大きい", "新しい", "行く", "見る", "読む", "話す", "剣", "魔", "竜", "光", "闇"
+        ],
+        "answer": {
+            "一": ("いち", ["いち", "に", "さん", "し"]),
+            "日": ("ひ/にち",["ひ/にち", "つき", "みず", "き"]),
+            "火": ("ひ/か",["ひ/か", "みず", "つち", "き"]),
+            "山": ("やま",["やま", "かわ", "そら", "てん"]),
+            "空": ("そら",["そら", "てん", "あめ", "いし"]),
+            "上": ("うえ",["うえ", "した", "ひだり", "みぎ"]),
+            "前": ("まえ",["まえ", "うしろ", "うえ", "なか"]),
+            "人": ("ひと",["ひと", "おとこ", "おんな", "め"]),
+            "目": ("め",["め", "みみ", "くち", "て"]),
+            "今": ("いま",["いま", "とき", "ふん", "はん"]),
+            "時": ("とき/じ",["とき/じ", "いま", "ねん", "あさ"]),
+            "大きい": ("おおきい",["おおきい", "ちいさい", "たかい", "ひくい"]),
+            "新しい": ("あたらしい",["あたらしい", "ふるい", "おおきい", "おおい"]),
+            "行く": ("いく",["いく", "くる", "みる", "きく"]),
+            "見る": ("みる",["みる", "きく", "いく", "たつ"]),
+            "読む": ("よむ",["よむ", "かく", "いう", "はなす"]),
+            "話す": ("はなす",["はなす", "いう", "よむ", "やすむ"]),
+            "剣": ("けん",["けん", "たて", "ま", "りゅう"]),
+            "魔": ("ま",["ま", "ちから", "ひかり", "やみ"]),
+            "竜": ("りゅう",["りゅう", "かみ", "ま", "おう"]),
+            "光": ("ひかり",["ひかり", "やみ", "かみ", "いのち"]),
+            "闇": ("やみ",["やみ", "ひかり", "ま", "りゅう"])
+        },
+        "word_size": 40,
+        "order":[],
+        "enemy_surf": 29,  # Mid Boss (Tenma)
+        "enemy_attack_word": "死",
+        "target": [20, 25],
+        "enemy_hp": 400,   # Requires 20 hits to defeat!
+        "discription": "中級Boss『天魔』降臨！點擊漢字正確的讀音！",
+    },
+    #
+    
+    
+    #5 (masu to ru)
     {
         "question_type": "input",
         "question": "verb_masu",
@@ -2376,7 +2847,7 @@ battle_detail = [
         "curr_qs": None,
         "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\nます形 → 辞書形",
     },
-    #5 sentence order
+    #6 sentence order
     {
         "question_type": "Sentence_Order",
         "questions": [
@@ -2403,141 +2874,7 @@ battle_detail = [
         "enemy_hp": 160,
         "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
     },
-    #6
-    {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
-        "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160,
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
-    },
-    #7
-    {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
-        "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160,
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
-    },
-    #8
-    {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
-        "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160,
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
-    },
-    #9
-    {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
-        "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160,
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
-    },
-    #10
-    {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
-        "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160,
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
-    },
+   
     #11
     {
         "question_type": "Sentence_Order",
@@ -3789,6 +4126,7 @@ while running:
             else: # An action has been chosen, show the question
                 # Create rects for options if they don't exist for the current question
                 if not draggable_rects:
+                    random.shuffle(current_q["options"])
                     options = current_q["options"]
                     option_y = transform_scale([800])[0]
                     option_width, option_height = transform_scale([180, 90])
@@ -4021,6 +4359,7 @@ while running:
                 # Setup Rects for the first time for this question
                 if not draggable_rects:
                     current_sentence_indices = [] # Reset user answer
+                    random.shuffle(current_q["options"])
                     options = current_q["options"]
                     # Create generic rects, we will move them dynamically in the draw loop
                     opt_w, opt_h = transform_scale([140, 70])
