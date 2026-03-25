@@ -2266,6 +2266,58 @@ story_num = 0
 stage = 0
 dialog_num = 0
 
+#sound effect
+SFX_FILES = {
+    "click": "media/sfx_click.wav",
+    "attack": "media/sfx_attack.wav",       # When player attacks
+    "heal": "media/sfx_heal.wav",           # When player uses recover
+    "damage": "media/sfx_damage.wav",       # When enemy attacks player
+    "error": "media/sfx_error.wav",         # Wrong answer buzzer
+    "win": "media/sfx_win.wav",             # Stage clear
+    "lose": "media/sfx_lose.wav"            # Player dies
+}
+# 2. Dictionary to hold the loaded sound objects
+loaded_sfx = {}
+
+# 3. Pre-load all sound effects safely
+for name, filename in SFX_FILES.items():
+    try:
+        filepath = path + filename
+        if os.path.exists(filepath):
+            loaded_sfx[name] = pygame.mixer.Sound(filepath)
+        else:
+            loaded_sfx[name] = None
+            print(f"Warning: SFX missing -> {filepath}")
+    except Exception as e:
+        loaded_sfx[name] = None
+        print(f"Error loading {name} sound: {e}")
+
+# 4. The main function to play a sound effect
+def play_sfx(name):
+    sound = loaded_sfx.get(name)
+    if sound:
+        # Get volume from options (0 to 100), convert to Pygame format (0.0 to 1.0)
+        volume = save.get('sound', 100) / 100.0
+        sound.set_volume(volume)
+        sound.play()
+def play_bgm(filename):
+    try:
+        filepath = path + "media/" + filename
+        if os.path.exists(filepath):
+            pygame.mixer.music.load(filepath)
+            volume = save.get('music', 100) / 100.0
+            pygame.mixer.music.set_volume(volume)
+            pygame.mixer.music.play(-1) # -1 means loop forever
+        else:
+            print(f"Warning: BGM missing -> {filepath}")
+    except Exception as e:
+        print(f"Error playing BGM: {e}")
+
+# 6. Function to instantly update BGM volume when dragging the option slider
+def update_bgm_volume():
+    volume = save.get('music', 100) / 100.0
+    pygame.mixer.music.set_volume(volume)
+
 #this part is for drag type
 draggable_rects = []
 draggable_rects_initial_pos = []
@@ -2793,43 +2845,223 @@ battle_detail = [
         "discription": "將正確的星期拖拉至對應的中文意思旁",
     },
     # 19 (MC - Mid Boss "Tenma" - Grand Kanji Exam)
+    # 19 (MC - Mid Boss "Tenma" - Grand Kanji Exam)
     {
         "question_type": "MC",
         "question":[
-            "一", "日", "火", "山", "空", "上", "前", "人", "目", "今", 
-            "時", "大きい", "新しい", "行く", "見る", "読む", "話す", "剣", "魔", "竜", "光", "闇"
+            "百", "千", "水", "木", "山", "空", "前", "人", "目", "時", 
+            "大きい", "新しい", "行く", "読む", "話す", 
+            "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日", "日曜日"
         ],
         "answer": {
-            "一": ("いち", ["いち", "に", "さん", "し"]),
-            "日": ("ひ/にち",["ひ/にち", "つき", "みず", "き"]),
-            "火": ("ひ/か",["ひ/か", "みず", "つち", "き"]),
-            "山": ("やま",["やま", "かわ", "そら", "てん"]),
-            "空": ("そら",["そら", "てん", "あめ", "いし"]),
-            "上": ("うえ",["うえ", "した", "ひだり", "みぎ"]),
-            "前": ("まえ",["まえ", "うしろ", "うえ", "なか"]),
+            "百": ("ひゃく", ["ひゃく", "せん", "まん", "ひやく"]),
+            "千": ("せん", ["せん", "ひゃく", "まん", "ぜん"]),
+            "水": ("みず", ["みず", "つき", "つち", "ひ/か"]),
+            "木": ("き", ["き", "きん", "ひ/にち", "みず"]),
+            "山": ("やま", ["やま", "かわ", "そら", "てん"]),
+            "空": ("そら", ["そら", "てん", "あめ", "いし"]),
+            "前": ("まえ", ["まえ", "うしろ", "うえ", "なか"]),
             "人": ("ひと",["ひと", "おとこ", "おんな", "め"]),
             "目": ("め",["め", "みみ", "くち", "て"]),
-            "今": ("いま",["いま", "とき", "ふん", "はん"]),
             "時": ("とき/じ",["とき/じ", "いま", "ねん", "あさ"]),
-            "大きい": ("おおきい",["おおきい", "ちいさい", "たかい", "ひくい"]),
-            "新しい": ("あたらしい",["あたらしい", "ふるい", "おおきい", "おおい"]),
-            "行く": ("いく",["いく", "くる", "みる", "きく"]),
-            "見る": ("みる",["みる", "きく", "いく", "たつ"]),
-            "読む": ("よむ",["よむ", "かく", "いう", "はなす"]),
-            "話す": ("はなす",["はなす", "いう", "よむ", "やすむ"]),
-            "剣": ("けん",["けん", "たて", "ま", "りゅう"]),
-            "魔": ("ま",["ま", "ちから", "ひかり", "やみ"]),
-            "竜": ("りゅう",["りゅう", "かみ", "ま", "おう"]),
-            "光": ("ひかり",["ひかり", "やみ", "かみ", "いのち"]),
-            "闇": ("やみ",["やみ", "ひかり", "ま", "りゅう"])
+            "大きい": ("おおきい", ["おおきい", "ちいさい", "たかい", "ひくい"]),
+            "新しい": ("あたらしい", ["あたらしい", "ふるい", "おおきい", "おおい"]),
+            "行く": ("いく", ["いく", "くる", "みる", "きく"]),
+            "読む": ("よむ", ["よむ", "かく", "いう", "はなす"]),
+            "話す": ("はなす", ["はなす", "いう", "よむ", "やすむ"]),
+            "月曜日": ("げつようび",["げつようび", "かようび", "すいようび", "にちようび"]),
+            "火曜日": ("かようび",["かようび", "もくようび", "きんようび", "どようび"]),
+            "水曜日": ("すいようび",["すいようび", "かようび", "もくようび", "げつようび"]),
+            "木曜日": ("もくようび",["もくようび", "すいようび", "きんようび", "どようび"]),
+            "金曜日": ("きんようび",["きんようび", "げつようび", "かようび", "にちようび"]),
+            "土曜日": ("どようび",["どようび", "にちようび", "すいようび", "もくようび"]),
+            "日曜日": ("にちようび",["にちようび", "げつようび", "きんようび", "どようび"])
         },
-        "word_size": 40,
+        "word_size": 36,
         "order":[],
         "enemy_surf": 29,  # Mid Boss (Tenma)
         "enemy_attack_word": "死",
         "target": [20, 25],
         "enemy_hp": 400,   # Requires 20 hits to defeat!
         "discription": "中級Boss『天魔』降臨！點擊漢字正確的讀音！",
+    },
+    # 20 (Sentence Order - Basic A is B)
+    {
+        "question_type": "Sentence_Order",
+        "questions":[
+            { 
+                "meaning": "我是赤真 (I am Akamasa)", 
+                "answer_order": ["わたし", "は", "あかまさ", "です"], 
+                "options": ["です", "わたし", "は", "あかまさ", "が", "を"] 
+            },
+            { 
+                "meaning": "這是蘋果 (This is an apple)", 
+                "answer_order": ["これ", "は", "りんご", "です"], 
+                "options":["りんご", "これ", "は", "です", "それ", "に"] 
+            },
+            { 
+                "meaning": "莉子是精靈 (Riko is an elf)", 
+                "answer_order": ["りこ", "は", "エルフ", "です"], 
+                "options": ["りこ", "エルフ", "は", "です", "を", "の"] 
+            },
+            { 
+                "meaning": "那是一本書 (That is a book)", 
+                "answer_order": ["それ", "は", "ほん", "です"], 
+                "options":["ほん", "それ", "は", "です", "あれ", "が"] 
+            },
+            { 
+                "meaning": "明天是星期一 (Tomorrow is Monday)", 
+                "answer_order":["あした", "は", "げつようび", "です"], 
+                "options":["あした", "は", "げつようび", "です", "きょう", "に"] 
+            }
+        ],
+        "order":[],
+        "enemy_surf": 9,
+        "enemy_attack_word": "基",
+        "target": [5, 6],
+        "enemy_hp": 100, # 5 hits to defeat
+        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+    },
+    # 21 (Sentence Order - Particles を, に, へ)
+    {
+        "question_type": "Sentence_Order",
+        "questions":[
+            { 
+                "meaning": "吃蘋果 (Eat an apple)", 
+                "answer_order": ["りんご", "を", "たべます"], 
+                "options":["りんご", "を", "たべます", "は", "のみます", "が"] 
+            },
+            { 
+                "meaning": "喝水 (Drink water)", 
+                "answer_order":["みず", "を", "のみます"], 
+                "options":["みず", "を", "のみます", "に", "たべます", "へ"] 
+            },
+            { 
+                "meaning": "去學校 (Go to school)", 
+                "answer_order":["がっこう", "に", "いきます"], 
+                "options":["がっこう", "に", "いきます", "を", "きます", "で"] 
+            },
+            { 
+                "meaning": "讀書 (Read a book)", 
+                "answer_order": ["ほん", "を", "よみます"], 
+                "options": ["ほん", "を", "よみます", "が", "かきます", "に"] 
+            },
+            { 
+                "meaning": "回家 (Return home)", 
+                "answer_order": ["うち", "に", "かえります"], 
+                "options":["うち", "に", "かえります", "を", "でます", "は"] 
+            },
+            { 
+                "meaning": "買肉 (Buy meat)", 
+                "answer_order":["にく", "を", "かいます"], 
+                "options":["にく", "を", "かいます", "は", "に", "が"] 
+            }
+        ],
+        "order":[],
+        "enemy_surf": 9,
+        "enemy_attack_word": "助", # Represents "Particles"
+        "target": [6, 7],
+        "enemy_hp": 120, # 6 hits to defeat
+        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+    },
+    # 22 (Sentence Order - Subject + Object + Verb)
+    {
+        "question_type": "Sentence_Order",
+        "questions":[
+            { 
+                "meaning": "我吃肉 (I eat meat)", 
+                "answer_order":["わたし", "は", "にく", "を", "たべます"], 
+                "options":["わたし", "は", "にく", "を", "たべます", "が", "に"] 
+            },
+            { 
+                "meaning": "莉子喝水 (Riko drinks water)", 
+                "answer_order": ["りこ", "は", "みず", "を", "のみます"], 
+                "options":["りこ", "は", "みず", "を", "のみます", "へ", "で"] 
+            },
+            { 
+                "meaning": "我去學校 (I go to school)", 
+                "answer_order":["わたし", "は", "がっこう", "に", "いきます"], 
+                "options":["わたし", "は", "がっこう", "に", "いきます", "を", "で"] 
+            },
+            { 
+                "meaning": "老師看書 (The teacher reads a book)", 
+                "answer_order":["せんせい", "は", "ほん", "を", "よみます"], 
+                "options":["せんせい", "は", "ほん", "を", "よみます", "が", "に"] 
+            },
+            { 
+                "meaning": "赤真買蘋果 (Akamasa buys an apple)", 
+                "answer_order": ["あかまさ", "は", "りんご", "を", "かいます"], 
+                "options":["あかまさ", "は", "りんご", "を", "かいます", "の", "へ"] 
+            },
+            { 
+                "meaning": "學生寫字 (The student writes characters)", 
+                "answer_order":["がくせい", "は", "じ", "を", "かきます"], 
+                "options":["がくせい", "は", "じ", "を", "かきます", "に", "の"] 
+            },
+            { 
+                "meaning": "貓看鳥 (The cat looks at the bird)", 
+                "answer_order":["ねこ", "は", "とり", "を", "みます"], 
+                "options":["ねこ", "は", "とり", "を", "みます", "が", "へ"] 
+            }
+        ],
+        "order":[],
+        "enemy_surf": 9,
+        "enemy_attack_word": "連",
+        "target": [7, 8],
+        "enemy_hp": 140, # 7 hits to defeat
+        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+    },
+    # 23 (Sentence Order - Expansion with Time & Location)
+    {
+        "question_type": "Sentence_Order",
+        "questions":[
+            { 
+                "meaning": "今天我在家 (I am at home today)", 
+                "answer_order": ["きょう", "わたし", "は", "うち", "に", "います"], 
+                "options":["きょう", "わたし", "は", "うち", "に", "います", "を", "へ"] 
+            },
+            { 
+                "meaning": "昨天吃了蘋果 (Ate an apple yesterday)", 
+                "answer_order":["きのう", "りんご", "を", "たべました"], 
+                "options":["きのう", "りんご", "を", "たべました", "たべます", "に", "は"] 
+            },
+            { 
+                "meaning": "在學校讀書 (Study at school)", 
+                "answer_order":["がっこう", "で", "ほん", "を", "よみます"], 
+                "options":["がっこう", "で", "ほん", "を", "よみます", "に", "が"] 
+            },
+            { 
+                "meaning": "明天去森林 (Go to the forest tomorrow)", 
+                "answer_order": ["あした", "もり", "へ", "いきます"], 
+                "options": ["あした", "もり", "へ", "いきます", "で", "を", "きのう"] 
+            },
+            { 
+                "meaning": "在餐廳吃肉 (Eat meat at the restaurant)", 
+                "answer_order":["レストラン", "で", "にく", "を", "たべます"], 
+                "options":["レストラン", "で", "にく", "を", "たべます", "に", "は"] 
+            },
+            { 
+                "meaning": "每天早上喝水 (Drink water every morning)", 
+                "answer_order":["まいあさ", "みず", "を", "のみます"], 
+                "options":["まいあさ", "みず", "を", "のみます", "は", "で", "の"] 
+            },
+            { 
+                "meaning": "昨天莉子買了書 (Riko bought a book yesterday)", 
+                "answer_order": ["きのう", "りこ", "は", "ほん", "を", "かいました"], 
+                "options":["きのう", "りこ", "は", "ほん", "を", "かいました", "かいます", "で"] 
+            },
+            { 
+                "meaning": "在房間寫字 (Write characters in the room)", 
+                "answer_order":["へや", "で", "じ", "を", "かきます"], 
+                "options":["へや", "で", "じ", "を", "かきます", "に", "へ"] 
+            }
+        ],
+        "order":[],
+        "enemy_surf": 9,
+        "enemy_attack_word": "完",
+        "target": [8, 9],
+        "enemy_hp": 160, # 8 hits to defeat
+        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
     },
     #
     
@@ -3695,14 +3927,18 @@ while running:
                 if pygame.mouse.get_pressed()[0]:
                     if click_check(pygame.mouse.get_pos(), transform_scale([570, 620, 300, 50])):  #start
                         if (time == 0):
+                            play_sfx("click")
                             time += 1
                             menu_action = "start"
                     if click_check(pygame.mouse.get_pos(), transform_scale([570, 690, 300, 50])):  #option
                         if (time == 0):
+                            play_sfx("click")
+                            play_sfx("click")
                             time += 1
                             menu_action = "option"
                     if click_check(pygame.mouse.get_pos(), transform_scale([570, 760, 300, 50])):  #option
                         if (time == 0):
+                            play_sfx("click")
                             time += 1
                             menu_action = "achievement"
                     if click_check(pygame.mouse.get_pos(), transform_scale([570, 830, 300, 50])):  #exit
@@ -4897,23 +5133,29 @@ while running:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if pygame.mouse.get_pressed()[0]:
                     pos = pygame.mouse.get_pos()
-                    
 
                     if click_check(pos, transform_scale([620, 860, 80, 80])) and time == 0:
+                        play_sfx("click")
                         selecting_weapon = not(selecting_weapon)
                         selecting_equiptment = False
                     elif click_check(pos, transform_scale([740, 860, 80, 80])) and time == 0:
+                        play_sfx("click")
                         selecting_equiptment = not(selecting_equiptment)
                         selecting_weapon = False
                     elif click_check(pos, w1_rect) and time == 0:
+                        play_sfx("click")
                         time += 1; menu_action = "w1"
                     elif click_check(pos, w2_rect) and save['unlock'][9] and time == 0:
+                        play_sfx("click")
                         time += 1; menu_action = "w2"
                     elif click_check(pos, w3_rect) and save['unlock'][20] and time == 0:
+                        play_sfx("click")
                         time += 1; menu_action = "w3"
                     elif click_check(pos, w4_rect) and (save['unlock'][29] or save['unlock'][34]) and time == 0:
+                        play_sfx("click")
                         time += 1; menu_action = "w4"
                     elif click_check(pos, transform_scale([40, 40, 80, 80])) and time == 0:
+                        play_sfx("click")
                         time += 1; menu_action = "back"
                     else:
                         selecting_weapon = False
@@ -4998,19 +5240,23 @@ while running:
                     if click_check(pygame.mouse.get_pos(), transform_scale([1186, 424, 75, 110])):
                         #if (save['current_stage']+1 < len(save["star"])):
                         if (save['current_stage'] < max_stage and save['current_stage']+1 < len(save["star"])):
+                            play_sfx("click")
                             save['current_stage'] += 1
                             write()
                     if click_check(pygame.mouse.get_pos(), transform_scale([162, 424, 75, 110])):
                         if (save['current_stage'] > min_stage):
+                            play_sfx("click")
                             save['current_stage'] -= 1
                             write()
                     if click_check(pygame.mouse.get_pos(), transform_scale([297, 198, 847, 635])):
                         if (save['unlock'][save["current_stage"]]):
                             if (time == 0):
+                                play_sfx("click")
                                 time += 1
                                 menu_action = "enter"
                     if click_check(pygame.mouse.get_pos(), transform_scale([40, 40, 80, 80])):
                         if(time == 0):
+                            play_sfx("click")
                             time += 1
                             menu_action = "back"
         # enter story
