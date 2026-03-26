@@ -2349,6 +2349,7 @@ battle_detail = [
         "enemy_attack_word": "む" ,
         "target": [5, 7],
         "enemy_hp": 100,
+        "enemy_attack": 20,
         "discription": "以滑鼠點擊正確的選項",
     },
     # 1
@@ -2373,6 +2374,7 @@ battle_detail = [
         "enemy_attack_word": "む" ,
         "target": [10, 14],
         "enemy_hp": 200,
+        "enemy_attack": 30,
         "discription": "以滑, 鼠點擊正確的選項",
     },
     # 2
@@ -2397,6 +2399,7 @@ battle_detail = [
         "enemy_attack_word": "や" ,
         "target": [10, 14],
         "enemy_hp": 200,
+        "enemy_attack": 30,
         "discription": "以滑鼠點擊正確的選項",
     },
     # 3
@@ -2421,6 +2424,7 @@ battle_detail = [
         "enemy_attack_word": "爪", 
         "target":[10, 14],
         "enemy_hp": 220,
+        "enemy_attack": 40,
         "discription": "以滑鼠點擊正確的選項",
     },
     # 4
@@ -2445,6 +2449,7 @@ battle_detail = [
         "enemy_attack_word": "吼", 
         "target":[10, 14],
         "enemy_hp": 240,
+        "enemy_attack": 50,
         "discription": "以滑鼠點擊正確的選項",
     },
     # 5
@@ -2474,6 +2479,7 @@ battle_detail = [
         "enemy_attack_word": "擊",
         "target": [15, 18],
         "enemy_hp": 260,
+        "enemy_attack": 60,
         "discription": "以滑鼠點擊正確的選項",
     },
     # 6
@@ -2499,6 +2505,7 @@ battle_detail = [
         "enemy_attack_word": "突", 
         "target": [11, 15], # Adjusted for 11 questions
         "enemy_hp": 280,
+        "enemy_attack": 70,
         "discription": "以滑鼠點擊正確的選項",
     },
     # 7
@@ -2590,6 +2597,7 @@ battle_detail = [
         "enemy_attack_word": "滅", 
         "target": [20, 25], 
         "enemy_hp": 400,
+        "enemy_attack": 80,
         "discription": "以滑鼠點擊正確的選項",
     },
     # 8
@@ -2628,6 +2636,7 @@ battle_detail = [
         "enemy_attack_word": "咬", 
         "target":[12, 16],
         "enemy_hp": 240,
+        "enemy_attack": 50,
         "discription": "以滑鼠點擊正確的選項",
     },
     # 9 (Kanji - Numbers)
@@ -2654,6 +2663,7 @@ battle_detail = [
         "enemy_attack_word": "算",
         "target": [10, 12],
         "enemy_hp": 200,
+        "enemy_attack": 30,
         "discription": "以滑鼠點擊漢字正確的平假名讀音",
     },
     # 10 (Kanji - Elements)
@@ -2675,6 +2685,7 @@ battle_detail = [
         "enemy_attack_word": "素",
         "target": [6, 7],
         "enemy_hp": 140,
+        "enemy_attack": 20,
         "discription": "以滑鼠點擊漢字正確的平假名讀音",
     },
     # 11 (kanji - Animals & Objects)
@@ -2692,6 +2703,7 @@ battle_detail = [
         "enemy_attack_word": "む",
         "target": [7, 9],
         "enemy_hp": 140,
+        "enemy_attack": 20,
         "discription": "以滑鼠拖拉正確的選項至空格內",
     },
     # 12 (kanji - Nature)
@@ -2714,6 +2726,7 @@ battle_detail = [
         "enemy_attack_word": "震",
         "target": [9, 12],
         "enemy_hp": 180,
+        "enemy_attack": 30,
         "discription": "以滑鼠點擊漢字正確的平假名讀音",
     },
     # 13 (kanji - Directions)
@@ -2734,6 +2747,7 @@ battle_detail = [
         "enemy_attack_word": "轉",
         "target": [9, 12],
         "enemy_hp": 180,
+        "enemy_attack": 30,
         "discription": "將正確的方向漢字拖拉至對應的中文意思旁",
     },
     # 14 (MC - Body & People)
@@ -2757,6 +2771,7 @@ battle_detail = [
         "enemy_attack_word": "抓",
         "target": [10, 13],
         "enemy_hp": 200,
+        "enemy_attack": 30,
         "discription": "以滑鼠點擊漢字正確的平假名讀音",
     },
     # 15 (Drag - Time & Periods)
@@ -2777,6 +2792,7 @@ battle_detail = [
         "enemy_attack_word": "遲",
         "target": [10, 13],
         "enemy_hp": 200,
+        "enemy_attack": 30,
         "discription": "將正確的時間漢字拖拉至對應的中文意思旁",
     },
     # 16 (MC - Adjectives)
@@ -2799,6 +2815,7 @@ battle_detail = [
         "enemy_attack_word": "幻",
         "target": [11, 14],
         "enemy_hp": 220,
+        "enemy_attack": 40,
         "discription": "以滑鼠點擊形容詞正確的平假名讀音",
     },
     # 17 (kanji to hiragana 1 )
@@ -2823,6 +2840,7 @@ battle_detail = [
         "enemy_attack_word": "む" ,
         "target": [5, 7],
         "enemy_hp": 100,
+        "enemy_attack": 20,
         "discription": "以滑鼠點擊正確的選項",
     },
     # 18 (kanji - Days of the week)
@@ -2842,6 +2860,7 @@ battle_detail = [
         "enemy_attack_word": "壓",
         "target":[6, 7],
         "enemy_hp": 140,
+        "enemy_attack": 20,
         "discription": "將正確的星期拖拉至對應的中文意思旁",
     },
     # 19 (MC - Mid Boss "Tenma" - Grand Kanji Exam)
@@ -2883,6 +2902,7 @@ battle_detail = [
         "enemy_attack_word": "死",
         "target": [20, 25],
         "enemy_hp": 400,   # Requires 20 hits to defeat!
+        "enemy_attack": 50,
         "discription": "中級Boss『天魔』降臨！點擊漢字正確的讀音！",
     },
     # 20 (Sentence Order - Basic A is B)
@@ -2920,6 +2940,7 @@ battle_detail = [
         "enemy_attack_word": "基",
         "target": [5, 6],
         "enemy_hp": 100, # 5 hits to defeat
+        "enemy_attack": 20,
         "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
     },
     # 21 (Sentence Order - Particles を, に, へ)
@@ -2962,6 +2983,7 @@ battle_detail = [
         "enemy_attack_word": "助", # Represents "Particles"
         "target": [6, 7],
         "enemy_hp": 120, # 6 hits to defeat
+        "enemy_attack": 30,
         "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
     },
     # 22 (Sentence Order - Subject + Object + Verb)
@@ -3008,7 +3030,8 @@ battle_detail = [
         "enemy_surf": 9,
         "enemy_attack_word": "連",
         "target": [7, 8],
-        "enemy_hp": 140, # 7 hits to defeat
+        "enemy_hp": 140, # 7 hits to defeat\
+        "enemy_attack": 30,
         "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
     },
     # 23 (Sentence Order - Expansion with Time & Location)
@@ -3061,12 +3084,11 @@ battle_detail = [
         "enemy_attack_word": "完",
         "target": [8, 9],
         "enemy_hp": 160, # 8 hits to defeat
+        "enemy_attack": 40,
         "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
     },
-    #
-    
-    
-    #5 (masu to ru)
+
+    #24 (masu to ru)
     {
         "question_type": "input",
         "question": "verb_masu",
@@ -3076,125 +3098,73 @@ battle_detail = [
         "enemy_attack_word": "打",
         "target": [7, 10],
         "enemy_hp": 140,
+        "enemy_attack": 30,
         "curr_qs": None,
         "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\nます形 → 辞書形",
     },
-    #6 sentence order
+    # 25 (Input - Ru to Te Form)
     {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
-        "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160,
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+        "question_type": "input",
+        "question": "verb_ru",
+        "answer": "verb_te",
+        "enemy_surf": 9,
+        "counter": 0,
+        "enemy_attack_word": "連",
+        "target": [9, 11], # 9 hits for 3 stars
+        "enemy_hp": 180,
+        "enemy_attack": 30,
+        "curr_qs": None,
+        "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → て形",
     },
-   
-    #11
+    # 26 (Input - Ru to Nai Form)
     {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
-        "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160,
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+        "question_type": "input",
+        "question": "verb_ru",
+        "answer": "verb_nai",
+        "enemy_surf": 9,
+        "counter": 0,
+        "enemy_attack_word": "無",
+        "target":[10, 12], # 10 hits for 3 stars
+        "enemy_hp": 200,
+        "enemy_attack": 40,
+        "curr_qs": None,
+        "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → ない形 (否定)",
     },
-    #12
+    # 27 (Input - Ru to Ta Form)
     {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
-        "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160,
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+        "question_type": "input",
+        "question": "verb_ru",
+        "answer": "verb_ta",
+        "enemy_surf": 9,
+        "counter": 0,
+        "enemy_attack_word": "極",
+        "target": [11, 13], # 11 hits for 3 stars
+        "enemy_hp": 220,
+        "enemy_attack": 40,
+        "curr_qs": None,
+        "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → た形 (過去式)",
     },
-    #13
+    # 28 (Input - Ru to Kanou Form / Boss Fight)
     {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
-        "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160,
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+        "question_type": "input",
+        "question": "verb_ru",
+        "answer": "verb_kanou",
+        "enemy_surf": 29,  # Demon Dragon Boss Sprite
+        "counter": 0,
+        "enemy_attack_word": "滅",
+        "target": [20, 25], # 20 hits required! A true test of endurance.
+        "enemy_hp": 400,
+        "enemy_attack": 50,
+        "curr_qs": None,
+        "discription": "【魔龍降臨】以鍵盤輸入羅馬拼音後，按Enter\n辞書形 → 可能形 (能/可以)",
     },
-    #14
+    #29 chapter 4 ending 1 start
     {
         "question_type": "Sentence_Order",
         "questions": [
             { 
                 "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
+                "nswer_order": ["わたし", "は", "がくせい", "です"], 
                 "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
             },
             { 
@@ -3213,411 +3183,7 @@ battle_detail = [
         "enemy_attack_word": "亂",
         "target": [2, 3], # 3 stars criteria
         "enemy_hp": 160,
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
-    },
-    #15
-    {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
-        "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160,
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
-    },
-    #16
-    {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
-        "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160,
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
-    },
-    #17
-    {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
-        "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160,
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
-    },
-    #18
-    {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
-        "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160,
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
-    },
-    #19
-    {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
-        "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160,
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
-    },
-    #20
-    {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
-        "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160,
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
-    },
-    #21
-    {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
-        "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160,
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
-    },
-    #22
-    {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
-        "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160,
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
-    },
-    #23
-    {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
-        "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160,
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
-    },
-    #24
-    {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
-        "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160,
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
-    },
-    #25
-    {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
-        "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160,
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
-    },
-    #26
-    {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
-        "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160,
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
-    },
-    #27
-    {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
-        "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160,
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
-    },
-    #28
-    {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
-        "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160,
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
-    },
-    #29
-    {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
-        "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160,
+        "enemy_attack": 30,
         "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
     },
     #30
@@ -3645,6 +3211,7 @@ battle_detail = [
         "enemy_attack_word": "亂",
         "target": [2, 3], # 3 stars criteria
         "enemy_hp": 160,
+        "enemy_attack": 30,
         "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
     },
     #31
@@ -3672,6 +3239,7 @@ battle_detail = [
         "enemy_attack_word": "亂",
         "target": [2, 3], # 3 stars criteria
         "enemy_hp": 160,
+        "enemy_attack": 30,
         "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
     },
     #32
@@ -3699,6 +3267,7 @@ battle_detail = [
         "enemy_attack_word": "亂",
         "target": [2, 3], # 3 stars criteria
         "enemy_hp": 160,
+        "enemy_attack": 30,
         "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
     },
     #33
@@ -3726,6 +3295,7 @@ battle_detail = [
         "enemy_attack_word": "亂",
         "target": [2, 3], # 3 stars criteria
         "enemy_hp": 160,
+        "enemy_attack": 30,
         "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
     },
     #34
@@ -3753,6 +3323,7 @@ battle_detail = [
         "enemy_attack_word": "亂",
         "target": [2, 3], # 3 stars criteria
         "enemy_hp": 160,
+        "enemy_attack": 30,
         "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
     },
     #35
@@ -3780,6 +3351,7 @@ battle_detail = [
         "enemy_attack_word": "亂",
         "target": [2, 3], # 3 stars criteria
         "enemy_hp": 160,
+        "enemy_attack": 30,
         "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
     },
     #36
@@ -3807,6 +3379,7 @@ battle_detail = [
         "enemy_attack_word": "亂",
         "target": [2, 3], # 3 stars criteria
         "enemy_hp": 160,
+        "enemy_attack": 30,
         "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
     },
     #37
@@ -3834,6 +3407,7 @@ battle_detail = [
         "enemy_attack_word": "亂",
         "target": [2, 3], # 3 stars criteria
         "enemy_hp": 160,
+        "enemy_attack": 30,
         "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
     },
     #38
@@ -3861,6 +3435,7 @@ battle_detail = [
         "enemy_attack_word": "亂",
         "target": [2, 3], # 3 stars criteria
         "enemy_hp": 160,
+        "enemy_attack": 30,
         "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
     }
     
@@ -4670,10 +4245,16 @@ while running:
                     text(screen, current_q["options"][dragged_item_index], (0,0,0), 32, r.center, "center")
 
                 # Submit Button (Cast Spell)
-                submit_rect = pygame.Rect(transform_scale([600, 800, 240, 80]))
-                pygame.draw.rect(screen, [186, 148, 45], submit_rect, border_radius=10)
+                submit_rect = pygame.Rect(transform_scale([750, 800, 200, 80]))
+                pygame.draw.rect(screen,[186, 148, 45], submit_rect, border_radius=10)
                 pygame.draw.rect(screen, [0, 0, 0], submit_rect, 3, 10)
                 text(screen, "詠唱", [0, 0, 0], 40, submit_rect.center, "center")
+
+                # Reset Button (Clear Sentence)
+                reset_rect = pygame.Rect(transform_scale([490, 800, 200, 80]))
+                pygame.draw.rect(screen, [200, 80, 80], reset_rect, border_radius=10) # Reddish color for reset
+                pygame.draw.rect(screen, [0, 0, 0], reset_rect, 3, 10)
+                text(screen, "重置", [255, 255, 255], 40, reset_rect.center, "center")
 
                 # Determine Positions and Draw Blocks
                 # We arrange blocks based on whether they are in 'current_sentence_indices' or not
@@ -4701,13 +4282,18 @@ while running:
                             if submit_rect.collidepoint(event.pos):
                                 time = 1 # Start validation
                                 # Construct user sentence from indices
-                                user_sentence = [current_q["options"][i] for i in current_sentence_indices]
+                                user_sentence =[current_q["options"][i] for i in current_sentence_indices]
                                 if user_sentence == current_q["answer_order"]:
                                     correct = True
                                 else:
                                     correct = False
                             
-                            # 2. Check Words
+                            # 2. Check Reset Button
+                            elif reset_rect.collidepoint(event.pos):
+                                # play_sfx("click")  # Uncomment this if you added the sound manager!
+                                current_sentence_indices.clear() # This empties the answer line instantly!
+                            
+                            # 3. Check Words
                             elif not is_dragging:
                                 for i, rect in enumerate(draggable_rects):
                                     if rect.collidepoint(event.pos):
@@ -4729,8 +4315,10 @@ while running:
                             if zone_answer.colliderect(draggable_rects[dragged_item_index]):
                                 if hover_insertion_index != -1:
                                     current_sentence_indices.insert(hover_insertion_index, dragged_item_index)
+                                else:
+                                    current_sentence_indices.append(dragged_item_index)
                             else:
-                                current_sentence_indices.append(dragged_item_index)
+                                pass 
                             
                             
                             is_dragging = False
