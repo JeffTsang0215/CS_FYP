@@ -4,6 +4,7 @@ from copy import deepcopy
 #basic set up for pygame
 pygame.init()
 pygame.font.init()
+pygame.mixer.init()
 
 # this is for running python main.py
 path = os.path.dirname(os.path.abspath(__file__)) + '/'
@@ -36,7 +37,7 @@ HEIGHT = int(WIDTH/1440*960)
 
 def transform_scale(arr):
     return [int(n*WIDTH/1440) for n in arr]
-# draw text on screen
+
 # draw text on screen
 def text(screen, text_string, color, size, pos, align="left"):
     try:
@@ -1948,7 +1949,14 @@ images = [
     pygame.transform.scale(pygame.image.load(path+"media/finalstage1_title.png"),transform_scale([299, 60])),         #28
     pygame.transform.scale(pygame.image.load(path+"media/demon_1.png"), transform_scale([685, 400])),                 #29
     pygame.transform.scale(pygame.image.load(path+"media/high_demon_1.png"), transform_scale([187, 60])),  # unused
-    pygame.transform.scale(pygame.image.load(path+"media/world_map.png"), transform_scale([WIDTH, HEIGHT]))           #31
+    pygame.transform.scale(pygame.image.load(path+"media/world_map.png"), transform_scale([WIDTH, HEIGHT])),          #31
+    pygame.transform.scale(pygame.image.load(path+"media/armor1.png"), transform_scale([60, 60])),                    #32
+    pygame.transform.scale(pygame.image.load(path+"media/armor2.png"), transform_scale([60, 60])),                    #33
+    pygame.transform.scale(pygame.image.load(path+"media/armor3.png"), transform_scale([60, 60])),                    #34
+    pygame.transform.scale(pygame.image.load(path+"media/weapon1.png"), transform_scale([60, 60])),                   #35
+    pygame.transform.scale(pygame.image.load(path+"media/weapon2.png"), transform_scale([60, 60])),                   #36
+    pygame.transform.scale(pygame.image.load(path+"media/weapon3.png"), transform_scale([60, 60])),                   #37
+    pygame.transform.scale(pygame.image.load(path+"media/sp_armor_weapon.png"), transform_scale([60, 60])),           #38
 
 ]                                                              
 
@@ -4694,18 +4702,42 @@ while running:
         if(save["obtain"][0]):
             pygame.draw.rect(screen, [153, 116, 41], transform_scale([620, 860, 80, 80]), border_radius=br)
             pygame.draw.rect(screen, [69, 46, 0], transform_scale([620, 860, 80, 80]), br, br)
+            if save["equipt"][0] != 99:
+                screen.blit(images[int(save["equipt"][0]/2)+35], transform_scale([630, 870]))
         
         if(selecting_weapon):
             pygame.draw.rect(screen, [153, 116, 41], transform_scale([620, 860-80*save["obtain_w_n"], 80, 80*save["obtain_w_n"]]), border_radius=br)
             pygame.draw.rect(screen, [69, 46, 0], transform_scale([620, 860-80*save["obtain_w_n"], 80, 80*save["obtain_w_n"]]), br, br)
+            if(save["obtain"][0]):
+                screen.blit(images[35], transform_scale([630, 870-80]))
+            if(save["obtain"][2]):
+                screen.blit(images[36], transform_scale([630, 870-160]))
+            if(save["obtain"][4]):
+                screen.blit(images[37], transform_scale([630, 870-240]))
+            if (save["obtain"][6]):
+                screen.blit(images[38], transform_scale([630, 870-80*save["obtain_w_n"]]))
+
+            
 
         if(save["obtain"][1]):
             pygame.draw.rect(screen, [153, 116, 41], transform_scale([740, 860, 80, 80]), border_radius=br)
             pygame.draw.rect(screen, [69, 46, 0], transform_scale([740, 860, 80, 80]), br, br)
+            if save["equipt"][1] == 6:
+                screen.blit(images[38], transform_scale([750, 870]))
+            elif save["equipt"][1] != 99:
+                screen.blit(images[int(save["equipt"][1]/2)+32], transform_scale([750, 870]))
 
         if(selecting_equiptment):
             pygame.draw.rect(screen, [153, 116, 41], transform_scale([740, 860-80*save["obtain_e_n"], 80, 80*save["obtain_e_n"]]), border_radius=br)
             pygame.draw.rect(screen, [69, 46, 0], transform_scale([740, 860-80*save["obtain_e_n"], 80, 80*save["obtain_e_n"]]), br, br)
+            if(save["obtain"][1]):
+                screen.blit(images[32], transform_scale([750, 870-80]))
+            if(save["obtain"][3]):
+                screen.blit(images[33], transform_scale([750, 870-160]))
+            if(save["obtain"][5]):
+                screen.blit(images[34], transform_scale([750, 870-240]))
+            if (save["obtain"][6]):
+                screen.blit(images[38], transform_scale([750, 870-80*save["obtain_e_n"]]))
 
 
         if(time != 0):
@@ -4724,12 +4756,62 @@ while running:
 
                     if click_check(pos, transform_scale([620, 860, 80, 80])) and time == 0:
                         play_sfx("click")
+                        if selecting_weapon:
+                            save["equipt"][0] = 99
                         selecting_weapon = not(selecting_weapon)
                         selecting_equiptment = False
                     elif click_check(pos, transform_scale([740, 860, 80, 80])) and time == 0:
                         play_sfx("click")
+                        if selecting_equiptment:
+                            save["equipt"][1] = 99
                         selecting_equiptment = not(selecting_equiptment)
                         selecting_weapon = False
+                    elif click_check(pos, transform_scale([620, 860-80, 80, 80])) and time == 0 and save["obtain"][0] and selecting_weapon:
+                        play_sfx("click")
+                        if save["equipt"][1] == 6:
+                            save["equipt"][1] = 99
+                        save["equipt"][0] = 0
+                        selecting_weapon = not(selecting_weapon)
+                    elif click_check(pos, transform_scale([620, 860-160, 80, 80])) and time == 0 and save["obtain"][2] and selecting_weapon:
+                        play_sfx("click")
+                        if save["equipt"][1] == 6:
+                            save["equipt"][1] = 99
+                        save["equipt"][0] = 2
+                        selecting_weapon = not(selecting_weapon)
+                    elif click_check(pos, transform_scale([620, 860-240, 80, 80])) and time == 0 and save["obtain"][4] and selecting_weapon:
+                        play_sfx("click")
+                        if save["equipt"][1] == 6:
+                            save["equipt"][1] = 99
+                        save["equipt"][0] = 4
+                        selecting_weapon = not(selecting_weapon)
+                    elif click_check(pos, transform_scale([740, 860-80, 80, 80])) and time == 0 and save["obtain"][1] and selecting_equiptment:
+                        play_sfx("click")
+                        if save["equipt"][0] == 6:
+                            save["equipt"][0] = 99
+                        save["equipt"][1] = 1
+                        selecting_equiptment = not(selecting_equiptment)
+                    elif click_check(pos, transform_scale([740, 860-160, 80, 80])) and time == 0 and save["obtain"][3] and selecting_equiptment:
+                        play_sfx("click")
+                        if save["equipt"][0] == 6:
+                            save["equipt"][0] = 99
+                        save["equipt"][1] = 3
+                        selecting_equiptment = not(selecting_equiptment)
+                    elif click_check(pos, transform_scale([740, 860-240, 80, 80])) and time == 0 and save["obtain"][5] and selecting_equiptment:
+                        play_sfx("click")
+                        if save["equipt"][0] == 6:
+                            save["equipt"][0] = 99
+                        save["equipt"][1] = 5
+                        selecting_equiptment = not(selecting_equiptment)
+                    elif click_check(pos, transform_scale([620, 860-80*save["obtain_w_n"], 80, 80])) and time == 0 and save["obtain"][6] and selecting_weapon:
+                        play_sfx("click")
+                        save["equipt"][0] = 6
+                        save["equipt"][1] = 6
+                        selecting_weapon = not(selecting_weapon)
+                    elif click_check(pos, transform_scale([740, 860-80*save["obtain_e_n"], 80, 80])) and time == 0 and save["obtain"][6] and selecting_equiptment:
+                        play_sfx("click")
+                        save["equipt"][0] = 6
+                        save["equipt"][1] = 6
+                        selecting_equiptment = not(selecting_equiptment)
                     elif click_check(pos, w1_rect) and time == 0:
                         play_sfx("click")
                         time += 1; menu_action = "w1"
