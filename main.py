@@ -12,7 +12,7 @@ path = os.path.dirname(os.path.abspath(__file__)) + '/'
 # this is for running the executable file
 # path = os.path.dirname(os.path.realpath(sys.executable)) + '/'
 
-new_game = True
+new_game = False
 god_mod = False
 chapter_ranges =[(0, 8), (9, 19), (20, 28), (29, 38)] # (Start Stage, End Stage) for Ch 1, 2, 3, 4
 current_chapter = 0
@@ -31,7 +31,6 @@ save = {
     'music': 100,
     'full_screen': False,
     'hard': False,
-    'passed_first_round': False,
 }
 
 WIDTH  = int(pygame.display.Info().current_w * 0.65)
@@ -1560,7 +1559,7 @@ def draw_story_bg(stage):
         case 38:
             screen.blit(images[3], (0, 0))             
 
-def end_stage_achievement_check(recover_times, damage_taken_times, attack_times, player_hp, idle_times, stage):
+def end_stage_achievement_check(recover_times, damage_taken_times, attack_times, click_times, player_hp, idle_times, stage):
     if(sum(save["star"]) >= int(len(battle_detail)*3/2) and not(save["achievement"][4])):
         save["achievement"][4] = True
         achievement_stack.append([4, fps])
@@ -1580,7 +1579,7 @@ def end_stage_achievement_check(recover_times, damage_taken_times, attack_times,
     if (damage_taken_times == 0 and not(save["achievement"][6])):
         save["achievement"][6] = True
         achievement_stack.append([6, fps])
-    if (player_hp <= 100*0.1 and not(save["achievement"][7])):
+    if (0 < player_hp <= 100*0.1 and not(save["achievement"][7])):
         save["achievement"][7] = True
         achievement_stack.append([7, fps])
     if (idle_times >= fps*60*15 and not(save["achievement"][21])):
@@ -1619,6 +1618,18 @@ def end_stage_achievement_check(recover_times, damage_taken_times, attack_times,
     elif(stage == 38 and not(save["achievement"][24])):
         save["achievement"][24] = True
         achievement_stack.append([24, fps])
+    elif(stage == 33 and not(save["achievement"][27]) and save['equipt'][0] == 7 and save['equipt'][0] == 8): # here, no equiptment
+        save["achievement"][27] = True
+        achievement_stack.append([27])
+    elif(stage == 38 and not(save["achievement"][27]) and save['equipt'][0] == 7 and save['equipt'][0] == 8): # here, no equiptment
+        save["achievement"][27] = True
+        achievement_stack.append([27, fps])
+    elif(stage == 33 and not(save["achievement"][26]) and save['hard']): # here, 2nd round
+        save["achievement"][26] = True
+        achievement_stack.append([26])
+    elif(stage == 38 and not(save["achievement"][26]) and save['hard']): # here, 2nd round
+        save["achievement"][26] = True
+        achievement_stack.append([26])
 
     elif(stage == 8 and not(save["achievement"][14])):
         save["achievement"][14] = True
@@ -1656,6 +1667,15 @@ def end_stage_achievement_check(recover_times, damage_taken_times, attack_times,
         save["obtain"][6] = True
         save["obtain_w_n"] += 1
         save["obtain_e_n"] += 1
+    
+    if(attack_times == 1 and click_times == 0 and not(save["achievement"][28])):
+        save["achievement"][28] = True
+        achievement_stack.append([28, fps])
+
+    if (not(save["achievement"][29])):
+        if(sum(save["achievement"]) == 29):
+            save["achievement"][29] = True
+            achievement_stack.append([29, fps])
     write()
 
 
@@ -1695,7 +1715,6 @@ if new_game:
         'music': 100,
         'full_screen': False,
         'hard': False,
-        'passed_first_round': False,
     }
 if god_mod:
     save = {
@@ -1713,7 +1732,6 @@ if god_mod:
         'music': 100,
         'full_screen': False,
         'hard': False,
-        'passed_first_round': False,
     }
 # question bank: verb form convertion
 # size: 27
@@ -1904,7 +1922,7 @@ achievement_data = {
         "已達成\n「????」\n結局", 
         "已達成\n「????」\n結局", 
         "開啟二周目", 
-        "以困難模式通關遊戲", 
+        "通關二周目", 
         "不穿任何裝備\n通關最終關卡", 
         "只用一擊擊敗魔物", 
         "已獲得所有成就", 
@@ -1935,9 +1953,9 @@ achievement_data = {
         "殺死莉子",                                     # done 22
         "已達成\n「犧牲小我」\n結局",                   # done
         "已達成\n「守護一切」\n結局",                   # done
-        "開啟二周目", 
-        "以困難模式通關遊戲", 
-        "不穿任何裝備\n通關最終關卡", 
+        "開啟二周目",                                  # done
+        "通關二周目",                                  # done 
+        "不穿任何裝備\n通關最終關卡",                   #done 
         "只用一擊擊敗魔物", 
         "已獲得所有成就", 
     ],
@@ -2371,7 +2389,7 @@ parts = []
 hover_insertion_index = -1
 block_offsets = {}
 
-scale = [2, 80, 4, 50, 8, 20, 10, 1, 10] # player_hp -= round(battle_detail[stage]["enemy_attack"] * scale[save["equipt"][1]]/10) | enemy_hp -= 20*scale[save["equipt"][0]]
+scale = [2, 80, 4, 50, 8, 20, 10, 1, 100] # player_hp -= round(battle_detail[stage]["enemy_attack"] * scale[save["equipt"][1]]/10) | enemy_hp -= 20*scale[save["equipt"][0]]
 
 # question type: MC, Drag, input
 battle_detail = [
@@ -3476,8 +3494,8 @@ battle_detail = [
         "enemy_surf": 29,
         "enemy_attack_word": "亂",
         "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 30 * (1.5 if save['hard'] else 1),
+        "enemy_hp": 1600 * (1.5 if save['hard'] else 1),
+        "enemy_attack": 200 * (1.5 if save['hard'] else 1),
         "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
     }
     
@@ -3487,1115 +3505,1113 @@ battle_detail = [
 
 def reload_battle_detail():
     battle_detail = [
-    # 0
-    {
-        "question_type": "MC",
-        "question": ["あ","い","う","え","お"],
-        "answer": {
-            "あ": ("a", ["a", "i", "u", "e"]),
-            "い": ("i", ["i", "u", "e", "o"]),
-            "う": ("u", ["u", "e", "o", "a"]),
-            "え": ("e", ["e", "o", "a", "i"]),
-            "お": ("o", ["o", "a", "i", "u"])
+        # 0
+        {
+            "question_type": "MC",
+            "question": ["あ","い","う","え","お"],
+            "answer": {
+                "あ": ("a", ["a", "i", "u", "e"]),
+                "い": ("i", ["i", "u", "e", "o"]),
+                "う": ("u", ["u", "e", "o", "a"]),
+                "え": ("e", ["e", "o", "a", "i"]),
+                "お": ("o", ["o", "a", "i", "u"])
+            },
+            "word_size": 64,
+            "order": [],
+            "enemy_surf": 9,
+            "enemy_attack_word": "む" ,
+            "target": [5, 7],
+            "enemy_hp": 100 * (1.5 if save['hard'] else 1),
+            "enemy_attack": 20 * (1.5 if save['hard'] else 1),
+            "discription": "以滑鼠點擊正確的選項",
         },
-        "word_size": 64,
-        "order": [],
-        "enemy_surf": 9,
-        "enemy_attack_word": "む" ,
-        "target": [5, 7],
-        "enemy_hp": 100 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 20 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊正確的選項",
-    },
-    # 1
-    {
-        "question_type": "MC",
-        "question": ["か","き","く","け","こ", "が","ぎ","ぐ","げ","ご"],
-        "answer": {
-            "か": ("ka", ["ka", "ga", "ha", "wa"]),
-            "き": ("ki", ["ki", "sa", "chi", "gi"]),
-            "く": ("ku", ["ka", "ga", "ku", "su"]),
-            "け": ("ke", ["ke", "ka", "ki", "gi"]),
-            "こ": ("ko", ["ko", "go", "wo", "ka"]),
-            "が": ("ga", ["ga", "ka", "na", "ra"]),
-            "ぎ": ("gi", ["gi", "ki", "shi", "bi"]),
-            "ぐ": ("gu", ["gu", "ku", "su", "bu"]),
-            "げ": ("ge", ["ge", "ke", "ko", "go"]),
-            "ご": ("go", ["go", "ko", "so", "ga"])
+        # 1
+        {
+            "question_type": "MC",
+            "question": ["か","き","く","け","こ", "が","ぎ","ぐ","げ","ご"],
+            "answer": {
+                "か": ("ka", ["ka", "ga", "ha", "wa"]),
+                "き": ("ki", ["ki", "sa", "chi", "gi"]),
+                "く": ("ku", ["ka", "ga", "ku", "su"]),
+                "け": ("ke", ["ke", "ka", "ki", "gi"]),
+                "こ": ("ko", ["ko", "go", "wo", "ka"]),
+                "が": ("ga", ["ga", "ka", "na", "ra"]),
+                "ぎ": ("gi", ["gi", "ki", "shi", "bi"]),
+                "ぐ": ("gu", ["gu", "ku", "su", "bu"]),
+                "げ": ("ge", ["ge", "ke", "ko", "go"]),
+                "ご": ("go", ["go", "ko", "so", "ga"])
+            },
+            "word_size": 64,
+            "order": [],
+            "enemy_surf": 9,
+            "enemy_attack_word": "む" ,
+            "target": [10, 14],
+            "enemy_hp": 200 * (1.5 if save['hard'] else 1),
+            "enemy_attack": 30 * (1.5 if save['hard'] else 1),
+            "discription": "以滑, 鼠點擊正確的選項",
         },
-        "word_size": 64,
-        "order": [],
-        "enemy_surf": 9,
-        "enemy_attack_word": "む" ,
-        "target": [10, 14],
-        "enemy_hp": 200 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "以滑, 鼠點擊正確的選項",
-    },
-    # 2
-    {
-        "question_type": "MC",
-        "question":["さ","し","す","せ","そ", "ざ","じ","ず","ぜ","ぞ"],
-        "answer": {
-            "さ": ("sa", ["sa", "za", "chi", "ki"]),
-            "し": ("shi", ["shi", "ji", "chi", "tsu"]),
-            "す": ("su", ["su", "zu", "tsu", "ku"]),
-            "せ": ("se",["se", "ze", "te", "ne"]),
-            "そ": ("so",["so", "zo", "to", "ko"]),
-            "ざ": ("za",["za", "sa", "da", "ga"]),
-            "じ": ("ji", ["ji", "shi", "gi", "zi"]),
-            "ず": ("zu", ["zu", "su", "dzu", "gu"]),
-            "ぜ": ("ze", ["ze", "se", "de", "ge"]),
-            "ぞ": ("zo", ["zo", "so", "do", "go"])
+        # 2
+        {
+            "question_type": "MC",
+            "question":["さ","し","す","せ","そ", "ざ","じ","ず","ぜ","ぞ"],
+            "answer": {
+                "さ": ("sa", ["sa", "za", "chi", "ki"]),
+                "し": ("shi", ["shi", "ji", "chi", "tsu"]),
+                "す": ("su", ["su", "zu", "tsu", "ku"]),
+                "せ": ("se",["se", "ze", "te", "ne"]),
+                "そ": ("so",["so", "zo", "to", "ko"]),
+                "ざ": ("za",["za", "sa", "da", "ga"]),
+                "じ": ("ji", ["ji", "shi", "gi", "zi"]),
+                "ず": ("zu", ["zu", "su", "dzu", "gu"]),
+                "ぜ": ("ze", ["ze", "se", "de", "ge"]),
+                "ぞ": ("zo", ["zo", "so", "do", "go"])
+            },
+            "word_size": 64,
+            "order":[],
+            "enemy_surf": 9,
+            "enemy_attack_word": "や" ,
+            "target": [10, 14],
+            "enemy_hp": 200 * (1.5 if save['hard'] else 1),
+            "enemy_attack": 30 * (1.5 if save['hard'] else 1),
+            "discription": "以滑鼠點擊正確的選項",
         },
-        "word_size": 64,
-        "order":[],
-        "enemy_surf": 9,
-        "enemy_attack_word": "や" ,
-        "target": [10, 14],
-        "enemy_hp": 200 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊正確的選項",
-    },
-    # 3
-    {
-        "question_type": "MC",
-        "question":["た","ち","つ","て","と", "だ","ぢ","づ","で","ど"],
-        "answer": {
-            "た": ("ta",["ta", "da", "ka", "na"]),
-            "ち": ("chi", ["chi", "shi", "ti", "ji"]),
-            "つ": ("tsu", ["tsu", "su", "tu", "du"]),
-            "て": ("te", ["te", "de", "se", "he"]),
-            "と": ("to", ["to", "do", "ko", "so"]),
-            "だ": ("da",["da", "ta", "ba", "ga"]),
-            "ぢ": ("di",["di", "ji", "chi", "zi"]),
-            "づ": ("du",["du", "zu", "tsu", "dzu"]),
-            "で": ("de", ["de", "te", "ge", "be"]),
-            "ど": ("do", ["do", "to", "go", "bo"])
+        # 3
+        {
+            "question_type": "MC",
+            "question":["た","ち","つ","て","と", "だ","ぢ","づ","で","ど"],
+            "answer": {
+                "た": ("ta",["ta", "da", "ka", "na"]),
+                "ち": ("chi", ["chi", "shi", "ti", "ji"]),
+                "つ": ("tsu", ["tsu", "su", "tu", "du"]),
+                "て": ("te", ["te", "de", "se", "he"]),
+                "と": ("to", ["to", "do", "ko", "so"]),
+                "だ": ("da",["da", "ta", "ba", "ga"]),
+                "ぢ": ("di",["di", "ji", "chi", "zi"]),
+                "づ": ("du",["du", "zu", "tsu", "dzu"]),
+                "で": ("de", ["de", "te", "ge", "be"]),
+                "ど": ("do", ["do", "to", "go", "bo"])
+            },
+            "word_size": 64,
+            "order":[],
+            "enemy_surf": 9,
+            "enemy_attack_word": "爪", 
+            "target":[10, 14],
+            "enemy_hp": 220 * (1.5 if save['hard'] else 1),
+            "enemy_attack": 40 * (1.5 if save['hard'] else 1),
+            "discription": "以滑鼠點擊正確的選項",
         },
-        "word_size": 64,
-        "order":[],
-        "enemy_surf": 9,
-        "enemy_attack_word": "爪", 
-        "target":[10, 14],
-        "enemy_hp": 220 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 40 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊正確的選項",
-    },
-    # 4
-    {
-        "question_type": "MC",
-        "question":["な","に","ぬ","ね","の", "ま","み","む","め","も"],
-        "answer": {
-            "な": ("na",["na", "ma", "ta", "ha"]),
-            "に": ("ni",["ni", "mi", "ri", "chi"]),
-            "ぬ": ("nu", ["nu", "mu", "me", "ne"]),  # Tests visual similarity with me/ne
-            "ね": ("ne",["ne", "re", "wa", "nu"]),  # Tests visual similarity with re/wa
-            "の": ("no",["no", "mo", "so", "ro"]),
-            "ま": ("ma",["ma", "na", "ha", "ho"]),  # Tests visual similarity with ha/ho
-            "み": ("mi",["mi", "ni", "ri", "hi"]),
-            "む": ("mu",["mu", "su", "nu", "fu"]),  # Tests visual similarity with su
-            "め": ("me",["me", "nu", "ne", "no"]),  # Tests visual similarity with nu/ne
-            "も": ("mo",["mo", "ma", "to", "yo"])
+        # 4
+        {
+            "question_type": "MC",
+            "question":["な","に","ぬ","ね","の", "ま","み","む","め","も"],
+            "answer": {
+                "な": ("na",["na", "ma", "ta", "ha"]),
+                "に": ("ni",["ni", "mi", "ri", "chi"]),
+                "ぬ": ("nu", ["nu", "mu", "me", "ne"]),  # Tests visual similarity with me/ne
+                "ね": ("ne",["ne", "re", "wa", "nu"]),  # Tests visual similarity with re/wa
+                "の": ("no",["no", "mo", "so", "ro"]),
+                "ま": ("ma",["ma", "na", "ha", "ho"]),  # Tests visual similarity with ha/ho
+                "み": ("mi",["mi", "ni", "ri", "hi"]),
+                "む": ("mu",["mu", "su", "nu", "fu"]),  # Tests visual similarity with su
+                "め": ("me",["me", "nu", "ne", "no"]),  # Tests visual similarity with nu/ne
+                "も": ("mo",["mo", "ma", "to", "yo"])
+            },
+            "word_size": 64,
+            "order":[],
+            "enemy_surf": 29, 
+            "enemy_attack_word": "吼", 
+            "target":[10, 14],
+            "enemy_hp": 240 * (1.5 if save['hard'] else 1),
+            "enemy_attack": 50 * (1.5 if save['hard'] else 1),
+            "discription": "以滑鼠點擊正確的選項",
         },
-        "word_size": 64,
-        "order":[],
-        "enemy_surf": 29, 
-        "enemy_attack_word": "吼", 
-        "target":[10, 14],
-        "enemy_hp": 240 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 50 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊正確的選項",
-    },
-    # 5
-    {
-        "question_type": "MC",
-        "question":["は","ひ","ふ","へ","ほ", "ば","び","ぶ","べ","ぼ", "ぱ","ぴ","ぷ","ぺ","ぽ"],
-        "answer": {
-            "は": ("ha",["ha", "ba", "pa", "ho"]), # Tests visual similarity with ho
-            "ひ": ("hi", ["hi", "bi", "pi", "ni"]),
-            "ふ": ("fu",["fu", "bu", "pu", "nu"]),
-            "へ": ("he",["he", "be", "pe", "te"]),
-            "ほ": ("ho",["ho", "bo", "po", "ha"]), # Tests visual similarity with ha
-            "ば": ("ba",["ba", "ha", "pa", "da"]),
-            "び": ("bi", ["bi", "hi", "pi", "ji"]),
-            "ぶ": ("bu", ["bu", "fu", "pu", "zu"]),
-            "べ": ("be", ["be", "he", "pe", "de"]),
-            "ぼ": ("bo",["bo", "ho", "po", "do"]),
-            "ぱ": ("pa",["pa", "ha", "ba", "ya"]),
-            "ぴ": ("pi",["pi", "hi", "bi", "ri"]),
-            "ぷ": ("pu", ["pu", "fu", "bu", "mu"]),
-            "ぺ": ("pe", ["pe", "he", "be", "re"]),
-            "ぽ": ("po", ["po", "ho", "bo", "so"])
+        # 5
+        {
+            "question_type": "MC",
+            "question":["は","ひ","ふ","へ","ほ", "ば","び","ぶ","べ","ぼ", "ぱ","ぴ","ぷ","ぺ","ぽ"],
+            "answer": {
+                "は": ("ha",["ha", "ba", "pa", "ho"]), # Tests visual similarity with ho
+                "ひ": ("hi", ["hi", "bi", "pi", "ni"]),
+                "ふ": ("fu",["fu", "bu", "pu", "nu"]),
+                "へ": ("he",["he", "be", "pe", "te"]),
+                "ほ": ("ho",["ho", "bo", "po", "ha"]), # Tests visual similarity with ha
+                "ば": ("ba",["ba", "ha", "pa", "da"]),
+                "び": ("bi", ["bi", "hi", "pi", "ji"]),
+                "ぶ": ("bu", ["bu", "fu", "pu", "zu"]),
+                "べ": ("be", ["be", "he", "pe", "de"]),
+                "ぼ": ("bo",["bo", "ho", "po", "do"]),
+                "ぱ": ("pa",["pa", "ha", "ba", "ya"]),
+                "ぴ": ("pi",["pi", "hi", "bi", "ri"]),
+                "ぷ": ("pu", ["pu", "fu", "bu", "mu"]),
+                "ぺ": ("pe", ["pe", "he", "be", "re"]),
+                "ぽ": ("po", ["po", "ho", "bo", "so"])
+            },
+            "word_size": 64,
+            "order":[],
+            "enemy_surf": 9, 
+            "enemy_attack_word": "擊",
+            "target": [15, 18],
+            "enemy_hp": 260 * (1.5 if save['hard'] else 1),
+            "enemy_attack": 60 * (1.5 if save['hard'] else 1),
+            "discription": "以滑鼠點擊正確的選項",
         },
-        "word_size": 64,
-        "order":[],
-        "enemy_surf": 9, 
-        "enemy_attack_word": "擊",
-        "target": [15, 18],
-        "enemy_hp": 260 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 60 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊正確的選項",
-    },
-    # 6
-    {
-        "question_type": "MC",
-        "question":["や","ゆ","よ", "ら","り","る","れ","ろ", "わ","を","ん"],
-        "answer": {
-            "や": ("ya", ["ya", "ka", "yo", "wa"]),
-            "ゆ": ("yu", ["yu", "yo", "nu", "me"]),
-            "よ": ("よ",["yo", "ma", "ha", "ro"]),
-            "ら": ("ra",["ra", "chi", "u", "ro"]),  # Tests similarity with chi (ち) and u (う)
-            "り": ("ri", ["ri", "i", "ni", "re"]),   # Tests similarity with i (い)
-            "る": ("ru", ["ru", "ro", "su", "tsu"]), # Tests similarity with ro (ろ)
-            "れ": ("re", ["re", "ne", "wa", "nu"]),  # Tests similarity with ne (ね) and wa (わ)
-            "ろ": ("ro",["ro", "ru", "so", "tsu"]), # Tests similarity with ru (る)
-            "わ": ("wa", ["wa", "re", "ne", "wo"]),  # Tests similarity with re (れ) and ne (ね)
-            "を": ("wo",["wo", "o", "wa", "n"]),    # Tests phonetic similarity with o (お)
-            "ん": ("n",["n", "m", "h", "so"])
+        # 6
+        {
+            "question_type": "MC",
+            "question":["や","ゆ","よ", "ら","り","る","れ","ろ", "わ","を","ん"],
+            "answer": {
+                "や": ("ya", ["ya", "ka", "yo", "wa"]),
+                "ゆ": ("yu", ["yu", "yo", "nu", "me"]),
+                "よ": ("よ",["yo", "ma", "ha", "ro"]),
+                "ら": ("ra",["ra", "chi", "u", "ro"]),  # Tests similarity with chi (ち) and u (う)
+                "り": ("ri", ["ri", "i", "ni", "re"]),   # Tests similarity with i (い)
+                "る": ("ru", ["ru", "ro", "su", "tsu"]), # Tests similarity with ro (ろ)
+                "れ": ("re", ["re", "ne", "wa", "nu"]),  # Tests similarity with ne (ね) and wa (わ)
+                "ろ": ("ro",["ro", "ru", "so", "tsu"]), # Tests similarity with ru (る)
+                "わ": ("wa", ["wa", "re", "ne", "wo"]),  # Tests similarity with re (れ) and ne (ね)
+                "を": ("wo",["wo", "o", "wa", "n"]),    # Tests phonetic similarity with o (お)
+                "ん": ("n",["n", "m", "h", "so"])
+            },
+            "word_size": 64,
+            "order":[],
+            "enemy_surf": 9,
+            "enemy_attack_word": "突", 
+            "target": [11, 15], # Adjusted for 11 questions
+            "enemy_hp": 280 * (1.5 if save['hard'] else 1),
+            "enemy_attack": 70 * (1.5 if save['hard'] else 1),
+            "discription": "以滑鼠點擊正確的選項",
         },
-        "word_size": 64,
-        "order":[],
-        "enemy_surf": 9,
-        "enemy_attack_word": "突", 
-        "target": [11, 15], # Adjusted for 11 questions
-        "enemy_hp": 280 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 70 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊正確的選項",
-    },
-    # 7
-    {
-        "question_type": "MC",
-        "question":[
-            "あ","い","う","え","お", "か","き","く","け","こ", "が","ぎ","ぐ","げ","ご",
-            "さ","し","す","せ","そ", "ざ","じ","ず","ぜ","ぞ", "た","ち","つ","て","と",
-            "だ","ぢ","づ","で","ど", "な","に","ぬ","ね","の", "ま","み","む","め","も",
-            "は","ひ","ふ","へ","ほ", "ば","び","ぶ","べ","ぼ", "ぱ","ぴ","ぷ","ぺ","ぽ",
-            "や","ゆ","よ", "ら","り","る","れ","ろ", "わ","を","ん"
-        ],
-        "answer": {
-            "あ": ("a",["a", "i", "u", "e"]),
-            "い": ("i",["i", "u", "e", "o"]),
-            "う": ("u",["u", "e", "o", "a"]),
-            "え": ("e", ["e", "o", "a", "i"]),
-            "お": ("o", ["o", "a", "i", "u"]),
-            "か": ("ka", ["ka", "ga", "ha", "wa"]),
-            "き": ("ki",["ki", "sa", "chi", "gi"]),
-            "く": ("ku",["ka", "ga", "ku", "su"]),
-            "け": ("ke",["ke", "ka", "ki", "gi"]),
-            "こ": ("ko", ["ko", "go", "wo", "ka"]),
-            "が": ("ga", ["ga", "ka", "na", "ra"]),
-            "ぎ": ("gi", ["gi", "ki", "shi", "bi"]),
-            "ぐ": ("gu",["gu", "ku", "su", "bu"]),
-            "げ": ("ge",["ge", "ke", "ko", "go"]),
-            "ご": ("go",["go", "ko", "so", "ga"]),
-            "さ": ("sa", ["sa", "za", "chi", "ki"]),
-            "し": ("shi", ["shi", "ji", "chi", "tsu"]),
-            "す": ("su", ["su", "zu", "tsu", "ku"]),
-            "せ": ("se",["se", "ze", "te", "ne"]),
-            "そ": ("so",["so", "zo", "to", "ko"]),
-            "ざ": ("za",["za", "sa", "da", "ga"]),
-            "じ": ("ji", ["ji", "shi", "gi", "zi"]),
-            "ず": ("zu", ["zu", "su", "dzu", "gu"]),
-            "ぜ": ("ze", ["ze", "se", "de", "ge"]),
-            "ぞ": ("zo", ["zo", "so", "do", "go"]),
-            "た": ("ta",["ta", "da", "ka", "na"]),
-            "ち": ("chi",["chi", "shi", "ti", "ji"]),
-            "つ": ("tsu",["tsu", "su", "tu", "du"]),
-            "て": ("te", ["te", "de", "se", "he"]),
-            "と": ("to", ["to", "do", "ko", "so"]),
-            "だ": ("da", ["da", "ta", "ba", "ga"]),
-            "ぢ": ("di",["di", "ji", "chi", "zi"]),
-            "づ": ("du",["du", "zu", "tsu", "dzu"]),
-            "で": ("de",["de", "te", "ge", "be"]),
-            "ど": ("do", ["do", "to", "go", "bo"]),
-            "な": ("na", ["na", "ma", "ta", "ha"]),
-            "に": ("ni", ["ni", "mi", "ri", "chi"]),
-            "ぬ": ("nu", ["nu", "mu", "me", "ne"]),
-            "ね": ("ne",["ne", "re", "wa", "nu"]),
-            "の": ("no",["no", "mo", "so", "ro"]),
-            "ま": ("ma", ["ma", "na", "ha", "ho"]),
-            "み": ("mi", ["mi", "ni", "ri", "hi"]),
-            "む": ("mu", ["mu", "su", "nu", "fu"]),
-            "め": ("me", ["me", "nu", "ne", "no"]),
-            "も": ("mo",["mo", "ma", "to", "yo"]),
-            "は": ("ha",["ha", "ba", "pa", "ho"]),
-            "ひ": ("hi", ["hi", "bi", "pi", "ni"]),
-            "ふ": ("fu", ["fu", "bu", "pu", "nu"]),
-            "へ": ("he", ["he", "be", "pe", "te"]),
-            "ほ": ("ho", ["ho", "bo", "po", "ha"]),
-            "ば": ("ba",["ba", "ha", "pa", "da"]),
-            "び": ("bi",["bi", "hi", "pi", "ji"]),
-            "ぶ": ("bu", ["bu", "fu", "pu", "zu"]),
-            "べ": ("be", ["be", "he", "pe", "de"]),
-            "ぼ": ("bo", ["bo", "ho", "po", "do"]),
-            "ぱ": ("pa", ["pa", "ha", "ba", "ya"]),
-            "ぴ": ("pi",["pi", "hi", "bi", "ri"]),
-            "ぷ": ("pu",["pu", "fu", "bu", "mu"]),
-            "ぺ": ("pe", ["pe", "he", "be", "re"]),
-            "ぽ": ("po", ["po", "ho", "bo", "so"]),
-            "や": ("ya", ["ya", "ka", "yo", "wa"]),
-            "ゆ": ("yu", ["yu", "yo", "nu", "me"]),
-            "よ": ("yo",["yo", "ma", "ha", "ro"]),
-            "ら": ("ra",["ra", "chi", "u", "ro"]),
-            "り": ("ri", ["ri", "i", "ni", "re"]),
-            "る": ("ru", ["ru", "ro", "su", "tsu"]),
-            "れ": ("re", ["re", "ne", "wa", "nu"]),
-            "ろ": ("ro", ["ro", "ru", "so", "tsu"]),
-            "わ": ("wa",["wa", "re", "ne", "wo"]),
-            "を": ("wo",["wo", "o", "wa", "n"]),
-            "ん": ("n",["n", "m", "h", "so"])
+        # 7
+        {
+            "question_type": "MC",
+            "question":[
+                "あ","い","う","え","お", "か","き","く","け","こ", "が","ぎ","ぐ","げ","ご",
+                "さ","し","す","せ","そ", "ざ","じ","ず","ぜ","ぞ", "た","ち","つ","て","と",
+                "だ","ぢ","づ","で","ど", "な","に","ぬ","ね","の", "ま","み","む","め","も",
+                "は","ひ","ふ","へ","ほ", "ば","び","ぶ","べ","ぼ", "ぱ","ぴ","ぷ","ぺ","ぽ",
+                "や","ゆ","よ", "ら","り","る","れ","ろ", "わ","を","ん"
+            ],
+            "answer": {
+                "あ": ("a",["a", "i", "u", "e"]),
+                "い": ("i",["i", "u", "e", "o"]),
+                "う": ("u",["u", "e", "o", "a"]),
+                "え": ("e", ["e", "o", "a", "i"]),
+                "お": ("o", ["o", "a", "i", "u"]),
+                "か": ("ka", ["ka", "ga", "ha", "wa"]),
+                "き": ("ki",["ki", "sa", "chi", "gi"]),
+                "く": ("ku",["ka", "ga", "ku", "su"]),
+                "け": ("ke",["ke", "ka", "ki", "gi"]),
+                "こ": ("ko", ["ko", "go", "wo", "ka"]),
+                "が": ("ga", ["ga", "ka", "na", "ra"]),
+                "ぎ": ("gi", ["gi", "ki", "shi", "bi"]),
+                "ぐ": ("gu",["gu", "ku", "su", "bu"]),
+                "げ": ("ge",["ge", "ke", "ko", "go"]),
+                "ご": ("go",["go", "ko", "so", "ga"]),
+                "さ": ("sa", ["sa", "za", "chi", "ki"]),
+                "し": ("shi", ["shi", "ji", "chi", "tsu"]),
+                "す": ("su", ["su", "zu", "tsu", "ku"]),
+                "せ": ("se",["se", "ze", "te", "ne"]),
+                "そ": ("so",["so", "zo", "to", "ko"]),
+                "ざ": ("za",["za", "sa", "da", "ga"]),
+                "じ": ("ji", ["ji", "shi", "gi", "zi"]),
+                "ず": ("zu", ["zu", "su", "dzu", "gu"]),
+                "ぜ": ("ze", ["ze", "se", "de", "ge"]),
+                "ぞ": ("zo", ["zo", "so", "do", "go"]),
+                "た": ("ta",["ta", "da", "ka", "na"]),
+                "ち": ("chi",["chi", "shi", "ti", "ji"]),
+                "つ": ("tsu",["tsu", "su", "tu", "du"]),
+                "て": ("te", ["te", "de", "se", "he"]),
+                "と": ("to", ["to", "do", "ko", "so"]),
+                "だ": ("da", ["da", "ta", "ba", "ga"]),
+                "ぢ": ("di",["di", "ji", "chi", "zi"]),
+                "づ": ("du",["du", "zu", "tsu", "dzu"]),
+                "で": ("de",["de", "te", "ge", "be"]),
+                "ど": ("do", ["do", "to", "go", "bo"]),
+                "な": ("na", ["na", "ma", "ta", "ha"]),
+                "に": ("ni", ["ni", "mi", "ri", "chi"]),
+                "ぬ": ("nu", ["nu", "mu", "me", "ne"]),
+                "ね": ("ne",["ne", "re", "wa", "nu"]),
+                "の": ("no",["no", "mo", "so", "ro"]),
+                "ま": ("ma", ["ma", "na", "ha", "ho"]),
+                "み": ("mi", ["mi", "ni", "ri", "hi"]),
+                "む": ("mu", ["mu", "su", "nu", "fu"]),
+                "め": ("me", ["me", "nu", "ne", "no"]),
+                "も": ("mo",["mo", "ma", "to", "yo"]),
+                "は": ("ha",["ha", "ba", "pa", "ho"]),
+                "ひ": ("hi", ["hi", "bi", "pi", "ni"]),
+                "ふ": ("fu", ["fu", "bu", "pu", "nu"]),
+                "へ": ("he", ["he", "be", "pe", "te"]),
+                "ほ": ("ho", ["ho", "bo", "po", "ha"]),
+                "ば": ("ba",["ba", "ha", "pa", "da"]),
+                "び": ("bi",["bi", "hi", "pi", "ji"]),
+                "ぶ": ("bu", ["bu", "fu", "pu", "zu"]),
+                "べ": ("be", ["be", "he", "pe", "de"]),
+                "ぼ": ("bo", ["bo", "ho", "po", "do"]),
+                "ぱ": ("pa", ["pa", "ha", "ba", "ya"]),
+                "ぴ": ("pi",["pi", "hi", "bi", "ri"]),
+                "ぷ": ("pu",["pu", "fu", "bu", "mu"]),
+                "ぺ": ("pe", ["pe", "he", "be", "re"]),
+                "ぽ": ("po", ["po", "ho", "bo", "so"]),
+                "や": ("ya", ["ya", "ka", "yo", "wa"]),
+                "ゆ": ("yu", ["yu", "yo", "nu", "me"]),
+                "よ": ("yo",["yo", "ma", "ha", "ro"]),
+                "ら": ("ra",["ra", "chi", "u", "ro"]),
+                "り": ("ri", ["ri", "i", "ni", "re"]),
+                "る": ("ru", ["ru", "ro", "su", "tsu"]),
+                "れ": ("re", ["re", "ne", "wa", "nu"]),
+                "ろ": ("ro", ["ro", "ru", "so", "tsu"]),
+                "わ": ("wa",["wa", "re", "ne", "wo"]),
+                "を": ("wo",["wo", "o", "wa", "n"]),
+                "ん": ("n",["n", "m", "h", "so"])
+            },
+            "word_size": 64,
+            "order":[],
+            "enemy_surf": 29, 
+            "enemy_attack_word": "滅", 
+            "target": [20, 25], 
+            "enemy_hp": 400 * (1.5 if save['hard'] else 1),
+            "enemy_attack": 80 * (1.5 if save['hard'] else 1),
+            "discription": "以滑鼠點擊正確的選項",
         },
-        "word_size": 64,
-        "order":[],
-        "enemy_surf": 29, 
-        "enemy_attack_word": "滅", 
-        "target": [20, 25], 
-        "enemy_hp": 400 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 80 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊正確的選項",
-    },
-    # 8
-    {
-        "question_type": "MC",
-        "question":[
-            "きゃ","きゅ","きょ", "しゃ","しゅ","しょ", "ちゃ","ちゅ","ちょ", 
-            "にゃ","にゅ","にょ", "ひゃ","ひゅ","ひょ", "みゃ","みゅ","みょ", "りゃ","りゅ","りょ"
-        ],
-        "answer": {
-            "きゃ": ("kya", ["kya", "kiya", "kuyo", "gya"]),
-            "きゅ": ("kyu", ["kyu", "kiyu", "kya", "gyu"]),
-            "きょ": ("kyo", ["kyo", "kiyo", "kyu", "gyo"]),
-            "しゃ": ("sha", ["sha", "shiya", "shu", "ja"]),
-            "しゅ": ("shu", ["shu", "shiyu", "sho", "ju"]),
-            "しょ": ("sho", ["sho", "shiyo", "sha", "jo"]),
-            "ちゃ": ("cha",["cha", "chiya", "chu", "sha"]),
-            "ちゅ": ("chu",["chu", "chiyu", "cho", "shu"]),
-            "ちょ": ("cho",["cho", "chiyo", "cha", "sho"]),
-            "にゃ": ("nya",["nya", "niya", "nyu", "mya"]),
-            "にゅ": ("nyu",["nyu", "niyu", "nyo", "myu"]),
-            "にょ": ("nyo",["nyo", "niyo", "nya", "myo"]),
-            "ひゃ": ("hya",["hya", "hiya", "hyu", "pya"]),
-            "ひゅ": ("hyu",["hyu", "hiyu", "hyo", "pyu"]),
-            "ひょ": ("hyo",["hyo", "hiyo", "hya", "pyo"]),
-            "みゃ": ("mya",["mya", "miya", "myu", "nya"]),
-            "みゅ": ("myu",["myu", "miyu", "myo", "nyu"]),
-            "みょ": ("myo", ["myo", "miyo", "mya", "nyo"]),
-            "りゃ": ("rya", ["rya", "riya", "ryu", "mya"]),
-            "りゅ": ("ryu", ["ryu", "riyu", "ryo", "myu"]),
-            "りょ": ("ryo", ["ryo", "riyo", "rya", "myo"])
+        # 8
+        {
+            "question_type": "MC",
+            "question":[
+                "きゃ","きゅ","きょ", "しゃ","しゅ","しょ", "ちゃ","ちゅ","ちょ", 
+                "にゃ","にゅ","にょ", "ひゃ","ひゅ","ひょ", "みゃ","みゅ","みょ", "りゃ","りゅ","りょ"
+            ],
+            "answer": {
+                "きゃ": ("kya", ["kya", "kiya", "kuyo", "gya"]),
+                "きゅ": ("kyu", ["kyu", "kiyu", "kya", "gyu"]),
+                "きょ": ("kyo", ["kyo", "kiyo", "kyu", "gyo"]),
+                "しゃ": ("sha", ["sha", "shiya", "shu", "ja"]),
+                "しゅ": ("shu", ["shu", "shiyu", "sho", "ju"]),
+                "しょ": ("sho", ["sho", "shiyo", "sha", "jo"]),
+                "ちゃ": ("cha",["cha", "chiya", "chu", "sha"]),
+                "ちゅ": ("chu",["chu", "chiyu", "cho", "shu"]),
+                "ちょ": ("cho",["cho", "chiyo", "cha", "sho"]),
+                "にゃ": ("nya",["nya", "niya", "nyu", "mya"]),
+                "にゅ": ("nyu",["nyu", "niyu", "nyo", "myu"]),
+                "にょ": ("nyo",["nyo", "niyo", "nya", "myo"]),
+                "ひゃ": ("hya",["hya", "hiya", "hyu", "pya"]),
+                "ひゅ": ("hyu",["hyu", "hiyu", "hyo", "pyu"]),
+                "ひょ": ("hyo",["hyo", "hiyo", "hya", "pyo"]),
+                "みゃ": ("mya",["mya", "miya", "myu", "nya"]),
+                "みゅ": ("myu",["myu", "miyu", "myo", "nyu"]),
+                "みょ": ("myo", ["myo", "miyo", "mya", "nyo"]),
+                "りゃ": ("rya", ["rya", "riya", "ryu", "mya"]),
+                "りゅ": ("ryu", ["ryu", "riyu", "ryo", "myu"]),
+                "りょ": ("ryo", ["ryo", "riyo", "rya", "myo"])
+            },
+            "word_size": 64,
+            "order":[],
+            "enemy_surf": 9,
+            "enemy_attack_word": "咬", 
+            "target":[12, 16],
+            "enemy_hp": 240 * (1.5 if save['hard'] else 1),
+            "enemy_attack": 50 * (1.5 if save['hard'] else 1),
+            "discription": "以滑鼠點擊正確的選項",
         },
-        "word_size": 64,
-        "order":[],
-        "enemy_surf": 9,
-        "enemy_attack_word": "咬", 
-        "target":[12, 16],
-        "enemy_hp": 240 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 50 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊正確的選項",
-    },
-    # 9 (Kanji - Numbers)
-    {
-        "question_type": "MC",
-        "question":["一", "二", "三", "四", "五", "六", "七", "八", "九", "十"],
-        "answer": {
-            "一": ("いち", ["いち", "に", "さん", "し"]),
-            "二": ("に", ["に", "いち", "さん", "よん"]),
-            "三": ("さん", ["さん", "に", "し", "ご"]),
-            "四": ("よん", ["よん", "さん", "ご", "ろく"]),
-            "五": ("ご", ["ご", "よん", "ろく", "なな"]),
-            "六": ("ろく",["ろく", "ご", "なな", "はち"]),
-            "七": ("なな",["なな", "ろく", "はち", "きゅう"]),
-            "八": ("はち", ["はち", "なな", "きゅう", "じゅう"]),
-            "九": ("きゅう", ["きゅう", "はち", "じゅう", "いち"]),
-            "十": ("じゅう", ["じゅう", "きゅう", "いち", "に"]),
-            "百": ("ひゃく", ["ひゃく", "せん", "まん", "ひやく"]),
-            "千": ("せん", ["せん", "ひゃく", "まん", "ぜん"])  
+        # 9 (Kanji - Numbers)
+        {
+            "question_type": "MC",
+            "question":["一", "二", "三", "四", "五", "六", "七", "八", "九", "十"],
+            "answer": {
+                "一": ("いち", ["いち", "に", "さん", "し"]),
+                "二": ("に", ["に", "いち", "さん", "よん"]),
+                "三": ("さん", ["さん", "に", "し", "ご"]),
+                "四": ("よん", ["よん", "さん", "ご", "ろく"]),
+                "五": ("ご", ["ご", "よん", "ろく", "なな"]),
+                "六": ("ろく",["ろく", "ご", "なな", "はち"]),
+                "七": ("なな",["なな", "ろく", "はち", "きゅう"]),
+                "八": ("はち", ["はち", "なな", "きゅう", "じゅう"]),
+                "九": ("きゅう", ["きゅう", "はち", "じゅう", "いち"]),
+                "十": ("じゅう", ["じゅう", "きゅう", "いち", "に"]),
+                "百": ("ひゃく", ["ひゃく", "せん", "まん", "ひやく"]),
+                "千": ("せん", ["せん", "ひゃく", "まん", "ぜん"])  
+            },
+            "word_size": 48,
+            "order":[],
+            "enemy_surf": 9,
+            "enemy_attack_word": "算",
+            "target": [10, 12],
+            "enemy_hp": 200 * (1.5 if save['hard'] else 1),
+            "enemy_attack": 30 * (1.5 if save['hard'] else 1),
+            "discription": "以滑鼠點擊漢字正確的平假名讀音",
         },
-        "word_size": 48,
-        "order":[],
-        "enemy_surf": 9,
-        "enemy_attack_word": "算",
-        "target": [10, 12],
-        "enemy_hp": 200 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊漢字正確的平假名讀音",
-    },
-    # 10 (Kanji - Elements)
-    {
-        "question_type": "MC",
-        "question":["日", "月", "火", "水", "木", "金", "土"],
-        "answer": {
-            "日": ("ひ/にち",["ひ/にち", "つき", "みず", "き"]),
-            "月": ("つき",["つき", "ひ/にち", "つち", "きん"]),
-            "火": ("ひ/か",["ひ/か", "みず", "つち", "き"]),
-            "水": ("みず",["みず", "つき", "つち", "ひ/か"]),
-            "木": ("き",["き", "きん", "ひ/にち", "みず"]),
-            "金": ("きん",["きん", "ぎん", "き", "つち"]), # ぎん (Gin/Silver) is a common trap for きん (Kin/Gold)
-            "土": ("つち",["つち", "みず", "つき", "ひ/にち"])
+        # 10 (Kanji - Elements)
+        {
+            "question_type": "MC",
+            "question":["日", "月", "火", "水", "木", "金", "土"],
+            "answer": {
+                "日": ("ひ/にち",["ひ/にち", "つき", "みず", "き"]),
+                "月": ("つき",["つき", "ひ/にち", "つち", "きん"]),
+                "火": ("ひ/か",["ひ/か", "みず", "つち", "き"]),
+                "水": ("みず",["みず", "つき", "つち", "ひ/か"]),
+                "木": ("き",["き", "きん", "ひ/にち", "みず"]),
+                "金": ("きん",["きん", "ぎん", "き", "つち"]), # ぎん (Gin/Silver) is a common trap for きん (Kin/Gold)
+                "土": ("つち",["つち", "みず", "つき", "ひ/にち"])
+            },
+            "word_size": 40,
+            "order":[],
+            "enemy_surf": 9,
+            "enemy_attack_word": "素",
+            "target": [6, 7],
+            "enemy_hp": 140 * (1.5 if save['hard'] else 1),
+            "enemy_attack": 20 * (1.5 if save['hard'] else 1),
+            "discription": "以滑鼠點擊漢字正確的平假名讀音",
         },
-        "word_size": 40,
-        "order":[],
-        "enemy_surf": 9,
-        "enemy_attack_word": "素",
-        "target": [6, 7],
-        "enemy_hp": 140 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 20 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊漢字正確的平假名讀音",
-    },
-    # 11 (kanji - Animals & Objects)
-    {
-        "question_type": "Drag",
-         "questions": [
-            { "sentence": "貓_", "answer": "ねこ", "options": ["ねこ", "いぬ", "とり", "さかな"] },
-            { "sentence": "狗_", "answer": "いぬ", "options": ["いぬ", "ねこ", "うさぎ", "へび"] },
-            { "sentence": "書_", "answer": "ほん", "options": ["ほん", "えんぴつ", "かばん", "とけい"] },
-            { "sentence": "水_", "answer": "みず", "options": ["みず", "おちゃ", "ごはん", "ぱん"] },
-            #{ "sentence": "人_", "answer": "ひと", "options": ["ひと", "おとこ", "おんな", "こども"] },
-        ],
-        "order": [],
-        "enemy_surf": 9,
-        "enemy_attack_word": "む",
-        "target": [7, 9],
-        "enemy_hp": 140 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 20 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠拖拉正確的選項至空格內",
-    },
-    # 12 (kanji - Nature)
-    {
-        "question_type": "MC",
-        "question":["山", "川", "空", "天", "雨", "石", "花", "森"],
-        "answer": {
-            "山": ("やま", ["やま", "かわ", "そら", "てん"]),
-            "川": ("かわ", ["かわ", "やま", "うみ", "あめ"]),
-            "空": ("そら", ["そら", "てん", "あめ", "いし"]),
-            "天": ("てん", ["てん", "そら", "やま", "もり"]),
-            "雨": ("あめ", ["あめ", "かわ", "はな", "そら"]),
-            "石": ("いし",["いし", "やま", "はな", "もり"]),
-            "花": ("はな",["はな", "あめ", "そら", "いし"]),
-            "森": ("もり",["もり", "やま", "かわ", "てん"])
+        # 11 (kanji - Animals & Objects)
+        {
+            "question_type": "Drag",
+            "questions": [
+                { "sentence": "貓_", "answer": "ねこ", "options": ["ねこ", "いぬ", "とり", "さかな"] },
+                { "sentence": "狗_", "answer": "いぬ", "options": ["いぬ", "ねこ", "うさぎ", "へび"] },
+                { "sentence": "書_", "answer": "ほん", "options": ["ほん", "えんぴつ", "かばん", "とけい"] },
+                { "sentence": "水_", "answer": "みず", "options": ["みず", "おちゃ", "ごはん", "ぱん"] },
+                #{ "sentence": "人_", "answer": "ひと", "options": ["ひと", "おとこ", "おんな", "こども"] },
+            ],
+            "order": [],
+            "enemy_surf": 9,
+            "enemy_attack_word": "む",
+            "target": [7, 9],
+            "enemy_hp": 140 * (1.5 if save['hard'] else 1),
+            "enemy_attack": 20 * (1.5 if save['hard'] else 1),
+            "discription": "以滑鼠拖拉正確的選項至空格內",
         },
-        "word_size": 48,
-        "order":[],
-        "enemy_surf": 9,
-        "enemy_attack_word": "震",
-        "target": [9, 12],
-        "enemy_hp": 180 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊漢字正確的平假名讀音",
-    },
-    # 13 (kanji - Directions)
-    {
-        "question_type": "Drag",
-        "questions":[
-            { "sentence": "上面_", "answer": "上", "options": ["上", "下", "左", "右"] },
-            { "sentence": "下面_", "answer": "下", "options": ["下", "上", "前", "後"] },
-            { "sentence": "左邊_", "answer": "左", "options":["左", "右", "中", "外"] },
-            { "sentence": "右邊_", "answer": "右", "options": ["右", "左", "前", "中"] },
-            { "sentence": "中間_", "answer": "中", "options": ["中", "外", "上", "下"] },
-            { "sentence": "外面_", "answer": "外", "options":["外", "中", "左", "右"] },
-            { "sentence": "前方_", "answer": "前", "options":["前", "後", "上", "外"] },
-            { "sentence": "後方_", "answer": "後", "options": ["後", "前", "下", "中"] },
-        ],
-        "order":[],
-        "enemy_surf": 9,
-        "enemy_attack_word": "轉",
-        "target": [9, 12],
-        "enemy_hp": 180 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "將正確的方向漢字拖拉至對應的中文意思旁",
-    },
-    # 14 (MC - Body & People)
-    {
-        "question_type": "MC",
-        "question":["人", "目", "口", "耳", "手", "足", "体", "男", "女"],
-        "answer": {
-            "人": ("ひと", ["ひと", "おとこ", "おんな", "め"]),
-            "目": ("め", ["め", "みみ", "くち", "て"]),
-            "口": ("くち",["くち", "め", "みみ", "あし"]),
-            "耳": ("みみ",["みみ", "め", "くち", "からだ"]),
-            "手": ("て",["て", "あし", "め", "ひと"]),
-            "足": ("あし",["あし", "て", "みみ", "おとこ"]),
-            "体": ("からだ",["からだ", "ひと", "おんな", "くち"]),
-            "男": ("おとこ",["おとこ", "おんな", "ひと", "からだ"]),
-            "女": ("おんな",["おんな", "おとこ", "ひと", "て"])
+        # 12 (kanji - Nature)
+        {
+            "question_type": "MC",
+            "question":["山", "川", "空", "天", "雨", "石", "花", "森"],
+            "answer": {
+                "山": ("やま", ["やま", "かわ", "そら", "てん"]),
+                "川": ("かわ", ["かわ", "やま", "うみ", "あめ"]),
+                "空": ("そら", ["そら", "てん", "あめ", "いし"]),
+                "天": ("てん", ["てん", "そら", "やま", "もり"]),
+                "雨": ("あめ", ["あめ", "かわ", "はな", "そら"]),
+                "石": ("いし",["いし", "やま", "はな", "もり"]),
+                "花": ("はな",["はな", "あめ", "そら", "いし"]),
+                "森": ("もり",["もり", "やま", "かわ", "てん"])
+            },
+            "word_size": 48,
+            "order":[],
+            "enemy_surf": 9,
+            "enemy_attack_word": "震",
+            "target": [9, 12],
+            "enemy_hp": 180 * (1.5 if save['hard'] else 1),
+            "enemy_attack": 30 * (1.5 if save['hard'] else 1),
+            "discription": "以滑鼠點擊漢字正確的平假名讀音",
         },
-        "word_size": 48,
-        "order":[],
-        "enemy_surf": 9,
-        "enemy_attack_word": "抓",
-        "target": [10, 13],
-        "enemy_hp": 200 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊漢字正確的平假名讀音",
-    },
-    # 15 (Drag - Time & Periods)
-    {
-        "question_type": "Drag",
-        "questions":[
-            { "sentence": "現在_", "answer": "今", "options": ["今", "時", "分", "半"] },
-            { "sentence": "小時_", "answer": "時", "options":["時", "今", "年", "朝"] },
-            { "sentence": "分鐘_", "answer": "分", "options":["分", "半", "時", "昼"] },
-            { "sentence": "一半_", "answer": "半", "options": ["半", "分", "今", "夜"] },
-            { "sentence": "年份_", "answer": "年", "options":["年", "時", "半", "朝"] },
-            { "sentence": "早上_", "answer": "朝", "options":["朝", "昼", "夜", "今"] },
-            { "sentence": "中午_", "answer": "昼", "options": ["昼", "朝", "夜", "時"] },
-            { "sentence": "夜晚_", "answer": "夜", "options": ["夜", "昼", "朝", "年"] },
-        ],
-        "order":[],
-        "enemy_surf": 9,
-        "enemy_attack_word": "遲",
-        "target": [10, 13],
-        "enemy_hp": 200 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "將正確的時間漢字拖拉至對應的中文意思旁",
-    },
-    # 16 (MC - Adjectives)
-    {
-        "question_type": "MC",
-        "question":["大きい", "小さい", "高い", "低い", "新しい", "古い", "多い", "少ない"],
-        "answer": {
-            "大きい": ("おおきい",["おおきい", "ちいさい", "たかい", "ひくい"]),
-            "小さい": ("ちいさい", ["ちいさい", "おおきい", "あたらしい", "ふるい"]),
-            "高い": ("たかい", ["たかい", "ひくい", "おおきい", "おおい"]),
-            "低い": ("ひくい", ["ひくい", "たかい", "ちいさい", "すくない"]),
-            "新しい": ("あたらしい", ["あたらしい", "ふるい", "おおきい", "おおい"]),
-            "古い": ("ふるい",["ふるい", "あたらしい", "ちいさい", "ひくい"]),
-            "多い": ("おおい",["おおい", "すくない", "たかい", "あたらしい"]),
-            "少ない": ("すくない",["すくない", "おおい", "ひくい", "ふるい"])
+        # 13 (kanji - Directions)
+        {
+            "question_type": "Drag",
+            "questions":[
+                { "sentence": "上面_", "answer": "上", "options": ["上", "下", "左", "右"] },
+                { "sentence": "下面_", "answer": "下", "options": ["下", "上", "前", "後"] },
+                { "sentence": "左邊_", "answer": "左", "options":["左", "右", "中", "外"] },
+                { "sentence": "右邊_", "answer": "右", "options": ["右", "左", "前", "中"] },
+                { "sentence": "中間_", "answer": "中", "options": ["中", "外", "上", "下"] },
+                { "sentence": "外面_", "answer": "外", "options":["外", "中", "左", "右"] },
+                { "sentence": "前方_", "answer": "前", "options":["前", "後", "上", "外"] },
+                { "sentence": "後方_", "answer": "後", "options": ["後", "前", "下", "中"] },
+            ],
+            "order":[],
+            "enemy_surf": 9,
+            "enemy_attack_word": "轉",
+            "target": [9, 12],
+            "enemy_hp": 180 * (1.5 if save['hard'] else 1),
+            "enemy_attack": 30 * (1.5 if save['hard'] else 1),
+            "discription": "將正確的方向漢字拖拉至對應的中文意思旁",
         },
-        "word_size": 40,
-        "order":[],
-        "enemy_surf": 9,
-        "enemy_attack_word": "幻",
-        "target": [11, 14],
-        "enemy_hp": 220 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 40 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊形容詞正確的平假名讀音",
-    },
-    # 17 (kanji to hiragana 1 )
-    {
-        "question_type": "MC",
-        "question": ["行きます","来ます", "帰ります", "出掛けます","食べます", "飲みます", "見ます", "読みます", "書きます", "聞きます"],
-        "answer": {
-            "行きます": ("いきます", ["いきます", "ひきます", "いくきます", "ちきます"]),
-            "来ます": ("きます", ["きます", "くます", "います", "いきます"]),
-            "帰ります": ("かえります", ["かえります", "かります", "もどります", "でかります"]),
-            "出掛けます": ("でかけます", ["でかけます", "てかけます", "てがけます", "けがけます"]),
-            "食べます": ("たべます", ["たべます", "しゃべます", "だべます", "くべます"]),
-            "飲みます": ("のみます", ["のみます", "いんみます", "おんみます", "のみみます"]),
-            "見ます": ("みます", ["みます", "みえます", "けんます", "みせます"]),
-            "読みます": ("よみます", ["よみます", "どくみます", "とくみます", "のみます"]),
-            "書きます": ("かきます", ["かきます", "がきます", "しょきます", "よみます"]),
-            "聞きます": ("ききます", ["ききます", "みにます", "こくます", "きます"])
+        # 14 (MC - Body & People)
+        {
+            "question_type": "MC",
+            "question":["人", "目", "口", "耳", "手", "足", "体", "男", "女"],
+            "answer": {
+                "人": ("ひと", ["ひと", "おとこ", "おんな", "め"]),
+                "目": ("め", ["め", "みみ", "くち", "て"]),
+                "口": ("くち",["くち", "め", "みみ", "あし"]),
+                "耳": ("みみ",["みみ", "め", "くち", "からだ"]),
+                "手": ("て",["て", "あし", "め", "ひと"]),
+                "足": ("あし",["あし", "て", "みみ", "おとこ"]),
+                "体": ("からだ",["からだ", "ひと", "おんな", "くち"]),
+                "男": ("おとこ",["おとこ", "おんな", "ひと", "からだ"]),
+                "女": ("おんな",["おんな", "おとこ", "ひと", "て"])
+            },
+            "word_size": 48,
+            "order":[],
+            "enemy_surf": 9,
+            "enemy_attack_word": "抓",
+            "target": [10, 13],
+            "enemy_hp": 200 * (1.5 if save['hard'] else 1),
+            "enemy_attack": 30 * (1.5 if save['hard'] else 1),
+            "discription": "以滑鼠點擊漢字正確的平假名讀音",
         },
-        "word_size": 36,
-        "order": [],
-        "enemy_surf": 9,
-        "enemy_attack_word": "む" ,
-        "target": [5, 7],
-        "enemy_hp": 100 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 20 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊正確的選項",
-    },
-    # 18 (kanji - Days of the week)
-    {
-        "question_type": "Drag",
-        "questions":[
-            { "sentence": "星期一_", "answer": "月曜日", "options":["月曜日", "火曜日", "水曜日", "日曜日"] },
-            { "sentence": "星期二_", "answer": "火曜日", "options":["火曜日", "木曜日", "金曜日", "土曜日"] },
-            { "sentence": "星期三_", "answer": "水曜日", "options":["水曜日", "火曜日", "木曜日", "月曜日"] },
-            { "sentence": "星期四_", "answer": "木曜日", "options": ["木曜日", "水曜日", "金曜日", "土曜日"] },
-            { "sentence": "星期五_", "answer": "金曜日", "options":["金曜日", "月曜日", "火曜日", "日曜日"] },
-            { "sentence": "星期六_", "answer": "土曜日", "options": ["土曜日", "日曜日", "水曜日", "木曜日"] },
-            { "sentence": "星期日_", "answer": "日曜日", "options":["日曜日", "月曜日", "金曜日", "土曜日"] },
-        ],
-        "order":[],
-        "enemy_surf": 29, 
-        "enemy_attack_word": "壓",
-        "target":[6, 7],
-        "enemy_hp": 140 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 20 * (1.5 if save['hard'] else 1),
-        "discription": "將正確的星期拖拉至對應的中文意思旁",
-    },
-    # 19 (MC - Mid Boss "Tenma" - Grand Kanji Exam)
-    {
-        "question_type": "MC",
-        "question":[
-            "百", "千", "水", "木", "山", "空", "前", "人", "目", "時", 
-            "大きい", "新しい", "行く", "読む", "話す", 
-            "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日", "日曜日"
-        ],
-        "answer": {
-            "百": ("ひゃく", ["ひゃく", "せん", "まん", "ひやく"]),
-            "千": ("せん", ["せん", "ひゃく", "まん", "ぜん"]),
-            "水": ("みず", ["みず", "つき", "つち", "ひ/か"]),
-            "木": ("き", ["き", "きん", "ひ/にち", "みず"]),
-            "山": ("やま", ["やま", "かわ", "そら", "てん"]),
-            "空": ("そら", ["そら", "てん", "あめ", "いし"]),
-            "前": ("まえ", ["まえ", "うしろ", "うえ", "なか"]),
-            "人": ("ひと",["ひと", "おとこ", "おんな", "め"]),
-            "目": ("め",["め", "みみ", "くち", "て"]),
-            "時": ("とき/じ",["とき/じ", "いま", "ねん", "あさ"]),
-            "大きい": ("おおきい", ["おおきい", "ちいさい", "たかい", "ひくい"]),
-            "新しい": ("あたらしい", ["あたらしい", "ふるい", "おおきい", "おおい"]),
-            "行く": ("いく", ["いく", "くる", "みる", "きく"]),
-            "読む": ("よむ", ["よむ", "かく", "いう", "はなす"]),
-            "話す": ("はなす", ["はなす", "いう", "よむ", "やすむ"]),
-            "月曜日": ("げつようび",["げつようび", "かようび", "すいようび", "にちようび"]),
-            "火曜日": ("かようび",["かようび", "もくようび", "きんようび", "どようび"]),
-            "水曜日": ("すいようび",["すいようび", "かようび", "もくようび", "げつようび"]),
-            "木曜日": ("もくようび",["もくようび", "すいようび", "きんようび", "どようび"]),
-            "金曜日": ("きんようび",["きんようび", "げつようび", "かようび", "にちようび"]),
-            "土曜日": ("どようび",["どようび", "にちようび", "すいようび", "もくようび"]),
-            "日曜日": ("にちようび",["にちようび", "げつようび", "きんようび", "どようび"])
+        # 15 (Drag - Time & Periods)
+        {
+            "question_type": "Drag",
+            "questions":[
+                { "sentence": "現在_", "answer": "今", "options": ["今", "時", "分", "半"] },
+                { "sentence": "小時_", "answer": "時", "options":["時", "今", "年", "朝"] },
+                { "sentence": "分鐘_", "answer": "分", "options":["分", "半", "時", "昼"] },
+                { "sentence": "一半_", "answer": "半", "options": ["半", "分", "今", "夜"] },
+                { "sentence": "年份_", "answer": "年", "options":["年", "時", "半", "朝"] },
+                { "sentence": "早上_", "answer": "朝", "options":["朝", "昼", "夜", "今"] },
+                { "sentence": "中午_", "answer": "昼", "options": ["昼", "朝", "夜", "時"] },
+                { "sentence": "夜晚_", "answer": "夜", "options": ["夜", "昼", "朝", "年"] },
+            ],
+            "order":[],
+            "enemy_surf": 9,
+            "enemy_attack_word": "遲",
+            "target": [10, 13],
+            "enemy_hp": 200 * (1.5 if save['hard'] else 1),
+            "enemy_attack": 30 * (1.5 if save['hard'] else 1),
+            "discription": "將正確的時間漢字拖拉至對應的中文意思旁",
         },
-        "word_size": 36,
-        "order":[],
-        "enemy_surf": 29,  # Mid Boss (Tenma)
-        "enemy_attack_word": "死",
-        "target": [20, 25],
-        "enemy_hp": 400 * (1.5 if save['hard'] else 1),   # Requires 20 hits to defeat!
-        "enemy_attack": 50 * (1.5 if save['hard'] else 1),
-        "discription": "中級Boss『天魔』降臨！點擊漢字正確的讀音！",
-    },
-    # 20 (Sentence Order - Basic A is B)
-    {
-        "question_type": "Sentence_Order",
-        "questions":[
-            { 
-                "meaning": "我是赤真 (I am Akamasa)", 
-                "answer_order": ["わたし", "は", "あかまさ", "です"], 
-                "options": ["です", "わたし", "は", "あかまさ", "が", "を"] 
+        # 16 (MC - Adjectives)
+        {
+            "question_type": "MC",
+            "question":["大きい", "小さい", "高い", "低い", "新しい", "古い", "多い", "少ない"],
+            "answer": {
+                "大きい": ("おおきい",["おおきい", "ちいさい", "たかい", "ひくい"]),
+                "小さい": ("ちいさい", ["ちいさい", "おおきい", "あたらしい", "ふるい"]),
+                "高い": ("たかい", ["たかい", "ひくい", "おおきい", "おおい"]),
+                "低い": ("ひくい", ["ひくい", "たかい", "ちいさい", "すくない"]),
+                "新しい": ("あたらしい", ["あたらしい", "ふるい", "おおきい", "おおい"]),
+                "古い": ("ふるい",["ふるい", "あたらしい", "ちいさい", "ひくい"]),
+                "多い": ("おおい",["おおい", "すくない", "たかい", "あたらしい"]),
+                "少ない": ("すくない",["すくない", "おおい", "ひくい", "ふるい"])
             },
-            { 
-                "meaning": "這是蘋果 (This is an apple)", 
-                "answer_order": ["これ", "は", "りんご", "です"], 
-                "options":["りんご", "これ", "は", "です", "それ", "に"] 
+            "word_size": 40,
+            "order":[],
+            "enemy_surf": 9,
+            "enemy_attack_word": "幻",
+            "target": [11, 14],
+            "enemy_hp": 220 * (1.5 if save['hard'] else 1),
+            "enemy_attack": 40 * (1.5 if save['hard'] else 1),
+            "discription": "以滑鼠點擊形容詞正確的平假名讀音",
+        },
+        # 17 (kanji to hiragana 1 )
+        {
+            "question_type": "MC",
+            "question": ["行きます","来ます", "帰ります", "出掛けます","食べます", "飲みます", "見ます", "読みます", "書きます", "聞きます"],
+            "answer": {
+                "行きます": ("いきます", ["いきます", "ひきます", "いくきます", "ちきます"]),
+                "来ます": ("きます", ["きます", "くます", "います", "いきます"]),
+                "帰ります": ("かえります", ["かえります", "かります", "もどります", "でかります"]),
+                "出掛けます": ("でかけます", ["でかけます", "てかけます", "てがけます", "けがけます"]),
+                "食べます": ("たべます", ["たべます", "しゃべます", "だべます", "くべます"]),
+                "飲みます": ("のみます", ["のみます", "いんみます", "おんみます", "のみみます"]),
+                "見ます": ("みます", ["みます", "みえます", "けんます", "みせます"]),
+                "読みます": ("よみます", ["よみます", "どくみます", "とくみます", "のみます"]),
+                "書きます": ("かきます", ["かきます", "がきます", "しょきます", "よみます"]),
+                "聞きます": ("ききます", ["ききます", "みにます", "こくます", "きます"])
             },
-            { 
-                "meaning": "莉子是精靈 (Riko is an elf)", 
-                "answer_order": ["りこ", "は", "エルフ", "です"], 
-                "options": ["りこ", "エルフ", "は", "です", "を", "の"] 
+            "word_size": 36,
+            "order": [],
+            "enemy_surf": 9,
+            "enemy_attack_word": "む" ,
+            "target": [5, 7],
+            "enemy_hp": 100 * (1.5 if save['hard'] else 1),
+            "enemy_attack": 20 * (1.5 if save['hard'] else 1),
+            "discription": "以滑鼠點擊正確的選項",
+        },
+        # 18 (kanji - Days of the week)
+        {
+            "question_type": "Drag",
+            "questions":[
+                { "sentence": "星期一_", "answer": "月曜日", "options":["月曜日", "火曜日", "水曜日", "日曜日"] },
+                { "sentence": "星期二_", "answer": "火曜日", "options":["火曜日", "木曜日", "金曜日", "土曜日"] },
+                { "sentence": "星期三_", "answer": "水曜日", "options":["水曜日", "火曜日", "木曜日", "月曜日"] },
+                { "sentence": "星期四_", "answer": "木曜日", "options": ["木曜日", "水曜日", "金曜日", "土曜日"] },
+                { "sentence": "星期五_", "answer": "金曜日", "options":["金曜日", "月曜日", "火曜日", "日曜日"] },
+                { "sentence": "星期六_", "answer": "土曜日", "options": ["土曜日", "日曜日", "水曜日", "木曜日"] },
+                { "sentence": "星期日_", "answer": "日曜日", "options":["日曜日", "月曜日", "金曜日", "土曜日"] },
+            ],
+            "order":[],
+            "enemy_surf": 29, 
+            "enemy_attack_word": "壓",
+            "target":[6, 7],
+            "enemy_hp": 140 * (1.5 if save['hard'] else 1),
+            "enemy_attack": 20 * (1.5 if save['hard'] else 1),
+            "discription": "將正確的星期拖拉至對應的中文意思旁",
+        },
+        # 19 (MC - Mid Boss "Tenma" - Grand Kanji Exam)
+        {
+            "question_type": "MC",
+            "question":[
+                "百", "千", "水", "木", "山", "空", "前", "人", "目", "時", 
+                "大きい", "新しい", "行く", "読む", "話す", 
+                "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日", "日曜日"
+            ],
+            "answer": {
+                "百": ("ひゃく", ["ひゃく", "せん", "まん", "ひやく"]),
+                "千": ("せん", ["せん", "ひゃく", "まん", "ぜん"]),
+                "水": ("みず", ["みず", "つき", "つち", "ひ/か"]),
+                "木": ("き", ["き", "きん", "ひ/にち", "みず"]),
+                "山": ("やま", ["やま", "かわ", "そら", "てん"]),
+                "空": ("そら", ["そら", "てん", "あめ", "いし"]),
+                "前": ("まえ", ["まえ", "うしろ", "うえ", "なか"]),
+                "人": ("ひと",["ひと", "おとこ", "おんな", "め"]),
+                "目": ("め",["め", "みみ", "くち", "て"]),
+                "時": ("とき/じ",["とき/じ", "いま", "ねん", "あさ"]),
+                "大きい": ("おおきい", ["おおきい", "ちいさい", "たかい", "ひくい"]),
+                "新しい": ("あたらしい", ["あたらしい", "ふるい", "おおきい", "おおい"]),
+                "行く": ("いく", ["いく", "くる", "みる", "きく"]),
+                "読む": ("よむ", ["よむ", "かく", "いう", "はなす"]),
+                "話す": ("はなす", ["はなす", "いう", "よむ", "やすむ"]),
+                "月曜日": ("げつようび",["げつようび", "かようび", "すいようび", "にちようび"]),
+                "火曜日": ("かようび",["かようび", "もくようび", "きんようび", "どようび"]),
+                "水曜日": ("すいようび",["すいようび", "かようび", "もくようび", "げつようび"]),
+                "木曜日": ("もくようび",["もくようび", "すいようび", "きんようび", "どようび"]),
+                "金曜日": ("きんようび",["きんようび", "げつようび", "かようび", "にちようび"]),
+                "土曜日": ("どようび",["どようび", "にちようび", "すいようび", "もくようび"]),
+                "日曜日": ("にちようび",["にちようび", "げつようび", "きんようび", "どようび"])
             },
-            { 
-                "meaning": "那是一本書 (That is a book)", 
-                "answer_order": ["それ", "は", "ほん", "です"], 
-                "options":["ほん", "それ", "は", "です", "あれ", "が"] 
-            },
-            { 
-                "meaning": "明天是星期一 (Tomorrow is Monday)", 
-                "answer_order":["あした", "は", "げつようび", "です"], 
-                "options":["あした", "は", "げつようび", "です", "きょう", "に"] 
-            }
-        ],
-        "order":[],
-        "enemy_surf": 9,
-        "enemy_attack_word": "基",
-        "target": [5, 6],
-        "enemy_hp": 100 * (1.5 if save['hard'] else 1), # 5 hits to defeat
-        "enemy_attack": 20 * (1.5 if save['hard'] else 1),
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
-    },
-    # 21 (Sentence Order - Particles を, に, へ)
-    {
-        "question_type": "Sentence_Order",
-        "questions":[
-            { 
-                "meaning": "吃蘋果 (Eat an apple)", 
-                "answer_order": ["りんご", "を", "たべます"], 
-                "options":["りんご", "を", "たべます", "は", "のみます", "が"] 
-            },
-            { 
-                "meaning": "喝水 (Drink water)", 
-                "answer_order":["みず", "を", "のみます"], 
-                "options":["みず", "を", "のみます", "に", "たべます", "へ"] 
-            },
-            { 
-                "meaning": "去學校 (Go to school)", 
-                "answer_order":["がっこう", "に", "いきます"], 
-                "options":["がっこう", "に", "いきます", "を", "きます", "で"] 
-            },
-            { 
-                "meaning": "讀書 (Read a book)", 
-                "answer_order": ["ほん", "を", "よみます"], 
-                "options": ["ほん", "を", "よみます", "が", "かきます", "に"] 
-            },
-            { 
-                "meaning": "回家 (Return home)", 
-                "answer_order": ["うち", "に", "かえります"], 
-                "options":["うち", "に", "かえります", "を", "でます", "は"] 
-            },
-            { 
-                "meaning": "買肉 (Buy meat)", 
-                "answer_order":["にく", "を", "かいます"], 
-                "options":["にく", "を", "かいます", "は", "に", "が"] 
-            }
-        ],
-        "order":[],
-        "enemy_surf": 9,
-        "enemy_attack_word": "助", # Represents "Particles"
-        "target": [6, 7],
-        "enemy_hp": 120 * (1.5 if save['hard'] else 1), # 6 hits to defeat
-        "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
-    },
-    # 22 (Sentence Order - Subject + Object + Verb)
-    {
-        "question_type": "Sentence_Order",
-        "questions":[
-            { 
-                "meaning": "我吃肉 (I eat meat)", 
-                "answer_order":["わたし", "は", "にく", "を", "たべます"], 
-                "options":["わたし", "は", "にく", "を", "たべます", "が", "に"] 
-            },
-            { 
-                "meaning": "莉子喝水 (Riko drinks water)", 
-                "answer_order": ["りこ", "は", "みず", "を", "のみます"], 
-                "options":["りこ", "は", "みず", "を", "のみます", "へ", "で"] 
-            },
-            { 
-                "meaning": "我去學校 (I go to school)", 
-                "answer_order":["わたし", "は", "がっこう", "に", "いきます"], 
-                "options":["わたし", "は", "がっこう", "に", "いきます", "を", "で"] 
-            },
-            { 
-                "meaning": "老師看書 (The teacher reads a book)", 
-                "answer_order":["せんせい", "は", "ほん", "を", "よみます"], 
-                "options":["せんせい", "は", "ほん", "を", "よみます", "が", "に"] 
-            },
-            { 
-                "meaning": "赤真買蘋果 (Akamasa buys an apple)", 
-                "answer_order": ["あかまさ", "は", "りんご", "を", "かいます"], 
-                "options":["あかまさ", "は", "りんご", "を", "かいます", "の", "へ"] 
-            },
-            { 
-                "meaning": "學生寫字 (The student writes characters)", 
-                "answer_order":["がくせい", "は", "じ", "を", "かきます"], 
-                "options":["がくせい", "は", "じ", "を", "かきます", "に", "の"] 
-            },
-            { 
-                "meaning": "貓看鳥 (The cat looks at the bird)", 
-                "answer_order":["ねこ", "は", "とり", "を", "みます"], 
-                "options":["ねこ", "は", "とり", "を", "みます", "が", "へ"] 
-            }
-        ],
-        "order":[],
-        "enemy_surf": 9,
-        "enemy_attack_word": "連",
-        "target": [7, 8],
-        "enemy_hp": 140 * (1.5 if save['hard'] else 1), # 7 hits to defeat\
-        "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
-    },
-    # 23 (Sentence Order - Expansion with Time & Location)
-    {
-        "question_type": "Sentence_Order",
-        "questions":[
-            { 
-                "meaning": "今天我在家 (I am at home today)", 
-                "answer_order": ["きょう", "わたし", "は", "うち", "に", "います"], 
-                "options":["きょう", "わたし", "は", "うち", "に", "います", "を", "へ"] 
-            },
-            { 
-                "meaning": "昨天吃了蘋果 (Ate an apple yesterday)", 
-                "answer_order":["きのう", "りんご", "を", "たべました"], 
-                "options":["きのう", "りんご", "を", "たべました", "たべます", "に", "は"] 
-            },
-            { 
-                "meaning": "在學校讀書 (Study at school)", 
-                "answer_order":["がっこう", "で", "ほん", "を", "よみます"], 
-                "options":["がっこう", "で", "ほん", "を", "よみます", "に", "が"] 
-            },
-            { 
-                "meaning": "明天去森林 (Go to the forest tomorrow)", 
-                "answer_order": ["あした", "もり", "へ", "いきます"], 
-                "options": ["あした", "もり", "へ", "いきます", "で", "を", "きのう"] 
-            },
-            { 
-                "meaning": "在餐廳吃肉 (Eat meat at the restaurant)", 
-                "answer_order":["レストラン", "で", "にく", "を", "たべます"], 
-                "options":["レストラン", "で", "にく", "を", "たべます", "に", "は"] 
-            },
-            { 
-                "meaning": "每天早上喝水 (Drink water every morning)", 
-                "answer_order":["まいあさ", "みず", "を", "のみます"], 
-                "options":["まいあさ", "みず", "を", "のみます", "は", "で", "の"] 
-            },
-            { 
-                "meaning": "昨天莉子買了書 (Riko bought a book yesterday)", 
-                "answer_order": ["きのう", "りこ", "は", "ほん", "を", "かいました"], 
-                "options":["きのう", "りこ", "は", "ほん", "を", "かいました", "かいます", "で"] 
-            },
-            { 
-                "meaning": "在房間寫字 (Write characters in the room)", 
-                "answer_order":["へや", "で", "じ", "を", "かきます"], 
-                "options":["へや", "で", "じ", "を", "かきます", "に", "へ"] 
-            }
-        ],
-        "order":[],
-        "enemy_surf": 9,
-        "enemy_attack_word": "完",
-        "target": [8, 9],
-        "enemy_hp": 160 * (1.5 if save['hard'] else 1), # 8 hits to defeat
-        "enemy_attack": 40 * (1.5 if save['hard'] else 1),
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
-    },
+            "word_size": 36,
+            "order":[],
+            "enemy_surf": 29,  # Mid Boss (Tenma)
+            "enemy_attack_word": "死",
+            "target": [20, 25],
+            "enemy_hp": 400 * (1.5 if save['hard'] else 1),   # Requires 20 hits to defeat!
+            "enemy_attack": 50 * (1.5 if save['hard'] else 1),
+            "discription": "中級Boss『天魔』降臨！點擊漢字正確的讀音！",
+        },
+        # 20 (Sentence Order - Basic A is B)
+        {
+            "question_type": "Sentence_Order",
+            "questions":[
+                { 
+                    "meaning": "我是赤真 (I am Akamasa)", 
+                    "answer_order": ["わたし", "は", "あかまさ", "です"], 
+                    "options": ["です", "わたし", "は", "あかまさ", "が", "を"] 
+                },
+                { 
+                    "meaning": "這是蘋果 (This is an apple)", 
+                    "answer_order": ["これ", "は", "りんご", "です"], 
+                    "options":["りんご", "これ", "は", "です", "それ", "に"] 
+                },
+                { 
+                    "meaning": "莉子是精靈 (Riko is an elf)", 
+                    "answer_order": ["りこ", "は", "エルフ", "です"], 
+                    "options": ["りこ", "エルフ", "は", "です", "を", "の"] 
+                },
+                { 
+                    "meaning": "那是一本書 (That is a book)", 
+                    "answer_order": ["それ", "は", "ほん", "です"], 
+                    "options":["ほん", "それ", "は", "です", "あれ", "が"] 
+                },
+                { 
+                    "meaning": "明天是星期一 (Tomorrow is Monday)", 
+                    "answer_order":["あした", "は", "げつようび", "です"], 
+                    "options":["あした", "は", "げつようび", "です", "きょう", "に"] 
+                }
+            ],
+            "order":[],
+            "enemy_surf": 9,
+            "enemy_attack_word": "基",
+            "target": [5, 6],
+            "enemy_hp": 100 * (1.5 if save['hard'] else 1), # 5 hits to defeat
+            "enemy_attack": 20 * (1.5 if save['hard'] else 1),
+            "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+        },
+        # 21 (Sentence Order - Particles を, に, へ)
+        {
+            "question_type": "Sentence_Order",
+            "questions":[
+                { 
+                    "meaning": "吃蘋果 (Eat an apple)", 
+                    "answer_order": ["りんご", "を", "たべます"], 
+                    "options":["りんご", "を", "たべます", "は", "のみます", "が"] 
+                },
+                { 
+                    "meaning": "喝水 (Drink water)", 
+                    "answer_order":["みず", "を", "のみます"], 
+                    "options":["みず", "を", "のみます", "に", "たべます", "へ"] 
+                },
+                { 
+                    "meaning": "去學校 (Go to school)", 
+                    "answer_order":["がっこう", "に", "いきます"], 
+                    "options":["がっこう", "に", "いきます", "を", "きます", "で"] 
+                },
+                { 
+                    "meaning": "讀書 (Read a book)", 
+                    "answer_order": ["ほん", "を", "よみます"], 
+                    "options": ["ほん", "を", "よみます", "が", "かきます", "に"] 
+                },
+                { 
+                    "meaning": "回家 (Return home)", 
+                    "answer_order": ["うち", "に", "かえります"], 
+                    "options":["うち", "に", "かえります", "を", "でます", "は"] 
+                },
+                { 
+                    "meaning": "買肉 (Buy meat)", 
+                    "answer_order":["にく", "を", "かいます"], 
+                    "options":["にく", "を", "かいます", "は", "に", "が"] 
+                }
+            ],
+            "order":[],
+            "enemy_surf": 9,
+            "enemy_attack_word": "助", # Represents "Particles"
+            "target": [6, 7],
+            "enemy_hp": 120 * (1.5 if save['hard'] else 1), # 6 hits to defeat
+            "enemy_attack": 30 * (1.5 if save['hard'] else 1),
+            "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+        },
+        # 22 (Sentence Order - Subject + Object + Verb)
+        {
+            "question_type": "Sentence_Order",
+            "questions":[
+                { 
+                    "meaning": "我吃肉 (I eat meat)", 
+                    "answer_order":["わたし", "は", "にく", "を", "たべます"], 
+                    "options":["わたし", "は", "にく", "を", "たべます", "が", "に"] 
+                },
+                { 
+                    "meaning": "莉子喝水 (Riko drinks water)", 
+                    "answer_order": ["りこ", "は", "みず", "を", "のみます"], 
+                    "options":["りこ", "は", "みず", "を", "のみます", "へ", "で"] 
+                },
+                { 
+                    "meaning": "我去學校 (I go to school)", 
+                    "answer_order":["わたし", "は", "がっこう", "に", "いきます"], 
+                    "options":["わたし", "は", "がっこう", "に", "いきます", "を", "で"] 
+                },
+                { 
+                    "meaning": "老師看書 (The teacher reads a book)", 
+                    "answer_order":["せんせい", "は", "ほん", "を", "よみます"], 
+                    "options":["せんせい", "は", "ほん", "を", "よみます", "が", "に"] 
+                },
+                { 
+                    "meaning": "赤真買蘋果 (Akamasa buys an apple)", 
+                    "answer_order": ["あかまさ", "は", "りんご", "を", "かいます"], 
+                    "options":["あかまさ", "は", "りんご", "を", "かいます", "の", "へ"] 
+                },
+                { 
+                    "meaning": "學生寫字 (The student writes characters)", 
+                    "answer_order":["がくせい", "は", "じ", "を", "かきます"], 
+                    "options":["がくせい", "は", "じ", "を", "かきます", "に", "の"] 
+                },
+                { 
+                    "meaning": "貓看鳥 (The cat looks at the bird)", 
+                    "answer_order":["ねこ", "は", "とり", "を", "みます"], 
+                    "options":["ねこ", "は", "とり", "を", "みます", "が", "へ"] 
+                }
+            ],
+            "order":[],
+            "enemy_surf": 9,
+            "enemy_attack_word": "連",
+            "target": [7, 8],
+            "enemy_hp": 140 * (1.5 if save['hard'] else 1), # 7 hits to defeat\
+            "enemy_attack": 30 * (1.5 if save['hard'] else 1),
+            "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+        },
+        # 23 (Sentence Order - Expansion with Time & Location)
+        {
+            "question_type": "Sentence_Order",
+            "questions":[
+                { 
+                    "meaning": "今天我在家 (I am at home today)", 
+                    "answer_order": ["きょう", "わたし", "は", "うち", "に", "います"], 
+                    "options":["きょう", "わたし", "は", "うち", "に", "います", "を", "へ"] 
+                },
+                { 
+                    "meaning": "昨天吃了蘋果 (Ate an apple yesterday)", 
+                    "answer_order":["きのう", "りんご", "を", "たべました"], 
+                    "options":["きのう", "りんご", "を", "たべました", "たべます", "に", "は"] 
+                },
+                { 
+                    "meaning": "在學校讀書 (Study at school)", 
+                    "answer_order":["がっこう", "で", "ほん", "を", "よみます"], 
+                    "options":["がっこう", "で", "ほん", "を", "よみます", "に", "が"] 
+                },
+                { 
+                    "meaning": "明天去森林 (Go to the forest tomorrow)", 
+                    "answer_order": ["あした", "もり", "へ", "いきます"], 
+                    "options": ["あした", "もり", "へ", "いきます", "で", "を", "きのう"] 
+                },
+                { 
+                    "meaning": "在餐廳吃肉 (Eat meat at the restaurant)", 
+                    "answer_order":["レストラン", "で", "にく", "を", "たべます"], 
+                    "options":["レストラン", "で", "にく", "を", "たべます", "に", "は"] 
+                },
+                { 
+                    "meaning": "每天早上喝水 (Drink water every morning)", 
+                    "answer_order":["まいあさ", "みず", "を", "のみます"], 
+                    "options":["まいあさ", "みず", "を", "のみます", "は", "で", "の"] 
+                },
+                { 
+                    "meaning": "昨天莉子買了書 (Riko bought a book yesterday)", 
+                    "answer_order": ["きのう", "りこ", "は", "ほん", "を", "かいました"], 
+                    "options":["きのう", "りこ", "は", "ほん", "を", "かいました", "かいます", "で"] 
+                },
+                { 
+                    "meaning": "在房間寫字 (Write characters in the room)", 
+                    "answer_order":["へや", "で", "じ", "を", "かきます"], 
+                    "options":["へや", "で", "じ", "を", "かきます", "に", "へ"] 
+                }
+            ],
+            "order":[],
+            "enemy_surf": 9,
+            "enemy_attack_word": "完",
+            "target": [8, 9],
+            "enemy_hp": 160 * (1.5 if save['hard'] else 1), # 8 hits to defeat
+            "enemy_attack": 40 * (1.5 if save['hard'] else 1),
+            "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+        },
 
-    #24 (masu to ru)
-    {
-        "question_type": "input",
-        "question": "verb_masu",
-        "answer": "verb_ru",
-        "enemy_surf": 29,
-        "counter": 0,
-        "enemy_attack_word": "打",
-        "target": [7, 10],
-        "enemy_hp": 140 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "curr_qs": None,
-        "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\nます形 → 辞書形",
-    },
-    # 25 (Input - Ru to Te Form)
-    {
-        "question_type": "input",
-        "question": "verb_ru",
-        "answer": "verb_te",
-        "enemy_surf": 9,
-        "counter": 0,
-        "enemy_attack_word": "連",
-        "target": [9, 11], # 9 hits for 3 stars
-        "enemy_hp": 180 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "curr_qs": None,
-        "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → て形",
-    },
-    # 26 (Input - Ru to Nai Form)
-    {
-        "question_type": "input",
-        "question": "verb_ru",
-        "answer": "verb_nai",
-        "enemy_surf": 9,
-        "counter": 0,
-        "enemy_attack_word": "無",
-        "target":[10, 12], # 10 hits for 3 stars
-        "enemy_hp": 200 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 40 * (1.5 if save['hard'] else 1),
-        "curr_qs": None,
-        "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → ない形 (否定)",
-    },
-    # 27 (Input - Ru to Ta Form)
-    {
-        "question_type": "input",
-        "question": "verb_ru",
-        "answer": "verb_ta",
-        "enemy_surf": 9,
-        "counter": 0,
-        "enemy_attack_word": "極",
-        "target": [11, 13], # 11 hits for 3 stars
-        "enemy_hp": 220 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 40 * (1.5 if save['hard'] else 1),
-        "curr_qs": None,
-        "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → た形 (過去式)",
-    },
-    # 28 (Input - Ru to Kanou Form / Boss Fight)
-    {
-        "question_type": "input",
-        "question": "verb_ru",
-        "answer": "verb_kanou",
-        "enemy_surf": 29,  # Demon Dragon Boss Sprite
-        "counter": 0,
-        "enemy_attack_word": "滅",
-        "target": [20, 25], # 20 hits required! A true test of endurance.
-        "enemy_hp": 400 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 50 * (1.5 if save['hard'] else 1),
-        "curr_qs": None,
-        "discription": "【魔龍降臨】以鍵盤輸入羅馬拼音後，按Enter\n辞書形 → 可能形 (能/可以)",
-    },
-    #29 chapter 4 ending 1 start
-    {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "nswer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
-        "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
-    },
-    #30
-    {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
-        "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
-    },
-    #31
-    {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
-        "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
-    },
-    #32
-    {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
-        "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
-    },
-    #33
-    {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
-        "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
-    },
-    #34
-    {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
-        "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
-    },
-    #35
-    {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
-        "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
-    },
-    #36
-    {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
-        "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
-    },
-    #37
-    {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
-        "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
-    },
-    #38
-    {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
-        "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
-    }
-    
-    
-
-]
+        #24 (masu to ru)
+        {
+            "question_type": "input",
+            "question": "verb_masu",
+            "answer": "verb_ru",
+            "enemy_surf": 29,
+            "counter": 0,
+            "enemy_attack_word": "打",
+            "target": [7, 10],
+            "enemy_hp": 140 * (1.5 if save['hard'] else 1),
+            "enemy_attack": 30 * (1.5 if save['hard'] else 1),
+            "curr_qs": None,
+            "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\nます形 → 辞書形",
+        },
+        # 25 (Input - Ru to Te Form)
+        {
+            "question_type": "input",
+            "question": "verb_ru",
+            "answer": "verb_te",
+            "enemy_surf": 9,
+            "counter": 0,
+            "enemy_attack_word": "連",
+            "target": [9, 11], # 9 hits for 3 stars
+            "enemy_hp": 180 * (1.5 if save['hard'] else 1),
+            "enemy_attack": 30 * (1.5 if save['hard'] else 1),
+            "curr_qs": None,
+            "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → て形",
+        },
+        # 26 (Input - Ru to Nai Form)
+        {
+            "question_type": "input",
+            "question": "verb_ru",
+            "answer": "verb_nai",
+            "enemy_surf": 9,
+            "counter": 0,
+            "enemy_attack_word": "無",
+            "target":[10, 12], # 10 hits for 3 stars
+            "enemy_hp": 200 * (1.5 if save['hard'] else 1),
+            "enemy_attack": 40 * (1.5 if save['hard'] else 1),
+            "curr_qs": None,
+            "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → ない形 (否定)",
+        },
+        # 27 (Input - Ru to Ta Form)
+        {
+            "question_type": "input",
+            "question": "verb_ru",
+            "answer": "verb_ta",
+            "enemy_surf": 9,
+            "counter": 0,
+            "enemy_attack_word": "極",
+            "target": [11, 13], # 11 hits for 3 stars
+            "enemy_hp": 220 * (1.5 if save['hard'] else 1),
+            "enemy_attack": 40 * (1.5 if save['hard'] else 1),
+            "curr_qs": None,
+            "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → た形 (過去式)",
+        },
+        # 28 (Input - Ru to Kanou Form / Boss Fight)
+        {
+            "question_type": "input",
+            "question": "verb_ru",
+            "answer": "verb_kanou",
+            "enemy_surf": 29,  # Demon Dragon Boss Sprite
+            "counter": 0,
+            "enemy_attack_word": "滅",
+            "target": [20, 25], # 20 hits required! A true test of endurance.
+            "enemy_hp": 400 * (1.5 if save['hard'] else 1),
+            "enemy_attack": 50 * (1.5 if save['hard'] else 1),
+            "curr_qs": None,
+            "discription": "【魔龍降臨】以鍵盤輸入羅馬拼音後，按Enter\n辞書形 → 可能形 (能/可以)",
+        },
+        #29 chapter 4 ending 1 start
+        {
+            "question_type": "Sentence_Order",
+            "questions": [
+                { 
+                    "meaning": "我是學生 (I am a student)", 
+                    "nswer_order": ["わたし", "は", "がくせい", "です"], 
+                    "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
+                },
+                { 
+                    "meaning": "這是一本書 (This is a book)", 
+                    "answer_order": ["これ", "は", "ほん", "です"], 
+                    "options": ["ほん", "これ", "は", "です", "それ", "に"] 
+                },
+                { 
+                    "meaning": "不吃壽司 (I do not eat sushi)", 
+                    "answer_order": ["すし", "を", "たべません"], 
+                    "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
+                },
+            ],
+            "order": [],
+            "enemy_surf": 29,
+            "enemy_attack_word": "亂",
+            "target": [2, 3], # 3 stars criteria
+            "enemy_hp": 160 * (1.5 if save['hard'] else 1),
+            "enemy_attack": 30 * (1.5 if save['hard'] else 1),
+            "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+        },
+        #30
+        {
+            "question_type": "Sentence_Order",
+            "questions": [
+                { 
+                    "meaning": "我是學生 (I am a student)", 
+                    "answer_order": ["わたし", "は", "がくせい", "です"], 
+                    "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
+                },
+                { 
+                    "meaning": "這是一本書 (This is a book)", 
+                    "answer_order": ["これ", "は", "ほん", "です"], 
+                    "options": ["ほん", "これ", "は", "です", "それ", "に"] 
+                },
+                { 
+                    "meaning": "不吃壽司 (I do not eat sushi)", 
+                    "answer_order": ["すし", "を", "たべません"], 
+                    "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
+                },
+            ],
+            "order": [],
+            "enemy_surf": 29,
+            "enemy_attack_word": "亂",
+            "target": [2, 3], # 3 stars criteria
+            "enemy_hp": 160 * (1.5 if save['hard'] else 1),
+            "enemy_attack": 30 * (1.5 if save['hard'] else 1),
+            "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+        },
+        #31
+        {
+            "question_type": "Sentence_Order",
+            "questions": [
+                { 
+                    "meaning": "我是學生 (I am a student)", 
+                    "answer_order": ["わたし", "は", "がくせい", "です"], 
+                    "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
+                },
+                { 
+                    "meaning": "這是一本書 (This is a book)", 
+                    "answer_order": ["これ", "は", "ほん", "です"], 
+                    "options": ["ほん", "これ", "は", "です", "それ", "に"] 
+                },
+                { 
+                    "meaning": "不吃壽司 (I do not eat sushi)", 
+                    "answer_order": ["すし", "を", "たべません"], 
+                    "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
+                },
+            ],
+            "order": [],
+            "enemy_surf": 29,
+            "enemy_attack_word": "亂",
+            "target": [2, 3], # 3 stars criteria
+            "enemy_hp": 160 * (1.5 if save['hard'] else 1),
+            "enemy_attack": 30 * (1.5 if save['hard'] else 1),
+            "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+        },
+        #32
+        {
+            "question_type": "Sentence_Order",
+            "questions": [
+                { 
+                    "meaning": "我是學生 (I am a student)", 
+                    "answer_order": ["わたし", "は", "がくせい", "です"], 
+                    "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
+                },
+                { 
+                    "meaning": "這是一本書 (This is a book)", 
+                    "answer_order": ["これ", "は", "ほん", "です"], 
+                    "options": ["ほん", "これ", "は", "です", "それ", "に"] 
+                },
+                { 
+                    "meaning": "不吃壽司 (I do not eat sushi)", 
+                    "answer_order": ["すし", "を", "たべません"], 
+                    "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
+                },
+            ],
+            "order": [],
+            "enemy_surf": 29,
+            "enemy_attack_word": "亂",
+            "target": [2, 3], # 3 stars criteria
+            "enemy_hp": 160 * (1.5 if save['hard'] else 1),
+            "enemy_attack": 30 * (1.5 if save['hard'] else 1),
+            "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+        },
+        #33
+        {
+            "question_type": "Sentence_Order",
+            "questions": [
+                { 
+                    "meaning": "我是學生 (I am a student)", 
+                    "answer_order": ["わたし", "は", "がくせい", "です"], 
+                    "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
+                },
+                { 
+                    "meaning": "這是一本書 (This is a book)", 
+                    "answer_order": ["これ", "は", "ほん", "です"], 
+                    "options": ["ほん", "これ", "は", "です", "それ", "に"] 
+                },
+                { 
+                    "meaning": "不吃壽司 (I do not eat sushi)", 
+                    "answer_order": ["すし", "を", "たべません"], 
+                    "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
+                },
+            ],
+            "order": [],
+            "enemy_surf": 29,
+            "enemy_attack_word": "亂",
+            "target": [2, 3], # 3 stars criteria
+            "enemy_hp": 160 * (1.5 if save['hard'] else 1),
+            "enemy_attack": 30 * (1.5 if save['hard'] else 1),
+            "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+        },
+        #34
+        {
+            "question_type": "Sentence_Order",
+            "questions": [
+                { 
+                    "meaning": "我是學生 (I am a student)", 
+                    "answer_order": ["わたし", "は", "がくせい", "です"], 
+                    "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
+                },
+                { 
+                    "meaning": "這是一本書 (This is a book)", 
+                    "answer_order": ["これ", "は", "ほん", "です"], 
+                    "options": ["ほん", "これ", "は", "です", "それ", "に"] 
+                },
+                { 
+                    "meaning": "不吃壽司 (I do not eat sushi)", 
+                    "answer_order": ["すし", "を", "たべません"], 
+                    "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
+                },
+            ],
+            "order": [],
+            "enemy_surf": 29,
+            "enemy_attack_word": "亂",
+            "target": [2, 3], # 3 stars criteria
+            "enemy_hp": 160 * (1.5 if save['hard'] else 1),
+            "enemy_attack": 30 * (1.5 if save['hard'] else 1),
+            "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+        },
+        #35
+        {
+            "question_type": "Sentence_Order",
+            "questions": [
+                { 
+                    "meaning": "我是學生 (I am a student)", 
+                    "answer_order": ["わたし", "は", "がくせい", "です"], 
+                    "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
+                },
+                { 
+                    "meaning": "這是一本書 (This is a book)", 
+                    "answer_order": ["これ", "は", "ほん", "です"], 
+                    "options": ["ほん", "これ", "は", "です", "それ", "に"] 
+                },
+                { 
+                    "meaning": "不吃壽司 (I do not eat sushi)", 
+                    "answer_order": ["すし", "を", "たべません"], 
+                    "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
+                },
+            ],
+            "order": [],
+            "enemy_surf": 29,
+            "enemy_attack_word": "亂",
+            "target": [2, 3], # 3 stars criteria
+            "enemy_hp": 160 * (1.5 if save['hard'] else 1),
+            "enemy_attack": 30 * (1.5 if save['hard'] else 1),
+            "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+        },
+        #36
+        {
+            "question_type": "Sentence_Order",
+            "questions": [
+                { 
+                    "meaning": "我是學生 (I am a student)", 
+                    "answer_order": ["わたし", "は", "がくせい", "です"], 
+                    "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
+                },
+                { 
+                    "meaning": "這是一本書 (This is a book)", 
+                    "answer_order": ["これ", "は", "ほん", "です"], 
+                    "options": ["ほん", "これ", "は", "です", "それ", "に"] 
+                },
+                { 
+                    "meaning": "不吃壽司 (I do not eat sushi)", 
+                    "answer_order": ["すし", "を", "たべません"], 
+                    "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
+                },
+            ],
+            "order": [],
+            "enemy_surf": 29,
+            "enemy_attack_word": "亂",
+            "target": [2, 3], # 3 stars criteria
+            "enemy_hp": 160 * (1.5 if save['hard'] else 1),
+            "enemy_attack": 30 * (1.5 if save['hard'] else 1),
+            "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+        },
+        #37
+        {
+            "question_type": "Sentence_Order",
+            "questions": [
+                { 
+                    "meaning": "我是學生 (I am a student)", 
+                    "answer_order": ["わたし", "は", "がくせい", "です"], 
+                    "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
+                },
+                { 
+                    "meaning": "這是一本書 (This is a book)", 
+                    "answer_order": ["これ", "は", "ほん", "です"], 
+                    "options": ["ほん", "これ", "は", "です", "それ", "に"] 
+                },
+                { 
+                    "meaning": "不吃壽司 (I do not eat sushi)", 
+                    "answer_order": ["すし", "を", "たべません"], 
+                    "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
+                },
+            ],
+            "order": [],
+            "enemy_surf": 29,
+            "enemy_attack_word": "亂",
+            "target": [2, 3], # 3 stars criteria
+            "enemy_hp": 160 * (1.5 if save['hard'] else 1),
+            "enemy_attack": 30 * (1.5 if save['hard'] else 1),
+            "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+        },
+        #38
+        {
+            "question_type": "Sentence_Order",
+            "questions": [
+                { 
+                    "meaning": "我是學生 (I am a student)", 
+                    "answer_order": ["わたし", "は", "がくせい", "です"], 
+                    "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
+                },
+                { 
+                    "meaning": "這是一本書 (This is a book)", 
+                    "answer_order": ["これ", "は", "ほん", "です"], 
+                    "options": ["ほん", "これ", "は", "です", "それ", "に"] 
+                },
+                { 
+                    "meaning": "不吃壽司 (I do not eat sushi)", 
+                    "answer_order": ["すし", "を", "たべません"], 
+                    "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
+                },
+            ],
+            "order": [],
+            "enemy_surf": 29,
+            "enemy_attack_word": "亂",
+            "target": [2, 3], # 3 stars criteria
+            "enemy_hp": 160 * (1.5 if save['hard'] else 1),
+            "enemy_attack": 30 * (1.5 if save['hard'] else 1),
+            "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+        }
+    ]
+    return battle_detail
 
 
 
@@ -4610,6 +4626,7 @@ idle_times = 0
 recover_times = 0
 damage_taken_times = 0
 attack_times = 0
+click_times = 0
 
 achievement_stack = []
     
@@ -4623,32 +4640,33 @@ while running:
     if game_state == "menu":
 
         # BG image
-        screen.blit(images[25 if save["passed_first_round"] else 0], (0, 0))
+        screen.blit(images[25 if save["star"][-1]>0 or save['hard'] else 0], (0, 0))
 
         # Title text
         r = images[1].get_rect()
         r.center = screen.get_rect().center
         screen.blit(images[1], r)
 
-        pygame.draw.rect(screen, [186, 148, 45], transform_scale([570, 550, 300, 50]), border_radius=br)
-        pygame.draw.rect(screen, [0, 0, 0], transform_scale([570, 550, 300, 50]), br, br)
-        text(screen, "New Game", [0, 0, 0], br*10, transform_scale([570+150, 550+25]), "center")
+        if save["star"][-1] > 0:
+            pygame.draw.rect(screen, [186, 148, 45], transform_scale([570, 550, 300, 50]), border_radius=br)
+            pygame.draw.rect(screen, [0, 0, 0], transform_scale([570, 550, 300, 50]), br, br)
+            text(screen, "輪迴", [0, 0, 0], br*10, transform_scale([570+150, 550+25]), "center")
 
         pygame.draw.rect(screen, [186, 148, 45], transform_scale([570, 620, 300, 50]), border_radius=br)
         pygame.draw.rect(screen, [0, 0, 0], transform_scale([570, 620, 300, 50]), br, br)
-        text(screen, "Continue", [0, 0, 0], br*10, transform_scale([570+150, 620+25]), "center")
+        text(screen, "繼續" if save["unlock"][1] or save['hard'] else "新遊戲", [0, 0, 0], br*10, transform_scale([570+150, 620+25]), "center")
 
         pygame.draw.rect(screen, [186, 148, 45], transform_scale([570, 690, 300, 50]), border_radius=br)
         pygame.draw.rect(screen, [0, 0, 0], transform_scale([570, 690, 300, 50]), br, br)
-        text(screen, "Option", [0, 0, 0], br*10, transform_scale([570+150, 690+25]), "center")
+        text(screen, "設定", [0, 0, 0], br*10, transform_scale([570+150, 690+25]), "center")
 
         pygame.draw.rect(screen, [186, 148, 45], transform_scale([570, 760, 300, 50]), border_radius=br)
         pygame.draw.rect(screen, [0, 0, 0], transform_scale([570, 760, 300, 50]), br, br)
-        text(screen, "Achievements", [0, 0, 0], br*10, transform_scale([570+150, 760+25]), "center")
+        text(screen, "成就", [0, 0, 0], br*10, transform_scale([570+150, 760+25]), "center")
 
         pygame.draw.rect(screen, [186, 148, 45], transform_scale([570, 830, 300, 50]), border_radius=br)
         pygame.draw.rect(screen, [0, 0, 0], transform_scale([570, 830, 300, 50]), br, br)
-        text(screen, "Exit", [0, 0, 0], br*10, transform_scale([570+150, 830+25]), "center")
+        text(screen, "退出", [0, 0, 0], br*10, transform_scale([570+150, 830+25]), "center")
 
         
         if(time != 0):
@@ -4661,27 +4679,32 @@ while running:
                 running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if pygame.mouse.get_pressed()[0]:
-                    if click_check(pygame.mouse.get_pos(), transform_scale([570, 550, 300, 50])):  #start
+                    if click_check(pygame.mouse.get_pos(), transform_scale([570, 550, 300, 50])):  # new round
                         if (time == 0):
                             play_sfx("click")
                             time += 1
                             menu_action = "start"
-                            save = {
+                            save.update({
                                 'unlock': [True] + [False]*38,
                                 'star': [0]*39,
                                 'current_stage': 0,
-                                'achievement': [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False],
-                                'obtain': [False, False, False, False, False, False, False],  # C_weapon, C_equiptment, A_weapon, A_equiptment, SS_weapon, SS_equiptment, ex_weapon
                                 'equipt': [7, 8],  # weapon, equiptment. 7, 8 mean empty. number follow 'obtain' index
-                                'obtain_w_n': 0,
-                                'obtain_e_n': 0,
+                                'obtain_w_n': 2,
+                                'obtain_e_n': 2,
                                 'last_play': [0, 0], # stage_number, continus_times
-                                'sound': 100,
-                                'music': 100,
-                                'full_screen': False,
-                                'hard': False,
-                                'passed_first_round': False,
-                            }
+                                'hard': True,
+                            })
+                            save["obtain"][4] = False
+                            save["obtain"][5] = False
+                            save["obtain"][6] = False
+                            battle_detail = reload_battle_detail()
+                            if not(save["achievement"][25]):
+                                save["achievement"][25] = True
+                                achievement_stack.append([25, fps])
+                            if (not(save["achievement"][29])):
+                                if(sum(save["achievement"]) == 29):
+                                    save["achievement"][29] = True
+                                    achievement_stack.append([29, fps])
                     if click_check(pygame.mouse.get_pos(), transform_scale([570, 620, 300, 50])):  #start
                         if (time == 0):
                             play_sfx("click")
@@ -4734,11 +4757,12 @@ while running:
             recover_times = 0
             damage_taken_times = 0
             attack_times = 0
+            click_times = 0
             game_state = "playing"
             
             stage = story_num
             player_hp = 100
-            enemy_hp = battle_detail[stage]["enemy_hp"] * (1.5 if save['hard'] else 1)
+            enemy_hp = battle_detail[stage]["enemy_hp"]
 
             if battle_detail[stage]["question_type"] == "MC":
                 battle_detail[stage]["order"] = [random.randint(0, len(battle_detail[stage]["question"])-1)]
@@ -4932,6 +4956,7 @@ while running:
                         if action == "attack" or action == "recover":
                             if time == 0:
                                 if click_check(pos, transform_scale(list(enemy))):
+                                    click_times += 1
                                     enemy_hp = max(0, enemy_hp-1)
                                     if enemy_hp <= 0:
                                         time = -1*fps
@@ -4948,7 +4973,7 @@ while running:
                                                 save["star"][stage] = 1
                                         if len(save["unlock"])>save["current_stage"]+1:
                                             save["unlock"][save["current_stage"]+1]=True
-                                        end_stage_achievement_check(recover_times, damage_taken_times, attack_times, player_hp, idle_times, stage)
+                                        end_stage_achievement_check(recover_times, damage_taken_times, attack_times, click_times, player_hp, idle_times, stage)
                                         write()
                                         game_state = "win"
                                 if click_check(pos, transform_scale([407, 729, 194, 94])):
@@ -5019,14 +5044,7 @@ while running:
                                     save["star"][stage] = 1
                             if len(save["unlock"])>save["current_stage"]+1:
                                 save["unlock"][save["current_stage"]+1]=True
-                            end_stage_achievement_check(recover_times, damage_taken_times, attack_times, player_hp, idle_times, stage)
-                            # if(sum(save["star"]) >= int(total_stage*3/2) and not(save["achievement"][4])):                !!! ADD THIS WHEN TOTAL STAGE NUMBER IS CONFIRMED !!!
-                            #     save["achievement"][4] = True
-
-                            #     achievement_stack.append([4, fps])
-                            # if(sum(save["star"]) >= int(total_stage*3) and not(save["achievement"][4])):
-                            #     save["achievement"][5] = True
-                            #     achievement_stack.append([5, fps])
+                            end_stage_achievement_check(recover_times, damage_taken_times, attack_times, click_times, player_hp, idle_times, stage)
                             write()
                             game_state = "win"
                         else:
@@ -5060,7 +5078,7 @@ while running:
                         time = 0
                     if time == 0:
                         attack_times += 1
-                        player_hp -= round(battle_detail[stage]["enemy_attack"] * scale[save["equipt"][1]]/10)
+                        player_hp -= round(battle_detail[stage]["enemy_attack"] * scale[save["equipt"][1]]/100)
                         damage_taken_times += 1
                         correct = None
                         if stage == 0:
@@ -5070,7 +5088,7 @@ while running:
                         question_num += 1
                         if player_hp <= 0:
                             time = -1*fps
-                            end_stage_achievement_check(recover_times, damage_taken_times, attack_times, player_hp, idle_times, stage)
+                            end_stage_achievement_check(recover_times, damage_taken_times, attack_times, click_times, player_hp, idle_times, stage)
                             game_state = "lose"
                         else:
                             temp = random.randint(0, len(battle_detail[stage]["question"])-1)
@@ -5093,7 +5111,7 @@ while running:
                         question_num += 1
                         if player_hp <= 0:
                             time = -1*fps
-                            end_stage_achievement_check(recover_times, damage_taken_times, attack_times, player_hp, idle_times, stage)
+                            end_stage_achievement_check(recover_times, damage_taken_times, attack_times, click_times, player_hp, idle_times, stage)
                             game_state = "lose"
                         else:
                             temp = random.randint(0, len(battle_detail[stage]["question"])-1)
@@ -5200,6 +5218,7 @@ while running:
                     running = False
                 if time == 0:
                     if click_check(pos, transform_scale(list(enemy))):
+                        click_times += 1
                         enemy_hp = max(0, enemy_hp-1)
                         if enemy_hp <= 0:
                             time = -1*fps
@@ -5216,7 +5235,7 @@ while running:
                                     save["star"][stage] = 1
                             if len(save["unlock"])>save["current_stage"]+1:
                                 save["unlock"][save["current_stage"]+1]=True
-                            end_stage_achievement_check(recover_times, damage_taken_times, attack_times, player_hp, idle_times, stage)
+                            end_stage_achievement_check(recover_times, damage_taken_times, attack_times, click_times, player_hp, idle_times, stage)
                             write()
                             game_state = "win"
                     if action is None:
@@ -5293,7 +5312,7 @@ while running:
                         if save["current_stage"] + 1 < len(save["unlock"]):
                             save["unlock"][save["current_stage"]+1]=True
                         write()
-                        end_stage_achievement_check(recover_times, damage_taken_times, attack_times, player_hp, idle_times, stage)
+                        end_stage_achievement_check(recover_times, damage_taken_times, attack_times, click_times, player_hp, idle_times, stage)
                         game_state = "win"
                     else: 
                         draggable_rects.clear() 
@@ -5312,14 +5331,14 @@ while running:
                     
                     if time == 0:
                         attack_times += 1
-                        player_hp -= round(battle_detail[stage]["enemy_attack"] * scale[save["equipt"][1]]/10)
+                        player_hp -= round(battle_detail[stage]["enemy_attack"] * scale[save["equipt"][1]]/100)
                         correct = None
                         question_num += 1
                         action = None
                         
                         if player_hp <= 0:
                             time = -1*fps
-                            end_stage_achievement_check(recover_times, damage_taken_times, attack_times, player_hp, idle_times, stage)
+                            end_stage_achievement_check(recover_times, damage_taken_times, attack_times, click_times, player_hp, idle_times, stage)
                             game_state = "lose"
                         else: 
                             draggable_rects.clear()
@@ -5344,7 +5363,7 @@ while running:
                         
                         if player_hp <= 0:
                             time = -1*fps
-                            end_stage_achievement_check(recover_times, damage_taken_times, attack_times, player_hp, idle_times, stage)
+                            end_stage_achievement_check(recover_times, damage_taken_times, attack_times, click_times, player_hp, idle_times, stage)
                             game_state = "lose"
                         else: 
                             draggable_rects.clear()
@@ -5497,6 +5516,7 @@ while running:
                 
                 if time == 0:
                     if click_check(pos, transform_scale(list(enemy))):
+                        click_times += 1
                         enemy_hp = max(0, enemy_hp-1)
                         if enemy_hp <= 0:
                             time = -1*fps
@@ -5513,7 +5533,7 @@ while running:
                                     save["star"][stage] = 1
                             if len(save["unlock"])>save["current_stage"]+1:
                                 save["unlock"][save["current_stage"]+1]=True
-                            end_stage_achievement_check(recover_times, damage_taken_times, attack_times, player_hp, idle_times, stage)
+                            end_stage_achievement_check(recover_times, damage_taken_times, attack_times, click_times, player_hp, idle_times, stage)
                             write()
                             game_state = "win"
                     if action is None:
@@ -5608,7 +5628,7 @@ while running:
                             if save["current_stage"] + 1 < len(save["unlock"]):
                                 save["unlock"][save["current_stage"]+1]=True
                             write()
-                            end_stage_achievement_check(recover_times, damage_taken_times, attack_times, player_hp, idle_times, stage)
+                            end_stage_achievement_check(recover_times, damage_taken_times, attack_times, click_times, player_hp, idle_times, stage)
                             game_state = "win"
                         elif question_num >= len(battle_detail[stage]["order"]):
                             random.shuffle(battle_detail[stage]["order"])
@@ -5641,7 +5661,7 @@ while running:
                 if time == 0:
                     if action == "attack": 
                         attack_times += 1
-                        player_hp -= round(battle_detail[stage]["enemy_attack"] * scale[save["equipt"][1]]/10)
+                        player_hp -= round(battle_detail[stage]["enemy_attack"] * scale[save["equipt"][1]]/100)
                     elif action == "recover": 
                         player_hp -= 10
                     
@@ -5652,7 +5672,7 @@ while running:
 
                     if player_hp <= 0:
                         time = -1*fps
-                        end_stage_achievement_check(recover_times, damage_taken_times, attack_times, player_hp, idle_times, stage)
+                        end_stage_achievement_check(recover_times, damage_taken_times, attack_times, click_times, player_hp, idle_times, stage)
                         game_state = "lose"
                     elif question_num >= len(battle_detail[stage]["order"]):
                         random.shuffle(battle_detail[stage]["order"])
@@ -5721,6 +5741,7 @@ while running:
                         
                 if event.type == pygame.KEYDOWN and time == 0:
                     if click_check(pos, transform_scale(list(enemy))):
+                        click_times += 1
                         enemy_hp = max(0, enemy_hp-1)
                         if enemy_hp <= 0:
                             time = -1*fps
@@ -5737,7 +5758,7 @@ while running:
                                     save["star"][stage] = 1
                             if len(save["unlock"])>save["current_stage"]+1:
                                 save["unlock"][save["current_stage"]+1]=True
-                            end_stage_achievement_check(recover_times, damage_taken_times, attack_times, player_hp, idle_times, stage)
+                            end_stage_achievement_check(recover_times, damage_taken_times, attack_times, click_times, player_hp, idle_times, stage)
                             write()
                             game_state = "win"
                     if action == "attack" or action == "recover":
@@ -5807,6 +5828,10 @@ while running:
                                     if(my_font.size(outputArr)[0]>660):
                                         save["achievement"][8] = True
                                         achievement_stack.append([8, fps])
+                                    if (not(save["achievement"][29])):
+                                        if(sum(save["achievement"]) == 29):
+                                            save["achievement"][29] = True
+                                            achievement_stack.append([29, fps])
                             else:
                                 # event after pressing Enter key
                                 time = 1
@@ -5844,7 +5869,7 @@ while running:
                             if len(save["unlock"])>save["current_stage"]+1:
                                 save["unlock"][save["current_stage"]+1]=True
                             write()
-                            end_stage_achievement_check(recover_times, damage_taken_times, attack_times, player_hp, idle_times, stage)
+                            end_stage_achievement_check(recover_times, damage_taken_times, attack_times, click_times, player_hp, idle_times, stage)
                             game_state = "win"
                         else:
                             temp = random.randint(0, len(verb[battle_detail[stage]["question"]])-1)
@@ -5878,7 +5903,7 @@ while running:
                         time = 0
                     if time == 0:
                         attack_times += 1
-                        player_hp -= round(battle_detail[stage]["enemy_attack"] * scale[save["equipt"][1]]/10)
+                        player_hp -= round(battle_detail[stage]["enemy_attack"] * scale[save["equipt"][1]]/100)
                         correct = None
                         if stage == 0:
                             action = "attack"
@@ -5886,7 +5911,7 @@ while running:
                             action = None
                         if player_hp <= 0:
                             time = -1*fps
-                            end_stage_achievement_check(recover_times, damage_taken_times, attack_times, player_hp, idle_times, stage)
+                            end_stage_achievement_check(recover_times, damage_taken_times, attack_times, click_times, player_hp, idle_times, stage)
                             game_state = "lose"
                         else:
                             temp = random.randint(0, len(verb[battle_detail[stage]["question"]])-1)
@@ -5908,7 +5933,7 @@ while running:
                         action = None
                         if player_hp <= 0:
                             time = -1*fps
-                            end_stage_achievement_check(recover_times, damage_taken_times, attack_times, player_hp, idle_times, stage)
+                            end_stage_achievement_check(recover_times, damage_taken_times, attack_times, click_times, player_hp, idle_times, stage)
                             game_state = "lose"
                         else:
                             temp = random.randint(0, len(verb[battle_detail[stage]["question"]])-1)
@@ -6024,12 +6049,16 @@ while running:
                     if click_check(pos, transform_scale([620, 860, 80, 80])) and time == 0:
                         play_sfx("click")
                         if selecting_weapon:
+                            if save["equipt"][0] == 6:
+                                save["equipt"][1] = 8
                             save["equipt"][0] = 7
                         selecting_weapon = not(selecting_weapon)
                         selecting_equiptment = False
                     elif click_check(pos, transform_scale([740, 860, 80, 80])) and time == 0:
                         play_sfx("click")
                         if selecting_equiptment:
+                            if save["equipt"][1] == 6:
+                                save['equipt'][0] = 7
                             save["equipt"][1] = 8
                         selecting_equiptment = not(selecting_equiptment)
                         selecting_weapon = False
@@ -6346,7 +6375,6 @@ while running:
                     changing=None
                     write()
 
-        print(save['full_screen'])
 
         if(changing == 'music'):
             a, b, r = transform_scale([380, 380+680, 680])
@@ -6415,7 +6443,7 @@ while running:
 #  再度轉生 
 # 開啟二周目
 #  迎難而上 
-# 以困難模式通關遊戲
+# 通關二周目
 #  史上最強豆腐 
 # 不穿任何裝備通關最終關卡
 #  一拳超人 
