@@ -31,6 +31,7 @@ save = {
     'music': 100,
     'full_screen': False,
     'hard': False,
+    'chosen_path': 34,
 }
 
 WIDTH  = int(pygame.display.Info().current_w * 0.65)
@@ -580,7 +581,16 @@ def load():
             if len(save['unlock']) < 39:
                 save['unlock'].extend([False] * (39 - len(save['unlock'])))
                 save['star'].extend([0] * (39 - len(save['star'])))
-                write()
+            if 'chosen_path' not in save:
+                save['chosen_path'] = 34
+            if 'hard' not in save:
+                save['hard'] = False
+            if 'equipt' in save:
+                if save['equipt'][0] not in [0, 2, 4, 6, 7]:
+                    save['equipt'][0] = 7  # 7 代表未裝備武器
+                if save['equipt'][1] not in [1, 3, 5, 6, 8]:
+                    save['equipt'][1] = 8  # 8 代表未裝備防具
+            write()
             print("Loaded data:", save)
     except:
         print("File not found. Creating a new one.")
@@ -1618,10 +1628,10 @@ def end_stage_achievement_check(recover_times, damage_taken_times, attack_times,
     elif(stage == 38 and not(save["achievement"][24])):
         save["achievement"][24] = True
         achievement_stack.append([24, fps])
-    elif(stage == 33 and not(save["achievement"][27]) and save['equipt'][0] == 7 and save['equipt'][0] == 8): # here, no equiptment
+    elif(stage == 33 and not(save["achievement"][27]) and save['equipt'][0] == 7 and save['equipt'][1] == 8): # here, no equiptment
         save["achievement"][27] = True
         achievement_stack.append([27])
-    elif(stage == 38 and not(save["achievement"][27]) and save['equipt'][0] == 7 and save['equipt'][0] == 8): # here, no equiptment
+    elif(stage == 38 and not(save["achievement"][27]) and save['equipt'][0] == 7 and save['equipt'][1] == 8): # here, no equiptment
         save["achievement"][27] = True
         achievement_stack.append([27, fps])
     elif(stage == 33 and not(save["achievement"][26]) and save['hard']): # here, 2nd round
@@ -1715,6 +1725,7 @@ if new_game:
         'music': 100,
         'full_screen': False,
         'hard': False,
+        'chosen_path': 34,
     }
 if god_mod:
     save = {
@@ -1732,6 +1743,7 @@ if god_mod:
         'music': 100,
         'full_screen': False,
         'hard': False,
+        'chosen_path': 34,
     }
 # question bank: verb form convertion
 # size: 27
@@ -3218,285 +3230,156 @@ battle_detail = [
         "curr_qs": None,
         "discription": "【魔龍降臨】以鍵盤輸入羅馬拼音後，按Enter\n辞書形 → 可能形 (能/可以)",
     },
-    #29 chapter 4 ending 1 start
+    # 29 chapter 4 Bad Ending (Stage 29)
     {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "nswer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
+        "question_type": "input",
+        "question": "verb_ru",
+        "answer": "verb_ro",
         "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+        "counter": 0,
+        "enemy_attack_word": "殺",
+        "target": [8, 10],
+        "enemy_hp": 260 * (1.5 if save['hard'] else 1),
+        "enemy_attack": 50 * (1.5 if save['hard'] else 1),
+        "curr_qs": None,
+        "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → 命令形 (強制...)",
     },
     #30
     {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
+        "question_type": "input",
+        "question": "verb_ru",
+        "answer": "verb_na",
         "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+        "counter": 0,
+        "enemy_attack_word": "怨",
+        "target": [10, 12],
+        "enemy_hp": 280 * (1.5 if save['hard'] else 1),
+        "enemy_attack": 60 * (1.5 if save['hard'] else 1),
+        "curr_qs": None,
+        "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → 禁止形 (不准...)",
     },
     #31
     {
         "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
+        "questions":[
+            { "meaning": "我殺了莉子 (I killed Riko)", "answer_order":["わたし", "は", "りこ", "を", "ころしました"], "options":["わたし", "は", "りこ", "を", "ころしました", "が", "に"] },
+            { "meaning": "甚麼都沒有 (There is nothing)", "answer_order": ["なにも", "ありません"], "options":["なにも", "ありません", "あります", "は", "が"] },
+            { "meaning": "世界將會毀滅 (The world will be destroyed)", "answer_order": ["せかい", "は", "ほろびます"], "options": ["せかい", "は", "ほろびます", "を", "に"] },
+            { "meaning": "不要死 (Don't die)", "answer_order":["しなないで", "ください"], "options":["しなないで", "ください", "しにます", "は", "で"] },
+            { "meaning": "我是魔王 (I am the Demon King)", "answer_order": ["わたし", "は", "まおう", "です"], "options":["わたし", "は", "まおう", "です", "が", "を"] }
         ],
-        "order": [],
+        "order":[],
         "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 30 * (1.5 if save['hard'] else 1),
+        "enemy_attack_word": "恨",
+        "target": [4, 5],
+        "enemy_hp": 300 * (1.5 if save['hard'] else 1),
+        "enemy_attack": 70 * (1.5 if save['hard'] else 1),
         "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
     },
     #32
     {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
+        "question_type": "input",
+        "question": "verb_ru",
+        "answer": "verb_ba",
         "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+        "counter": 0,
+        "enemy_attack_word": "悔",
+        "target":[12, 14],
+        "enemy_hp": 320 * (1.5 if save['hard'] else 1),
+        "enemy_attack": 75 * (1.5 if save['hard'] else 1),
+        "curr_qs": None,
+        "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → 條件形 (ば形)",
     },
     #33
     {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
+        "question_type": "input",
+        "question": "verb_ru",
+        "answer": "verb_saseru_rareru",
         "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+        "counter": 0,
+        "enemy_attack_word": "終",
+        "target": [20, 25],
+        "enemy_hp": 500 * (1.5 if save['hard'] else 1),
+        "enemy_attack": 80 * (1.5 if save['hard'] else 1),
+        "curr_qs": None,
+        "discription": "【魔王降臨】以鍵盤輸入羅馬拼音後，按Enter\n辞書形 → 使役被動形 (被迫...)",
     },
-    #34
+    # 34 chapter 4 True Ending (Stage 34)
     {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
+        "question_type": "input",
+        "question": "verb_ru",
+        "answer": "verb_ikou",
         "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+        "counter": 0,
+        "enemy_attack_word": "炎",
+        "target": [8, 10],
+        "enemy_hp": 260 * (1.5 if save['hard'] else 1),
+        "enemy_attack": 50 * (1.5 if save['hard'] else 1),
+        "curr_qs": None,
+        "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → 意向形 (一起...吧！)",
     },
     #35
     {
         "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
+        "questions":[
+            { "meaning": "今天在森林看書 (Read book in the forest today)", "answer_order":["きょう", "もり", "で", "ほん", "を", "よみます"], "options":["きょう", "もり", "で", "ほん", "を", "よみます", "に", "が"] },
+            { "meaning": "每天早上吃蘋果 (Eat apples every morning)", "answer_order":["まいあさ", "りんご", "を", "たべます"], "options":["まいあさ", "りんご", "を", "たべます", "に", "は"] },
+            { "meaning": "我不吃肉 (I do not eat meat)", "answer_order": ["わたし", "は", "にく", "を", "たべません"], "options":["わたし", "は", "にく", "を", "たべません", "たべます", "が"] },
+            { "meaning": "明天去學校 (Go to school tomorrow)", "answer_order": ["あした", "がっこう", "に", "いきます"], "options":["あした", "がっこう", "に", "いきます", "で", "を"] }
         ],
-        "order": [],
+        "order":[],
         "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 30 * (1.5 if save['hard'] else 1),
+        "enemy_attack_word": "風",
+        "target": [4, 5],
+        "enemy_hp": 300 * (1.5 if save['hard'] else 1),
+        "enemy_attack": 60 * (1.5 if save['hard'] else 1),
         "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
     },
     #36
     {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
+        "question_type": "input",
+        "question": "verb_ru",
+        "answer": "verb_kanou",
         "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+        "counter": 0,
+        "enemy_attack_word": "冰",
+        "target":[10, 12],
+        "enemy_hp": 320 * (1.5 if save['hard'] else 1),
+        "enemy_attack": 65 * (1.5 if save['hard'] else 1),
+        "curr_qs": None,
+        "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → 可能形 (能/可以)",
     },
     #37
     {
-        "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
-        ],
-        "order": [],
+        "question_type": "input",
+        "question": "verb_ru",
+        "answer": "verb_te",
         "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 160 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+        "counter": 0,
+        "enemy_attack_word": "壁",
+        "target": [12, 14],
+        "enemy_hp": 340 * (1.5 if save['hard'] else 1),
+        "enemy_attack": 70 * (1.5 if save['hard'] else 1),
+        "curr_qs": None,
+        "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → て形 (連續行動)",
     },
     #38
     {
         "question_type": "Sentence_Order",
-        "questions": [
-            { 
-                "meaning": "我是學生 (I am a student)", 
-                "answer_order": ["わたし", "は", "がくせい", "です"], 
-                "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-            },
-            { 
-                "meaning": "這是一本書 (This is a book)", 
-                "answer_order": ["これ", "は", "ほん", "です"], 
-                "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-            },
-            { 
-                "meaning": "不吃壽司 (I do not eat sushi)", 
-                "answer_order": ["すし", "を", "たべません"], 
-                "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-            },
+        "questions":[
+            { "meaning": "昨天莉子買了書 (Riko bought a book yesterday)", "answer_order":["きのう", "りこ", "は", "ほん", "を", "かいました"], "options":["きのう", "りこ", "は", "ほん", "を", "かいました", "かいます", "で"] },
+            { "meaning": "今天我在家 (I am at home today)", "answer_order":["きょう", "わたし", "は", "うち", "に", "います"], "options":["きょう", "わたし", "は", "うち", "に", "います", "を", "へ"] },
+            { "meaning": "在餐廳吃肉 (Eat meat at the restaurant)", "answer_order":["レストラン", "で", "にく", "を", "たべます"], "options":["レストラン", "で", "にく", "を", "たべます", "に", "は"] },
+            { "meaning": "每天早上喝水 (Drink water every morning)", "answer_order":["まいあさ", "みず", "を", "のみます"], "options":["まいあさ", "みず", "を", "のみます", "は", "で", "の"] },
+            { "meaning": "在房間寫字 (Write characters in the room)", "answer_order":["へや", "で", "じ", "を", "かきます"], "options":["へや", "で", "じ", "を", "かきます", "に", "へ"] }
         ],
-        "order": [],
+        "order":[],
         "enemy_surf": 29,
-        "enemy_attack_word": "亂",
-        "target": [2, 3], # 3 stars criteria
-        "enemy_hp": 1600 * (1.5 if save['hard'] else 1),
-        "enemy_attack": 200 * (1.5 if save['hard'] else 1),
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+        "enemy_attack_word": "滅",
+        "target": [5, 6],
+        "enemy_hp": 800 * (1.5 if save['hard'] else 1), # Demon King has very high HP!
+        "enemy_attack": 80 * (1.5 if save['hard'] else 1),
+        "discription": "【魔王降臨】將單字拖入橫線組成句子，發動最終詠唱！",
     }
     
     
@@ -4330,286 +4213,157 @@ def reload_battle_detail():
             "curr_qs": None,
             "discription": "【魔龍降臨】以鍵盤輸入羅馬拼音後，按Enter\n辞書形 → 可能形 (能/可以)",
         },
-        #29 chapter 4 ending 1 start
+        # 29 chapter 4 Bad Ending (Stage 29)
         {
-            "question_type": "Sentence_Order",
-            "questions": [
-                { 
-                    "meaning": "我是學生 (I am a student)", 
-                    "nswer_order": ["わたし", "は", "がくせい", "です"], 
-                    "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-                },
-                { 
-                    "meaning": "這是一本書 (This is a book)", 
-                    "answer_order": ["これ", "は", "ほん", "です"], 
-                    "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-                },
-                { 
-                    "meaning": "不吃壽司 (I do not eat sushi)", 
-                    "answer_order": ["すし", "を", "たべません"], 
-                    "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-                },
-            ],
-            "order": [],
+            "question_type": "input",
+            "question": "verb_ru",
+            "answer": "verb_ro",
             "enemy_surf": 29,
-            "enemy_attack_word": "亂",
-            "target": [2, 3], # 3 stars criteria
-            "enemy_hp": 160 * (1.5 if save['hard'] else 1),
-            "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-            "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+            "counter": 0,
+            "enemy_attack_word": "殺",
+            "target": [8, 10],
+            "enemy_hp": 260 * (1.5 if save['hard'] else 1),
+            "enemy_attack": 50 * (1.5 if save['hard'] else 1),
+            "curr_qs": None,
+            "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → 命令形 (強制...)",
         },
         #30
         {
-            "question_type": "Sentence_Order",
-            "questions": [
-                { 
-                    "meaning": "我是學生 (I am a student)", 
-                    "answer_order": ["わたし", "は", "がくせい", "です"], 
-                    "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-                },
-                { 
-                    "meaning": "這是一本書 (This is a book)", 
-                    "answer_order": ["これ", "は", "ほん", "です"], 
-                    "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-                },
-                { 
-                    "meaning": "不吃壽司 (I do not eat sushi)", 
-                    "answer_order": ["すし", "を", "たべません"], 
-                    "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-                },
-            ],
-            "order": [],
+            "question_type": "input",
+            "question": "verb_ru",
+            "answer": "verb_na",
             "enemy_surf": 29,
-            "enemy_attack_word": "亂",
-            "target": [2, 3], # 3 stars criteria
-            "enemy_hp": 160 * (1.5 if save['hard'] else 1),
-            "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-            "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+            "counter": 0,
+            "enemy_attack_word": "怨",
+            "target": [10, 12],
+            "enemy_hp": 280 * (1.5 if save['hard'] else 1),
+            "enemy_attack": 60 * (1.5 if save['hard'] else 1),
+            "curr_qs": None,
+            "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → 禁止形 (不准...)",
         },
         #31
         {
             "question_type": "Sentence_Order",
-            "questions": [
-                { 
-                    "meaning": "我是學生 (I am a student)", 
-                    "answer_order": ["わたし", "は", "がくせい", "です"], 
-                    "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-                },
-                { 
-                    "meaning": "這是一本書 (This is a book)", 
-                    "answer_order": ["これ", "は", "ほん", "です"], 
-                    "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-                },
-                { 
-                    "meaning": "不吃壽司 (I do not eat sushi)", 
-                    "answer_order": ["すし", "を", "たべません"], 
-                    "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-                },
+            "questions":[
+                { "meaning": "我殺了莉子 (I killed Riko)", "answer_order":["わたし", "は", "りこ", "を", "ころしました"], "options":["わたし", "は", "りこ", "を", "ころしました", "が", "に"] },
+                { "meaning": "甚麼都沒有 (There is nothing)", "answer_order": ["なにも", "ありません"], "options":["なにも", "ありません", "あります", "は", "が"] },
+                { "meaning": "世界將會毀滅 (The world will be destroyed)", "answer_order": ["せかい", "は", "ほろびます"], "options": ["せかい", "は", "ほろびます", "を", "に"] },
+                { "meaning": "不要死 (Don't die)", "answer_order":["しなないで", "ください"], "options":["しなないで", "ください", "しにます", "は", "で"] },
+                { "meaning": "我是魔王 (I am the Demon King)", "answer_order": ["わたし", "は", "まおう", "です"], "options":["わたし", "は", "まおう", "です", "が", "を"] }
             ],
-            "order": [],
+            "order":[],
             "enemy_surf": 29,
-            "enemy_attack_word": "亂",
-            "target": [2, 3], # 3 stars criteria
-            "enemy_hp": 160 * (1.5 if save['hard'] else 1),
-            "enemy_attack": 30 * (1.5 if save['hard'] else 1),
+            "enemy_attack_word": "恨",
+            "target": [4, 5],
+            "enemy_hp": 300 * (1.5 if save['hard'] else 1),
+            "enemy_attack": 70 * (1.5 if save['hard'] else 1),
             "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
         },
         #32
         {
-            "question_type": "Sentence_Order",
-            "questions": [
-                { 
-                    "meaning": "我是學生 (I am a student)", 
-                    "answer_order": ["わたし", "は", "がくせい", "です"], 
-                    "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-                },
-                { 
-                    "meaning": "這是一本書 (This is a book)", 
-                    "answer_order": ["これ", "は", "ほん", "です"], 
-                    "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-                },
-                { 
-                    "meaning": "不吃壽司 (I do not eat sushi)", 
-                    "answer_order": ["すし", "を", "たべません"], 
-                    "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-                },
-            ],
-            "order": [],
+            "question_type": "input",
+            "question": "verb_ru",
+            "answer": "verb_ba",
             "enemy_surf": 29,
-            "enemy_attack_word": "亂",
-            "target": [2, 3], # 3 stars criteria
-            "enemy_hp": 160 * (1.5 if save['hard'] else 1),
-            "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-            "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+            "counter": 0,
+            "enemy_attack_word": "悔",
+            "target":[12, 14],
+            "enemy_hp": 320 * (1.5 if save['hard'] else 1),
+            "enemy_attack": 75 * (1.5 if save['hard'] else 1),
+            "curr_qs": None,
+            "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → 條件形 (ば形)",
         },
         #33
         {
-            "question_type": "Sentence_Order",
-            "questions": [
-                { 
-                    "meaning": "我是學生 (I am a student)", 
-                    "answer_order": ["わたし", "は", "がくせい", "です"], 
-                    "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-                },
-                { 
-                    "meaning": "這是一本書 (This is a book)", 
-                    "answer_order": ["これ", "は", "ほん", "です"], 
-                    "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-                },
-                { 
-                    "meaning": "不吃壽司 (I do not eat sushi)", 
-                    "answer_order": ["すし", "を", "たべません"], 
-                    "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-                },
-            ],
-            "order": [],
+            "question_type": "input",
+            "question": "verb_ru",
+            "answer": "verb_saseru_rareru",
             "enemy_surf": 29,
-            "enemy_attack_word": "亂",
-            "target": [2, 3], # 3 stars criteria
-            "enemy_hp": 160 * (1.5 if save['hard'] else 1),
-            "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-            "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+            "counter": 0,
+            "enemy_attack_word": "終",
+            "target": [20, 25],
+            "enemy_hp": 500 * (1.5 if save['hard'] else 1),
+            "enemy_attack": 80 * (1.5 if save['hard'] else 1),
+            "curr_qs": None,
+            "discription": "【魔王降臨】以鍵盤輸入羅馬拼音後，按Enter\n辞書形 → 使役被動形 (被迫...)",
         },
-        #34
-        {
-            "question_type": "Sentence_Order",
-            "questions": [
-                { 
-                    "meaning": "我是學生 (I am a student)", 
-                    "answer_order": ["わたし", "は", "がくせい", "です"], 
-                    "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-                },
-                { 
-                    "meaning": "這是一本書 (This is a book)", 
-                    "answer_order": ["これ", "は", "ほん", "です"], 
-                    "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-                },
-                { 
-                    "meaning": "不吃壽司 (I do not eat sushi)", 
-                    "answer_order": ["すし", "を", "たべません"], 
-                    "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-                },
-            ],
-            "order": [],
-            "enemy_surf": 29,
-            "enemy_attack_word": "亂",
-            "target": [2, 3], # 3 stars criteria
-            "enemy_hp": 160 * (1.5 if save['hard'] else 1),
-            "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-            "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
-        },
-        #35
-        {
-            "question_type": "Sentence_Order",
-            "questions": [
-                { 
-                    "meaning": "我是學生 (I am a student)", 
-                    "answer_order": ["わたし", "は", "がくせい", "です"], 
-                    "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-                },
-                { 
-                    "meaning": "這是一本書 (This is a book)", 
-                    "answer_order": ["これ", "は", "ほん", "です"], 
-                    "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-                },
-                { 
-                    "meaning": "不吃壽司 (I do not eat sushi)", 
-                    "answer_order": ["すし", "を", "たべません"], 
-                    "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-                },
-            ],
-            "order": [],
-            "enemy_surf": 29,
-            "enemy_attack_word": "亂",
-            "target": [2, 3], # 3 stars criteria
-            "enemy_hp": 160 * (1.5 if save['hard'] else 1),
-            "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-            "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
-        },
-        #36
-        {
-            "question_type": "Sentence_Order",
-            "questions": [
-                { 
-                    "meaning": "我是學生 (I am a student)", 
-                    "answer_order": ["わたし", "は", "がくせい", "です"], 
-                    "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-                },
-                { 
-                    "meaning": "這是一本書 (This is a book)", 
-                    "answer_order": ["これ", "は", "ほん", "です"], 
-                    "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-                },
-                { 
-                    "meaning": "不吃壽司 (I do not eat sushi)", 
-                    "answer_order": ["すし", "を", "たべません"], 
-                    "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-                },
-            ],
-            "order": [],
-            "enemy_surf": 29,
-            "enemy_attack_word": "亂",
-            "target": [2, 3], # 3 stars criteria
-            "enemy_hp": 160 * (1.5 if save['hard'] else 1),
-            "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-            "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
-        },
-        #37
-        {
-            "question_type": "Sentence_Order",
-            "questions": [
-                { 
-                    "meaning": "我是學生 (I am a student)", 
-                    "answer_order": ["わたし", "は", "がくせい", "です"], 
-                    "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-                },
-                { 
-                    "meaning": "這是一本書 (This is a book)", 
-                    "answer_order": ["これ", "は", "ほん", "です"], 
-                    "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-                },
-                { 
-                    "meaning": "不吃壽司 (I do not eat sushi)", 
-                    "answer_order": ["すし", "を", "たべません"], 
-                    "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-                },
-            ],
-            "order": [],
-            "enemy_surf": 29,
-            "enemy_attack_word": "亂",
-            "target": [2, 3], # 3 stars criteria
-            "enemy_hp": 160 * (1.5 if save['hard'] else 1),
-            "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-            "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
-        },
-        #38
-        {
-            "question_type": "Sentence_Order",
-            "questions": [
-                { 
-                    "meaning": "我是學生 (I am a student)", 
-                    "answer_order": ["わたし", "は", "がくせい", "です"], 
-                    "options": ["です", "わたし", "は", "がくせい", "ね", "が"] 
-                },
-                { 
-                    "meaning": "這是一本書 (This is a book)", 
-                    "answer_order": ["これ", "は", "ほん", "です"], 
-                    "options": ["ほん", "これ", "は", "です", "それ", "に"] 
-                },
-                { 
-                    "meaning": "不吃壽司 (I do not eat sushi)", 
-                    "answer_order": ["すし", "を", "たべません"], 
-                    "options": ["すし", "を", "たべます", "たべません", "は", "の"] 
-                },
-            ],
-            "order": [],
-            "enemy_surf": 29,
-            "enemy_attack_word": "亂",
-            "target": [2, 3], # 3 stars criteria
-            "enemy_hp": 160 * (1.5 if save['hard'] else 1),
-            "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-            "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
-        }
+        # 34 chapter 4 True Ending (Stage 34)
+    {
+        "question_type": "input",
+        "question": "verb_ru",
+        "answer": "verb_ikou",
+        "enemy_surf": 29,
+        "counter": 0,
+        "enemy_attack_word": "炎",
+        "target": [8, 10],
+        "enemy_hp": 260 * (1.5 if save['hard'] else 1),
+        "enemy_attack": 50 * (1.5 if save['hard'] else 1),
+        "curr_qs": None,
+        "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → 意向形 (一起...吧！)",
+    },
+    #35
+    {
+        "question_type": "Sentence_Order",
+        "questions":[
+            { "meaning": "今天在森林看書 (Read book in the forest today)", "answer_order":["きょう", "もり", "で", "ほん", "を", "よみます"], "options":["きょう", "もり", "で", "ほん", "を", "よみます", "に", "が"] },
+            { "meaning": "每天早上吃蘋果 (Eat apples every morning)", "answer_order":["まいあさ", "りんご", "を", "たべます"], "options":["まいあさ", "りんご", "を", "たべます", "に", "は"] },
+            { "meaning": "我不吃肉 (I do not eat meat)", "answer_order": ["わたし", "は", "にく", "を", "たべません"], "options":["わたし", "は", "にく", "を", "たべません", "たべます", "が"] },
+            { "meaning": "明天去學校 (Go to school tomorrow)", "answer_order": ["あした", "がっこう", "に", "いきます"], "options":["あした", "がっこう", "に", "いきます", "で", "を"] }
+        ],
+        "order":[],
+        "enemy_surf": 29,
+        "enemy_attack_word": "風",
+        "target": [4, 5],
+        "enemy_hp": 300 * (1.5 if save['hard'] else 1),
+        "enemy_attack": 60 * (1.5 if save['hard'] else 1),
+        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+    },
+    #36
+    {
+        "question_type": "input",
+        "question": "verb_ru",
+        "answer": "verb_kanou",
+        "enemy_surf": 29,
+        "counter": 0,
+        "enemy_attack_word": "冰",
+        "target":[10, 12],
+        "enemy_hp": 320 * (1.5 if save['hard'] else 1),
+        "enemy_attack": 65 * (1.5 if save['hard'] else 1),
+        "curr_qs": None,
+        "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → 可能形 (能/可以)",
+    },
+    #37
+    {
+        "question_type": "input",
+        "question": "verb_ru",
+        "answer": "verb_te",
+        "enemy_surf": 29,
+        "counter": 0,
+        "enemy_attack_word": "壁",
+        "target": [12, 14],
+        "enemy_hp": 340 * (1.5 if save['hard'] else 1),
+        "enemy_attack": 70 * (1.5 if save['hard'] else 1),
+        "curr_qs": None,
+        "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → て形 (連續行動)",
+    },
+    #38
+    {
+        "question_type": "Sentence_Order",
+        "questions":[
+            { "meaning": "昨天莉子買了書 (Riko bought a book yesterday)", "answer_order":["きのう", "りこ", "は", "ほん", "を", "かいました"], "options":["きのう", "りこ", "は", "ほん", "を", "かいました", "かいます", "で"] },
+            { "meaning": "今天我在家 (I am at home today)", "answer_order":["きょう", "わたし", "は", "うち", "に", "います"], "options":["きょう", "わたし", "は", "うち", "に", "います", "を", "へ"] },
+            { "meaning": "在餐廳吃肉 (Eat meat at the restaurant)", "answer_order":["レストラン", "で", "にく", "を", "たべます"], "options":["レストラン", "で", "にく", "を", "たべます", "に", "は"] },
+            { "meaning": "每天早上喝水 (Drink water every morning)", "answer_order":["まいあさ", "みず", "を", "のみます"], "options":["まいあさ", "みず", "を", "のみます", "は", "で", "の"] },
+            { "meaning": "在房間寫字 (Write characters in the room)", "answer_order":["へや", "で", "じ", "を", "かきます"], "options":["へや", "で", "じ", "を", "かきます", "に", "へ"] }
+        ],
+        "order":[],
+        "enemy_surf": 29,
+        "enemy_attack_word": "滅",
+        "target": [5, 6],
+        "enemy_hp": 800 * (1.5 if save['hard'] else 1), # Demon King has very high HP!
+        "enemy_attack": 80 * (1.5 if save['hard'] else 1),
+        "discription": "【魔王降臨】將單字拖入橫線組成句子，發動最終詠唱！",
+    }
     ]
     return battle_detail
 
@@ -4693,6 +4447,7 @@ while running:
                                 'obtain_e_n': 2,
                                 'last_play': [0, 0], # stage_number, continus_times
                                 'hard': True,
+                                'chosen_path': 34,
                             })
                             save["obtain"][4] = False
                             save["obtain"][5] = False
@@ -4841,6 +4596,18 @@ while running:
             pygame.draw.rect(screen, [0, 0, 0], transform_scale([40, 40, 80, 80]), br, br)
             text(screen, "Back", [0, 0, 0], br*5, transform_scale([80, 80]), "center")
 
+            if stage == 28 and dialog_num == len(dialog[28]) - 1:
+                choice_1_rect = pygame.Rect(transform_scale([220, 450, 400, 100]))
+                choice_2_rect = pygame.Rect(transform_scale([820, 450, 400, 100]))
+                
+                pygame.draw.rect(screen, [150, 50, 50], choice_1_rect, border_radius=10)
+                pygame.draw.rect(screen,[0, 0, 0], choice_1_rect, 3, 10)
+                text(screen, "殺死莉子獲得力量",[255, 255, 255], 36, choice_1_rect.center, "center")
+                
+                pygame.draw.rect(screen, [50, 150, 50], choice_2_rect, border_radius=10)
+                pygame.draw.rect(screen,[0, 0, 0], choice_2_rect, 3, 10)
+                text(screen, "憑自己的力量迎戰", [255, 255, 255], 36, choice_2_rect.center, "center")
+
             #  effect
             if (dialog[story_num][dialog_num][0] == 1.1):
                 if(effect_time > 0 and effect_time < fps*2):
@@ -4871,22 +4638,46 @@ while running:
                     running = False
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if pygame.mouse.get_pressed()[0]:
+                        pos = pygame.mouse.get_pos()
                         
-                        if click_check(pygame.mouse.get_pos(), transform_scale([1111, 35, 310, 80])):
-                            # skip button
-                            dialog_num = len(dialog[story_num])
-                        elif click_check(pygame.mouse.get_pos(), transform_scale([40, 40, 80, 80])):
-                            if(time == 0):
-                                time += 1
-                                menu_action = "back"
+                        # Process choices if on Stage 28 choice screen
+                        if stage == 28 and dialog_num == len(dialog[28]) - 1:
+                            choice_1_rect = pygame.Rect(transform_scale([220, 450, 400, 100]))
+                            choice_2_rect = pygame.Rect(transform_scale([820, 450, 400, 100]))
+                            if click_check(pos, choice_1_rect):
+                                play_sfx("click")
+                                save["chosen_path"] = 29
+                                write()
+                                dialog_num += 1
+                            elif click_check(pos, choice_2_rect):
+                                play_sfx("click")
+                                save["chosen_path"] = 34
+                                write()
+                                dialog_num += 1
+                            elif click_check(pos, transform_scale([40, 40, 80, 80])):
+                                if time == 0:
+                                    play_sfx("click")
+                                    time += 1
+                                    menu_action = "back"
                         else:
-                            # next sentence
-                            dialog_num += 1
-                            if dialog_num != len(dialog[story_num]):
-                                # effect list
-                                if dialog[story_num][dialog_num][0] == 1.1 or dialog[story_num][dialog_num][0] == 2.1:
-                                    effect_time = 1
-                                    menu_action = "none"
+                            if click_check(pygame.mouse.get_pos(), transform_scale([1111, 35, 310, 80])):
+                                # skip button
+                                if stage == 28:
+                                    dialog_num = len(dialog[story_num]) - 1 # Stop at choice
+                                else:
+                                    dialog_num = len(dialog[story_num])
+                            elif click_check(pygame.mouse.get_pos(), transform_scale([40, 40, 80, 80])):
+                                if(time == 0):
+                                    time += 1
+                                    menu_action = "back"
+                            else:
+                                # next sentence
+                                dialog_num += 1
+                                if dialog_num != len(dialog[story_num]):
+                                    # effect list
+                                    if dialog[story_num][dialog_num][0] == 1.1 or dialog[story_num][dialog_num][0] == 2.1:
+                                        effect_time = 1
+                                        menu_action = "none"
             # enter game
             if(time > fps*1 and menu_action == "back"):
                 game_state = "menu"
@@ -4971,7 +4762,9 @@ while running:
                                         else:
                                             if save["star"][stage] < 1:
                                                 save["star"][stage] = 1
-                                        if len(save["unlock"])>save["current_stage"]+1:
+                                        if save["current_stage"] == 28:
+                                            save["unlock"][save.get("chosen_path", 34)] = True
+                                        elif len(save["unlock"])>save["current_stage"]+1:
                                             save["unlock"][save["current_stage"]+1]=True
                                         end_stage_achievement_check(recover_times, damage_taken_times, attack_times, click_times, player_hp, idle_times, stage)
                                         write()
@@ -5042,7 +4835,9 @@ while running:
                             else:
                                 if save["star"][stage] < 1:
                                     save["star"][stage] = 1
-                            if len(save["unlock"])>save["current_stage"]+1:
+                            if save["current_stage"] == 28:
+                                save["unlock"][save.get("chosen_path", 34)] = True
+                            elif len(save["unlock"])>save["current_stage"]+1:
                                 save["unlock"][save["current_stage"]+1]=True
                             end_stage_achievement_check(recover_times, damage_taken_times, attack_times, click_times, player_hp, idle_times, stage)
                             write()
@@ -5233,7 +5028,9 @@ while running:
                             else:
                                 if save["star"][stage] < 1:
                                     save["star"][stage] = 1
-                            if len(save["unlock"])>save["current_stage"]+1:
+                            if save["current_stage"] == 28:
+                                save["unlock"][save.get("chosen_path", 34)] = True
+                            elif len(save["unlock"])>save["current_stage"]+1:
                                 save["unlock"][save["current_stage"]+1]=True
                             end_stage_achievement_check(recover_times, damage_taken_times, attack_times, click_times, player_hp, idle_times, stage)
                             write()
@@ -5309,7 +5106,9 @@ while running:
                         else:
                             save["star"][stage] = max(save["star"][stage], 1)
                         
-                        if save["current_stage"] + 1 < len(save["unlock"]):
+                        if save["current_stage"] == 28:
+                            save["unlock"][save.get("chosen_path", 34)] = True
+                        elif len(save["unlock"])>save["current_stage"]+1:
                             save["unlock"][save["current_stage"]+1]=True
                         write()
                         end_stage_achievement_check(recover_times, damage_taken_times, attack_times, click_times, player_hp, idle_times, stage)
@@ -5531,7 +5330,9 @@ while running:
                             else:
                                 if save["star"][stage] < 1:
                                     save["star"][stage] = 1
-                            if len(save["unlock"])>save["current_stage"]+1:
+                            if save["current_stage"] == 28:
+                                save["unlock"][save.get("chosen_path", 34)] = True
+                            elif len(save["unlock"])>save["current_stage"]+1:
                                 save["unlock"][save["current_stage"]+1]=True
                             end_stage_achievement_check(recover_times, damage_taken_times, attack_times, click_times, player_hp, idle_times, stage)
                             write()
@@ -5625,7 +5426,9 @@ while running:
                             else:
                                 save["star"][stage] = max(save["star"][stage], 1)
                             
-                            if save["current_stage"] + 1 < len(save["unlock"]):
+                            if save["current_stage"] == 28:
+                                save["unlock"][save.get("chosen_path", 34)] = True
+                            elif len(save["unlock"])>save["current_stage"]+1:
                                 save["unlock"][save["current_stage"]+1]=True
                             write()
                             end_stage_achievement_check(recover_times, damage_taken_times, attack_times, click_times, player_hp, idle_times, stage)
@@ -5756,7 +5559,9 @@ while running:
                             else:
                                 if save["star"][stage] < 1:
                                     save["star"][stage] = 1
-                            if len(save["unlock"])>save["current_stage"]+1:
+                            if save["current_stage"] == 28:
+                                save["unlock"][save.get("chosen_path", 34)] = True
+                            elif len(save["unlock"])>save["current_stage"]+1:
                                 save["unlock"][save["current_stage"]+1]=True
                             end_stage_achievement_check(recover_times, damage_taken_times, attack_times, click_times, player_hp, idle_times, stage)
                             write()
@@ -5866,7 +5671,9 @@ while running:
                             else:
                                 if save["star"][stage] < 1:
                                     save["star"][stage] = 1
-                            if len(save["unlock"])>save["current_stage"]+1:
+                            if save["current_stage"] == 28:
+                                save["unlock"][save.get("chosen_path", 34)] = True
+                            elif len(save["unlock"])>save["current_stage"]+1:
                                 save["unlock"][save["current_stage"]+1]=True
                             write()
                             end_stage_achievement_check(recover_times, damage_taken_times, attack_times, click_times, player_hp, idle_times, stage)
@@ -6143,12 +5950,12 @@ while running:
             elif menu_action == "w4":
                 current_chapter = 3
                 # Dynamic branching validation
-                if save['unlock'][34]: # True Ending Path unlocked
-                    chapter_ranges[3] = (34, 38)
-                    save['current_stage'] = 34
-                else:                  # Sacrifice Path unlocked
+                if save.get('chosen_path', 34) == 29:
                     chapter_ranges[3] = (29, 33)
                     save['current_stage'] = 29
+                else:
+                    chapter_ranges[3] = (34, 38)
+                    save['current_stage'] = 34
                 game_state = "select_stage"
             elif menu_action == "back":
                 game_state = "menu"
