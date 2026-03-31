@@ -2342,7 +2342,7 @@ SFX_FILES = {
     "click": "media/sfx_click.wav",
     "attack": "media/sfx_attack.wav",       # When player attacks
     "heal": "media/sfx_heal.wav",           # When player uses recover
-    "damage": "media/sfx_damage.wav",       # When enemy attacks player
+    "damage": "media/sfx_hurt.wav",       # When enemy attacks player
     "error": "media/sfx_error.wav",         # Wrong answer buzzer
     "win": "media/sfx_win.wav",             # Stage clear
     "lose": "media/sfx_lose.wav"            # Player dies
@@ -4750,6 +4750,7 @@ while running:
                                     click_times += 1
                                     enemy_hp = max(0, enemy_hp-1)
                                     if enemy_hp <= 0:
+                                        play_sfx("win")
                                         time = -1*fps
                                         if (len(battle_detail[stage]["order"]) <= battle_detail[stage]["target"][0]):
                                             save["star"][stage] = 3
@@ -4808,6 +4809,7 @@ while running:
 
             if correct == True:
                 if action == "attack":
+                    if time == 1: play_sfx("attack")
                     if(time > 0 and time < fps*1):
                         time += 1
                         text_sp(screen, battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]][0], (120, 0, 0), 200, transform_scale([220, 330]), int((fps*1-time)/(fps*1)*255), "center")
@@ -4823,6 +4825,7 @@ while running:
                             action = None
                         question_num += 1
                         if enemy_hp <= 0:
+                            play_sfx("win")
                             time = -1*fps
                             if (len(battle_detail[stage]["order"]) <= battle_detail[stage]["target"][0]):
                                 save["star"][stage] = 3
@@ -4849,6 +4852,7 @@ while running:
                             battle_detail[stage]["order"].append(temp)
                             random.shuffle(battle_detail[stage]["answer"][battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]]][1])
                 elif action == "recover":
+                    if time == 1: play_sfx("heal")
                     if(time > 0 and time < fps*1):
                         time += 1
                         text_sp(screen, battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]][0], (120, 255, 120), 200, transform_scale([1310, 520]), int((fps*1-time)/(fps*1)*255), "center")
@@ -4866,6 +4870,9 @@ while running:
                         random.shuffle(battle_detail[stage]["answer"][battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]]][1])
             elif correct == False:
                 if action == "attack":
+                    if time == 1:                     # <--- ADD THESE 3 LINES
+                        #play_sfx("error")             # <---
+                        play_sfx("damage") 
                     if(time > 0 and time < fps*1):
                         time += 1
                         text_sp(screen, battle_detail[stage]["enemy_attack_word"], (120, 0, 120), 200, transform_scale([1310, 520]), int((fps*1-time)/(fps*1)*255), "center")
@@ -4882,6 +4889,7 @@ while running:
                             action = None
                         question_num += 1
                         if player_hp <= 0:
+                            play_sfx("lose")
                             time = -1*fps
                             end_stage_achievement_check(recover_times, damage_taken_times, attack_times, click_times, player_hp, idle_times, stage)
                             game_state = "lose"
@@ -4892,6 +4900,9 @@ while running:
                             battle_detail[stage]["order"].append(temp)
                             random.shuffle(battle_detail[stage]["answer"][battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]]][1])
                 elif action == "recover":
+                    if time == 1:                     # <--- ADD THESE 3 LINES
+                        #play_sfx("error")             # <---
+                        play_sfx("damage") 
                     if(time > 0 and time < fps*1):
                         time += 1
                         text_sp(screen, battle_detail[stage]["question"][battle_detail[stage]["order"][question_num]][0], (120, 255, 120), 200, transform_scale([1310, 520]), int((fps*1-time)/(fps*1)*255), "center")
@@ -4905,6 +4916,7 @@ while running:
                         action = None
                         question_num += 1
                         if player_hp <= 0:
+                            play_sfx("lose")
                             time = -1*fps
                             end_stage_achievement_check(recover_times, damage_taken_times, attack_times, click_times, player_hp, idle_times, stage)
                             game_state = "lose"
@@ -5016,6 +5028,7 @@ while running:
                         click_times += 1
                         enemy_hp = max(0, enemy_hp-1)
                         if enemy_hp <= 0:
+                            play_sfx("win")
                             time = -1*fps
                             if (len(battle_detail[stage]["order"]) <= battle_detail[stage]["target"][0]):
                                 save["star"][stage] = 3
@@ -5068,6 +5081,7 @@ while running:
 
             if correct == True:
                 if action == "attack":
+                    if time == 1: play_sfx("attack")
                     if(time > 0 and time < fps*1):
                         time += 1
                         q_text = current_q["answer"]
@@ -5080,6 +5094,7 @@ while running:
                         enemy_hp -= 20*scale[save["equipt"][0]] if not(god_mod) else 9999
 
                 elif action == "recover":
+                    if time == 1: play_sfx("heal")
                     if(time > 0 and time < fps*1):
                         time += 1
                         q_text = current_q["answer"]
@@ -5095,6 +5110,7 @@ while running:
                     action = None
                     
                     if enemy_hp <= 0:
+                        play_sfx("win")
                         time = -1*fps 
                         if (question_num <= battle_detail[stage]["target"][0]):
                             save["star"][stage] = 3
@@ -5122,6 +5138,9 @@ while running:
 
             elif correct == False:
                 if action == "attack":
+                    if time == 1:                     # <--- ADD THESE 3 LINES
+                        #play_sfx("error")             # <---
+                        play_sfx("damage")
                     if(time > 0 and time < fps*1):
                         time += 1
                         text_sp(screen, battle_detail[stage]["enemy_attack_word"], (120, 0, 120), 200, transform_scale([1310, 520]), int((fps*1-time)/(fps*1)*255), "center")
@@ -5136,6 +5155,7 @@ while running:
                         action = None
                         
                         if player_hp <= 0:
+                            play_sfx("lose")
                             time = -1*fps
                             end_stage_achievement_check(recover_times, damage_taken_times, attack_times, click_times, player_hp, idle_times, stage)
                             game_state = "lose"
@@ -5146,6 +5166,9 @@ while running:
                                 random.shuffle(battle_detail[stage]["order"])
                                 question_num = 0
                 elif action == "recover":
+                    if time == 1:                     # <--- ADD THESE 3 LINES
+                        #play_sfx("error")             # <---
+                        play_sfx("damage")
                     if(time > 0 and time < fps*1):
                         time += 1
                         q_text = current_q["answer"]
@@ -5161,6 +5184,7 @@ while running:
                         action = None
                         
                         if player_hp <= 0:
+                            play_sfx("lose")
                             time = -1*fps
                             end_stage_achievement_check(recover_times, damage_taken_times, attack_times, click_times, player_hp, idle_times, stage)
                             game_state = "lose"
@@ -5318,6 +5342,7 @@ while running:
                         click_times += 1
                         enemy_hp = max(0, enemy_hp-1)
                         if enemy_hp <= 0:
+                            play_sfx("win")
                             time = -1*fps
                             if (len(battle_detail[stage]["order"]) <= battle_detail[stage]["target"][0]):
                                 save["star"][stage] = 3
@@ -5397,6 +5422,7 @@ while running:
             # --- Validation & Transition Logic (Reuse logic from other modes) ---
             if correct == True:
                 if action == "attack":
+                    if time == 1: play_sfx("attack")
                     if(time > 0 and time < fps*1):
                         time += 1
                         # Show Full Correct Sentence
@@ -5415,6 +5441,7 @@ while running:
 
                         # Win Check
                         if enemy_hp <= 0:
+                            play_sfx("win")
                             time = -1*fps 
                             if (question_num <= battle_detail[stage]["target"][0]):
                                 save["star"][stage] = 3
@@ -5438,6 +5465,7 @@ while running:
                             question_num = 0
 
                 elif action == "recover":
+                    if time == 1: play_sfx("heal")
                     # Identical Recover logic to Drag mode
                     if(time > 0 and time < fps*1):
                         time += 1
@@ -5454,6 +5482,10 @@ while running:
                             question_num = 0
 
             elif correct == False:
+                if action == "attack":
+                    if time == 1:                     # <--- ADD THESE 3 LINES
+                        play_sfx("error")             # <---
+                        play_sfx("damage")
                 # Wrong Answer Logic
                 if(time > 0 and time < fps*1):
                     time += 1
@@ -5474,6 +5506,7 @@ while running:
                     draggable_rects.clear()
 
                     if player_hp <= 0:
+                        play_sfx("lose")
                         time = -1*fps
                         end_stage_achievement_check(recover_times, damage_taken_times, attack_times, click_times, player_hp, idle_times, stage)
                         game_state = "lose"
@@ -5547,6 +5580,7 @@ while running:
                         click_times += 1
                         enemy_hp = max(0, enemy_hp-1)
                         if enemy_hp <= 0:
+                            play_sfx("win")
                             time = -1*fps
                             if (len(battle_detail[stage]["order"]) <= battle_detail[stage]["target"][0]):
                                 save["star"][stage] = 3
@@ -5648,6 +5682,7 @@ while running:
             
             if correct == True:
                 if action == "attack":
+                    if time == 1: play_sfx("attack")
                     if(time > 0 and time < fps*1):
                         time += 1
                         text_sp(screen, verb[battle_detail[stage]["question"]][battle_detail[stage]["curr_qs"]][0], (120, 0, 0), 200, transform_scale([220, 330]), int((fps*1-time)/(fps*1)*255), "center")
@@ -5659,6 +5694,7 @@ while running:
                         correct = None
                         action = None
                         if enemy_hp <= 0:
+                            play_sfx("win")
                             time = -1*fps
                             if (battle_detail[stage]["counter"] <= battle_detail[stage]["target"][0]):
                                 save["star"][stage] = 3
@@ -5686,6 +5722,7 @@ while running:
                         inputArr = ""
                         outputArr = ""
                 elif action == "recover":
+                    if time == 1: play_sfx("heal")
                     if(time > 0 and time < fps*1):
                         time += 1
                         text_sp(screen, verb[battle_detail[stage]["question"]][battle_detail[stage]["curr_qs"]][0], (120, 255, 120), 200, transform_scale([1310, 520]), int((fps*1-time)/(fps*1)*255), "center")
@@ -5703,6 +5740,9 @@ while running:
                         outputArr = ""
             elif correct == False:
                 if action == "attack":
+                    if time == 1:                     # <--- ADD THESE 3 LINES
+                        #play_sfx("error")             # <---
+                        play_sfx("damage")
                     if(time > 0 and time < fps*1):
                         time += 1
                         text_sp(screen, battle_detail[stage]["enemy_attack_word"], (120, 0, 120), 200, transform_scale([1310, 520]), int((fps*1-time)/(fps*1)*255), "center")
@@ -5717,6 +5757,7 @@ while running:
                         else:
                             action = None
                         if player_hp <= 0:
+                            play_sfx("lose")
                             time = -1*fps
                             end_stage_achievement_check(recover_times, damage_taken_times, attack_times, click_times, player_hp, idle_times, stage)
                             game_state = "lose"
@@ -5728,6 +5769,9 @@ while running:
                         inputArr = ""
                         outputArr = ""
                 elif action == "recover":
+                    if time == 1:                     # <--- ADD THESE 3 LINES
+                        #play_sfx("error")             # <---
+                        play_sfx("damage")
                     if(time > 0 and time < fps*1):
                         time += 1
                         text_sp(screen, verb[battle_detail[stage]["question"]][battle_detail[stage]["curr_qs"]][0], (120, 255, 120), 200, transform_scale([1310, 520]), int((fps*1-time)/(fps*1)*255), "center")
