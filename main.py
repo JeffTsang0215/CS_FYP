@@ -35,7 +35,7 @@ save = {
 }
 
 WIDTH  = int(pygame.display.Info().current_w * 0.65)
-WIDTH  = 500
+# WIDTH  = 500
 HEIGHT = int(WIDTH/1440*960)
 
 def transform_scale(arr):
@@ -6221,7 +6221,6 @@ while running:
                         if save["full_screen"]:
                             screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN | pygame.SCALED)
                         else:
-                            # os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (int((pygame.display.get_desktop_sizes()[0][0]-WIDTH)/2), int((pygame.display.get_desktop_sizes()[0][1]-HEIGHT)/2))
                             screen = pygame.display.set_mode((WIDTH, HEIGHT))
             if event.type == pygame.MOUSEBUTTONUP:
                 if event.button == 1:
