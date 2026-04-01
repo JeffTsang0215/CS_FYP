@@ -12,8 +12,8 @@ path = os.path.dirname(os.path.abspath(__file__)) + '/'
 # this is for running the executable file
 # path = os.path.dirname(os.path.realpath(sys.executable)) + '/'
 
-new_game = True
-god_mod = True
+new_game = False
+god_mod = False
 chapter_ranges =[(0, 8), (9, 19), (20, 28), (29, 38)] # (Start Stage, End Stage) for Ch 1, 2, 3, 4
 current_chapter = 0
 
@@ -1860,11 +1860,11 @@ achievement_data = {
         "熟悉的字(?", 
         "英雄級冒險者", 
         "C級武器", 
-        "C級防", 
+        "C級防具", 
         "A級武器", 
-        "A級防", 
+        "A級防具", 
         "SS級武器", 
-        "SS級防", 
+        "SS級防具", 
         "一拳不行就多一拳", 
         "等到天荒地老", 
         "???", 
@@ -1892,11 +1892,11 @@ achievement_data = {
         "熟悉的字(?", 
         "英雄級冒險者", 
         "C級武器", 
-        "C級防", 
+        "C級防具", 
         "A級武器", 
-        "A級防", 
+        "A級防具", 
         "SS級武器", 
-        "SS級防", 
+        "SS級防具", 
         "一拳不行就多一拳", 
         "等到天荒地老", 
         "對不起", 
