@@ -12,8 +12,8 @@ path = os.path.dirname(os.path.abspath(__file__)) + '/'
 # this is for running the executable file
 # path = os.path.dirname(os.path.realpath(sys.executable)) + '/'
 
-new_game = False
-god_mod = False
+new_game = True
+god_mod = True
 chapter_ranges =[(0, 8), (9, 19), (20, 28), (29, 38)] # (Start Stage, End Stage) for Ch 1, 2, 3, 4
 current_chapter = 0
 
@@ -4435,7 +4435,7 @@ while running:
                 running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if pygame.mouse.get_pressed()[0]:
-                    if click_check(pygame.mouse.get_pos(), transform_scale([570, 550, 300, 50])):  # new round
+                    if click_check(pygame.mouse.get_pos(), transform_scale([570, 550, 300, 50])) and save["star"][-1] > 0:  # new round
                         if (time == 0):
                             play_sfx("click")
                             time += 1
