@@ -35,6 +35,7 @@ save = {
 }
 
 WIDTH  = int(pygame.display.Info().current_w * 0.65)
+WIDTH  = 500
 HEIGHT = int(WIDTH/1440*960)
 
 def transform_scale(arr):
@@ -1694,8 +1695,8 @@ def draw_achievemet_stack():
         pygame.draw.rect(screen, [47, 47, 47], transform_scale([1040, 860, 400, 100]))
         pygame.draw.rect(screen, [0, 0, 0], transform_scale([1040, 860, 400, 100]), transform_scale([4])[0])
         pygame.draw.rect(screen, [178, 250, 178], transform_scale([1050, 870, 80, 80]))
-        text_sp(screen, achievement_data["icon"][achievement_stack[0][0]][0], achievement_data["icon"][achievement_stack[0][0]][1], br*18, transform_scale([1090, 910]), 255, "center")
-        text(screen, achievement_data["unlock_title"][achievement_stack[0][0]], [200, 200, 200], br*8, transform_scale([1140, 900]), "left")
+        text_sp(screen, achievement_data["icon"][achievement_stack[0][0]][0], achievement_data["icon"][achievement_stack[0][0]][1], 4*18, transform_scale([1090, 910]), 255, "center")
+        text(screen, achievement_data["unlock_title"][achievement_stack[0][0]], [200, 200, 200], 4*8, transform_scale([1140, 900]), "left")
 
         achievement_stack[0][1] -= 1
     elif(achievement_stack[0][1] < -12):
@@ -1754,7 +1755,7 @@ if god_mod:
 if save["full_screen"]:
     screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN | pygame.SCALED)
 else:
-    screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.SCALED)
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Learn Japanese!")
 clock = pygame.time.Clock()
 fps = 60
@@ -4389,6 +4390,7 @@ s = pygame.Surface((WIDTH,HEIGHT))
 s.fill((0,0,0))
 br = transform_scale([4])[0]
 
+print(br)
 # main game loop
 while running: 
     if game_state == "menu":
@@ -4404,23 +4406,23 @@ while running:
         if save["star"][-1] > 0:
             pygame.draw.rect(screen, [186, 148, 45], transform_scale([570, 550, 300, 50]), border_radius=br)
             pygame.draw.rect(screen, [0, 0, 0], transform_scale([570, 550, 300, 50]), br, br)
-            text(screen, "輪迴", [0, 0, 0], br*10, transform_scale([570+150, 550+25]), "center")
+            text(screen, "輪迴", [0, 0, 0], 30, transform_scale([570+150, 550+25]), "center")
 
         pygame.draw.rect(screen, [186, 148, 45], transform_scale([570, 620, 300, 50]), border_radius=br)
         pygame.draw.rect(screen, [0, 0, 0], transform_scale([570, 620, 300, 50]), br, br)
-        text(screen, "繼續" if save["unlock"][1] or save['hard'] else "新遊戲", [0, 0, 0], br*10, transform_scale([570+150, 620+25]), "center")
+        text(screen, "繼續" if save["unlock"][1] or save['hard'] else "新遊戲", [0, 0, 0], 30, transform_scale([570+150, 620+25]), "center")
 
         pygame.draw.rect(screen, [186, 148, 45], transform_scale([570, 690, 300, 50]), border_radius=br)
         pygame.draw.rect(screen, [0, 0, 0], transform_scale([570, 690, 300, 50]), br, br)
-        text(screen, "設定", [0, 0, 0], br*10, transform_scale([570+150, 690+25]), "center")
+        text(screen, "設定", [0, 0, 0], 30, transform_scale([570+150, 690+25]), "center")
 
         pygame.draw.rect(screen, [186, 148, 45], transform_scale([570, 760, 300, 50]), border_radius=br)
         pygame.draw.rect(screen, [0, 0, 0], transform_scale([570, 760, 300, 50]), br, br)
-        text(screen, "成就", [0, 0, 0], br*10, transform_scale([570+150, 760+25]), "center")
+        text(screen, "成就", [0, 0, 0], 30, transform_scale([570+150, 760+25]), "center")
 
         pygame.draw.rect(screen, [186, 148, 45], transform_scale([570, 830, 300, 50]), border_radius=br)
         pygame.draw.rect(screen, [0, 0, 0], transform_scale([570, 830, 300, 50]), br, br)
-        text(screen, "退出", [0, 0, 0], br*10, transform_scale([570+150, 830+25]), "center")
+        text(screen, "退出", [0, 0, 0], 30, transform_scale([570+150, 830+25]), "center")
 
         
         if(time != 0):
@@ -4594,7 +4596,7 @@ while running:
             # back button
             pygame.draw.rect(screen, [186, 148, 45], transform_scale([40, 40, 80, 80]), border_radius=br)
             pygame.draw.rect(screen, [0, 0, 0], transform_scale([40, 40, 80, 80]), br, br)
-            text(screen, "Back", [0, 0, 0], br*5, transform_scale([80, 80]), "center")
+            text(screen, "返回", [0, 0, 0], 25, transform_scale([80, 80]), "center")
 
             if stage == 28 and dialog_num == len(dialog[28]) - 1:
                 choice_1_rect = pygame.Rect(transform_scale([220, 450, 400, 100]))
@@ -6038,7 +6040,7 @@ while running:
         # back button
         pygame.draw.rect(screen, [186, 148, 45], transform_scale([40, 40, 80, 80]), border_radius=br)
         pygame.draw.rect(screen, [0, 0, 0], transform_scale([40, 40, 80, 80]), br, br)
-        text(screen, "Back", [0, 0, 0], br*5, transform_scale([80, 80]), "center")
+        text(screen, "返回", [0, 0, 0], 20, transform_scale([80, 80]), "center")
 
 
         if(time != 0):
@@ -6159,37 +6161,37 @@ while running:
         # back button
         pygame.draw.rect(screen, [186, 148, 45], transform_scale([40, 40, 80, 80]), border_radius=br)
         pygame.draw.rect(screen, [0, 0, 0], transform_scale([40, 40, 80, 80]), br, br)
-        text(screen, "Back", [0, 0, 0], br*5, transform_scale([80, 80]), "center")
+        text(screen, "返回", [0, 0, 0], 25, transform_scale([80, 80]), "center")
         
 
 
         pygame.draw.rect(screen, [220, 220, 220], transform_scale([80, 140, 1280, 680]), border_radius=br)
-        text(screen, "設定", [0, 0, 0], br*25, transform_scale([720, 190]), "center")
-        text(screen, "    音樂:", [0, 0, 0], br*20, transform_scale([100, 160+100]), "left")
-        text(screen, "    音效:", [0, 0, 0], br*20, transform_scale([100, 160+100+br*22]), "left")
-        text(screen, "全螢幕:", [0, 0, 0], br*20, transform_scale([100, 160+100+br*44]), "left")
+        text(screen, "設定", [0, 0, 0], 3*25, transform_scale([720, 190]), "center")
+        text(screen, "    音樂:", [0, 0, 0], 3*20, transform_scale([100, 160+100]), "left")
+        text(screen, "    音效:", [0, 0, 0], 3*20, transform_scale([100, 160+100+3*22]), "left")
+        text(screen, "全螢幕:", [0, 0, 0], 3*20, transform_scale([100, 160+100+3*44]), "left")
 
 
         # adjust bar for music
-        pygame.draw.rect(screen, [128, 128, 128], transform_scale([320, 170+100, 800*save['music']/100, br*20]), border_radius=br)
-        pygame.draw.rect(screen, [200, 200, 200], transform_scale([320+800*save['music']/100, 170+100, 800-800*save['music']/100, br*20]), border_radius=br)
-        pygame.draw.rect(screen, [0, 0, 0], transform_scale([320, 170+100, 800, br*20]), br, br)
-        pygame.draw.rect(screen, [255, 255, 255], transform_scale([380+680*save['music']/100-60, 170+100, 120, br*20]), border_radius=br)
-        pygame.draw.rect(screen, [0, 0, 0], transform_scale([380+680*save['music']/100-60, 170+100, 120, br*20]), br, br)
-        text(screen, str(save['music']), [0, 0, 0], br*20, transform_scale([1220, 160+100]), "left")
+        pygame.draw.rect(screen, [128, 128, 128], transform_scale([320, 170+100, 800*save['music']/100, 3*20]), border_radius=br)
+        pygame.draw.rect(screen, [200, 200, 200], transform_scale([320+800*save['music']/100, 170+100, 800-800*save['music']/100, 3*20]), border_radius=br)
+        pygame.draw.rect(screen, [0, 0, 0], transform_scale([320, 170+100, 800, 3*20]), br, br)
+        pygame.draw.rect(screen, [255, 255, 255], transform_scale([380+680*save['music']/100-60, 170+100, 120, 3*20]), border_radius=br)
+        pygame.draw.rect(screen, [0, 0, 0], transform_scale([380+680*save['music']/100-60, 170+100, 120, 3*20]), br, br)
+        text(screen, str(save['music']), [0, 0, 0], 3*20, transform_scale([1220, 160+100]), "left")
 
         # adjust bar for sound
-        pygame.draw.rect(screen, [128, 128, 128], transform_scale([320, 170+100+br*22, 800*save['sound']/100, br*20]), border_radius=br)
-        pygame.draw.rect(screen, [200, 200, 200], transform_scale([320+800*save['sound']/100, 170+100+br*22, 800-800*save['sound']/100, br*20]), border_radius=br)
-        pygame.draw.rect(screen, [0, 0, 0], transform_scale([320, 170+100+br*22, 800, br*20]), br, br)
-        pygame.draw.rect(screen, [255, 255, 255], transform_scale([380+680*save['sound']/100-60, 170+100+br*22, 120, br*20]), border_radius=br)
-        pygame.draw.rect(screen, [0, 0, 0], transform_scale([380+680*save['sound']/100-60, 170+100+br*22, 120, br*20]), br, br)
-        text(screen, str(save['sound']), [0, 0, 0], br*20, transform_scale([1220, 160+100+br*22]), "left")
+        pygame.draw.rect(screen, [128, 128, 128], transform_scale([320, 170+100+3*22, 800*save['sound']/100, 3*20]), border_radius=br)
+        pygame.draw.rect(screen, [200, 200, 200], transform_scale([320+800*save['sound']/100, 170+100+3*22, 800-800*save['sound']/100, 3*20]), border_radius=br)
+        pygame.draw.rect(screen, [0, 0, 0], transform_scale([320, 170+100+3*22, 800, 3*20]), br, br)
+        pygame.draw.rect(screen, [255, 255, 255], transform_scale([380+680*save['sound']/100-60, 170+100+3*22, 120, 3*20]), border_radius=br)
+        pygame.draw.rect(screen, [0, 0, 0], transform_scale([380+680*save['sound']/100-60, 170+100+3*22, 120, 3*20]), br, br)
+        text(screen, str(save['sound']), [0, 0, 0], 3*20, transform_scale([1220, 160+100+3*22]), "left")
 
         # check box for full screen
-        pygame.draw.rect(screen, [128, 128, 128], transform_scale([320, 170+100+br*44, br*20, br*20]), border_radius=br)
-        pygame.draw.rect(screen, [200, 200, 200], transform_scale([320, 170+100+br*44, br*20, br*20]), br, br)
-        text(screen, "X" if save["full_screen"] else "", [0, 0, 0], br*15, transform_scale([320+br*10, 170+100+br*44+br*10]), "center")
+        pygame.draw.rect(screen, [128, 128, 128], transform_scale([320, 170+100+3*44, 3*20, 3*20]), border_radius=br)
+        pygame.draw.rect(screen, [200, 200, 200], transform_scale([320, 170+100+3*44, 3*20, 3*20]), br, br)
+        text(screen, "X" if save["full_screen"] else "", [0, 0, 0], 3*15, transform_scale([320+3*10, 170+100+3*44+3*10]), "center")
         
 
         if(time != 0):
@@ -6209,11 +6211,11 @@ while running:
                     if click_check(pygame.mouse.get_pos(), transform_scale([40, 40, 80, 80])):
                         if(time == 0):
                             time += 1
-                    if click_check(pos, transform_scale([380+680*save['music']/100-60, 170+100, 120, br*20])):
+                    if click_check(pos, transform_scale([380+680*save['music']/100-60, 170+100, 120, 3*20])):
                         changing = 'music'
-                    if click_check(pos, transform_scale([380+680*save['sound']/100-60, 170+100+br*22, 120, br*20])):
+                    if click_check(pos, transform_scale([380+680*save['sound']/100-60, 170+100+3*22, 120, 3*20])):
                         changing = 'sound'
-                    if click_check(pos, transform_scale([320, 170+100+br*44, br*20, br*20])):
+                    if click_check(pos, transform_scale([320, 170+100+3*44, 3*20, 3*20])):
                         save["full_screen"] = not(save["full_screen"])
                         # WIDTH, WIDTH_switch, HEIGHT, HEIGHT_switch = WIDTH_switch, WIDTH, HEIGHT_switch, HEIGHT
                         if save["full_screen"]:
@@ -6311,7 +6313,7 @@ while running:
         # back button
         pygame.draw.rect(screen, [186, 148, 45], transform_scale([40, 40, 80, 80]), border_radius=br)
         pygame.draw.rect(screen, [0, 0, 0], transform_scale([40, 40, 80, 80]), br, br)
-        text(screen, "Back", [0, 0, 0], br*5, transform_scale([80, 80]), "center")
+        text(screen, "返回", [0, 0, 0], 20, transform_scale([80, 80]), "center")
 
         pygame.draw.rect(screen, [128, 128, 128], transform_scale([880, 140, 480, 680]), border_radius=br)
         pygame.draw.rect(screen, [0, 0, 0], transform_scale([880, 140, 480, 680]), br, br)
@@ -6322,13 +6324,13 @@ while running:
             for j in range(6):
                 if (int((pos[0]-tar[0])/tar[2])==j and int((pos[1]-tar[1])/tar[3])==i and pos[0]-tar[0]>0 and pos[1]-tar[1]>0):
                     if(save["achievement"][i*6+j]):
-                        text(screen, achievement_data["unlock_title"][i*6+j], [0, 0, 0], br*18, transform_scale([1120, 200]), "center")
-                        text(screen, achievement_data["unlock_description"][i*6+j], [0, 0, 0], br*15, transform_scale([1120, 480]), "center")
+                        text(screen, achievement_data["unlock_title"][i*6+j], [0, 0, 0], 3*18, transform_scale([1120, 200]), "center")
+                        text(screen, achievement_data["unlock_description"][i*6+j], [0, 0, 0], 3*15, transform_scale([1120, 480]), "center")
                         pygame.draw.rect(screen, [178, 250, 178], transform_scale([40+120*j, 180+120*i, 120, 120]), border_radius=br)
                         pygame.draw.rect(screen, [0, 0, 0], transform_scale([40+120*j, 180+120*i, 120, 120]), br, br)
                     else:
-                        text(screen, achievement_data["hidden_title"][i*6+j], [0, 0, 0], br*18, transform_scale([1120, 200]), "center")
-                        text(screen, achievement_data["hidden_description"][i*6+j], [0, 0, 0], br*15, transform_scale([1120, 480]), "center")
+                        text(screen, achievement_data["hidden_title"][i*6+j], [0, 0, 0], 3*18, transform_scale([1120, 200]), "center")
+                        text(screen, achievement_data["hidden_description"][i*6+j], [0, 0, 0], 3*15, transform_scale([1120, 480]), "center")
                         pygame.draw.rect(screen, [250, 178, 178], transform_scale([40+120*j, 180+120*i, 120, 120]), border_radius=br)
                         pygame.draw.rect(screen, [0, 0, 0], transform_scale([40+120*j, 180+120*i, 120, 120]), br, br)
                         
@@ -6341,7 +6343,7 @@ while running:
                         pygame.draw.rect(screen, [200, 128, 128], transform_scale([40+120*j, 180+120*i, 120, 120]), border_radius=br)
                         pygame.draw.rect(screen, [0, 0, 0], transform_scale([40+120*j, 180+120*i, 120, 120]), br, br)
 
-                text_sp(screen, achievement_data["icon"][i*6+j][0], achievement_data["icon"][i*6+j][1], br*18, transform_scale([100+120*j, 240+120*i]), 255, "center")
+                text_sp(screen, achievement_data["icon"][i*6+j][0], achievement_data["icon"][i*6+j][1], 3*18, transform_scale([100+120*j, 240+120*i]), 255, "center")
         
         
 
