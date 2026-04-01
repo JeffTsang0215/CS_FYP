@@ -13,7 +13,7 @@ path = os.path.dirname(os.path.abspath(__file__)) + '/'
 # path = os.path.dirname(os.path.realpath(sys.executable)) + '/'
 
 new_game = False
-god_mod = False
+god_mod = True
 chapter_ranges =[(0, 8), (9, 19), (20, 28), (29, 38)] # (Start Stage, End Stage) for Ch 1, 2, 3, 4
 current_chapter = 0
 
@@ -5242,13 +5242,22 @@ while running:
                 
                 # Setup Rects for the first time for this question
                 if not draggable_rects:
-                    current_sentence_indices = [] # Reset user answer
+                    current_sentence_indices =[] # Reset user answer
                     random.shuffle(current_q["options"])
                     options = current_q["options"]
-                    # Create generic rects, we will move them dynamically in the draw loop
-                    opt_w, opt_h = transform_scale([140, 70])
-                    for i in range(len(options)):
-                        draggable_rects.append(pygame.Rect(0, 0, opt_w, opt_h)) 
+                    
+                    # 1. DYNAMICALLY size rects based on text length!
+                    try: 
+                        temp_font = pygame.font.Font('media/LXGWMarkerGothic-Regular.ttf', transform_scale([32])[0])
+                    except: 
+                        temp_font = pygame.font.Font(pygame.font.get_default_font(), transform_scale([32])[0])
+                        
+                    opt_h = transform_scale([70])[0]
+                    for opt_text in options:
+                        text_w = temp_font.size(opt_text)[0]
+                        # Min width 120, otherwise expand to fit text + 40px padding
+                        opt_w = max(transform_scale([120])[0], text_w + transform_scale([40])[0])
+                        draggable_rects.append(pygame.Rect(0, 0, opt_w, opt_h))
 
                 # Draw Question Meaning (The Prompt)
                 pygame.draw.rect(screen, pygame.Color("#f0f0f0"), transform_scale([200, 200, 1040, 80]), border_radius=10)
@@ -5257,65 +5266,83 @@ while running:
                 # Define Zones
                 answer_y = transform_scale([400])[0]
                 bank_y = transform_scale([600])[0]
-                zone_answer = pygame.Rect(transform_scale([200, 350, 1040, 170]))
+                zone_answer = pygame.Rect(transform_scale([80, 350, 1280, 170])) # <--- Widened drop zone
                 gap = transform_scale([20])[0]
-                block_w = draggable_rects[0].width
+                
                 hover_insertion_index = -1
                 if is_dragging and dragged_item_index != -1:
                     dragged_rect = draggable_rects[dragged_item_index]
                     if zone_answer.colliderect(dragged_rect):
-                        # Calculate where the block WOULD go
                         hover_insertion_index = len(current_sentence_indices)
                         for idx, opt_idx in enumerate(current_sentence_indices):
                             if dragged_rect.centerx < draggable_rects[opt_idx].centerx:
                                 hover_insertion_index = idx
                                 break
 
-                 # Drawing Answer Line
-                pygame.draw.line(screen, (0,0,0), transform_scale([220, 500]), transform_scale([1220, 500]), 3)
+                # Drawing Answer Line
+                pygame.draw.line(screen, (0,0,0), transform_scale([100, 500]), transform_scale([1340, 500]), 3)
 
-                # --- DRAW BLOCKS WITH SPREADING ANIMATION ---
-                start_x_ans = transform_scale([220])[0]
+                # --- 2. DRAW BLOCKS WITH SPREADING ANIMATION (Dynamic Width) ---
+                ans_x = transform_scale([100])[0]
                 
                 for idx_in_list, opt_idx in enumerate(current_sentence_indices):
                     r = draggable_rects[opt_idx]
-                    if not (is_dragging and dragged_item_index == opt_idx):
-                        # If we are dragging something over the answer zone, shift blocks to the right
-                        visual_idx = idx_in_list
-                        if hover_insertion_index != -1 and idx_in_list >= hover_insertion_index:
-                            visual_idx += 1 # Make room
-                        
-                        target_x = start_x_ans + visual_idx * (block_w + gap)
-                        # Smooth sliding animation (Linear Interpolation)
-                        r.x += (target_x - r.x) * 0.2 
-                        r.y += (answer_y - r.y) * 0.2
                     
-                    pygame.draw.rect(screen, pygame.Color("#aaddff"), r, border_radius=8)
-                    pygame.draw.rect(screen, (0,0,0), r, 2, 8)
-                    text(screen, current_q["options"][opt_idx], (0,0,0), 32, r.center, "center")
+                    # If the dragged item is hovering here, leave a space for it!
+                    if hover_insertion_index == idx_in_list and is_dragging and dragged_item_index != -1:
+                        ans_x += draggable_rects[dragged_item_index].width + gap
+                        
+                    if not (is_dragging and dragged_item_index == opt_idx):
+                        r.x += (ans_x - r.x) * 0.2 
+                        r.y += (answer_y - r.y) * 0.2
+                        
+                    # Add this block's width to the running total
+                    ans_x += r.width + gap
 
-                # Word Bank Drawing
-                start_x_bank = transform_scale([220])[0]
-                bank_counter = 0
+                    # --- FIX: ACTUALLY DRAW THE SELECTED BLOCKS ---
+                    if not (is_dragging and dragged_item_index == opt_idx):
+                        pygame.draw.rect(screen, pygame.Color("#aaddff"), r, border_radius=8)
+                        pygame.draw.rect(screen, (0,0,0), r, 2, 8)
+                        text(screen, current_q["options"][opt_idx], (0,0,0), 32, r.center, "center")
+
+                # --- 3. DRAW WORD BANK (Dynamic Width & Auto Wrapping) ---
+                bank_x = transform_scale([100])[0]
+                bank_y_start = transform_scale([580])[0]
+                current_row = 0
+                
                 for i in range(len(current_q["options"])):
                     if i not in current_sentence_indices:
                         r = draggable_rects[i]
-                        if not (is_dragging and dragged_item_index == i):
-                            target_x = start_x_bank + bank_counter * (block_w + gap)
-                            r.x += (target_x - r.x) * 0.2
-                            r.y += (bank_y - r.y) * 0.2
                         
-                        pygame.draw.rect(screen, pygame.Color("#ececec"), r, border_radius=8)
-                        pygame.draw.rect(screen, (0,0,0), r, 2, 8)
-                        text(screen, current_q["options"][i], (0,0,0), 32, r.center, "center")
-                        bank_counter += 1
-
+                        # Wrap to next line if this block exceeds screen width
+                        if bank_x + r.width > transform_scale([1340])[0]:
+                            bank_x = transform_scale([100])[0]
+                            current_row += 1
+                            
+                        if not (is_dragging and dragged_item_index == i):
+                            target_y = bank_y_start + current_row * transform_scale([90])[0]
+                            r.x += (bank_x - r.x) * 0.2
+                            r.y += (target_y - r.y) * 0.2
+                            
+                            # --- ACTUALLY DRAW THE UNSELECTED BLOCKS ---
+                            pygame.draw.rect(screen, pygame.Color("#ececec"), r, border_radius=8)
+                            pygame.draw.rect(screen, (0,0,0), r, 2, 8)
+                            text(screen, current_q["options"][i], (0,0,0), 32, r.center, "center")
+                        
+                        # Accumulate width for the next block
+                        bank_x += r.width + gap
+                        
                 # Dragged Item on top
                 if is_dragging and dragged_item_index != -1:
                     r = draggable_rects[dragged_item_index]
                     pygame.draw.rect(screen, pygame.Color("#ffd700"), r, border_radius=8)
                     pygame.draw.rect(screen, (0,0,0), r, 2, 8)
                     text(screen, current_q["options"][dragged_item_index], (0,0,0), 32, r.center, "center")
+
+                # Submit Button (Cast Spell)
+
+                # Submit Button (Cast Spell)
+                # ... (Leave your submit and reset button codes exactly as they are down here!) ...
 
                 # Submit Button (Cast Spell)
                 submit_rect = pygame.Rect(transform_scale([750, 800, 200, 80]))
