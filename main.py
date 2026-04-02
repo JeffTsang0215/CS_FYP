@@ -602,6 +602,17 @@ def write():
     with open('udata.sf', 'w') as store_data:
         json.dump(save, store_data)
 
+STAGE_TITLES = [
+    "第一章 - 初始之森", "第一章 - 五十音(1)", "第一章 - 五十音(2)", "第一章 - 哥布林來襲", "第一章 - 幻影虎", 
+    "第一章 - 五十音(3)", "第一章 - 五十音(4)", "第一章 - 全力防禦", "第一章 - 幻影虎(終)",
+    "第二章 - 漢字初識", "第二章 - 血脈覺醒", "第二章 - 基礎漢字", "第二章 - 迷惘", "第二章 - 詞彙", 
+    "第二章 - 瘴氣森林", "第二章 - 形容詞", "第二章 - 震動", "第二章 - 清除小怪", "第二章 - 危機", "第二章 - 天魔降臨",
+    "第三章 - 句子結構", "第三章 - 助詞用法", "第三章 - 主謂賓", "第三章 - 擴充句型", "第三章 - 動詞辞書形", 
+    "第三章 - 動詞て形", "第三章 - 動詞ない形", "第三章 - 動詞た形", "第三章 - 魔龍降臨",
+    "終章 - 忘我之路", "終章 - 南方大將", "終章 - 西方大將", "終章 - 北方大將", "終章 - 魔王寶座",
+    "決戰 - 勇者之路", "決戰 - 南方大將", "決戰 - 西方大將", "決戰 - 北方大將", "決戰1 - 獄煌聖所"
+]
+
 def draw_stage_selection(n):
 
 
@@ -610,7 +621,7 @@ def draw_stage_selection(n):
         case 0:
             bg = 10
             center = 17
-            title = 12
+            title = 39
             if save["unlock"][n+1]:
                 next = 17
             else:
@@ -626,13 +637,13 @@ def draw_stage_selection(n):
             else:
                 center = 18
             # the title text, but in image format, Jeff can help gen
-            title = 21
+            title = 40
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
-                    next = 20
+                    next = 17
                 else:
-                    next = 19
+                    next = 18
             else:
                 next = None
             # image of previos stage
@@ -645,15 +656,15 @@ def draw_stage_selection(n):
             bg = 10
             # Center stage (Stage 3) is Type 1
             if save["unlock"][n]:
-                center = 20
+                center = 17
             else:
-                center = 19
-            title = 23
+                center = 18
+            title = 41
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
-                    next = 20
+                    next = 17
                 else:
-                    next = 19
+                    next = 18
             else:
                 next = None
             if save["unlock"][n-1]:
@@ -664,39 +675,39 @@ def draw_stage_selection(n):
         case 3:
             bg = 10
             if save["unlock"][n]:
-                center = 20
+                center = 17
             else:
-                center = 19
-            title = 24
+                center = 18
+            title = 42
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
-                    next = 27
+                    next = 17
                 else:
-                    next = 26
+                    next = 18
             else:
                 next = None
             if save["unlock"][n-1]:
-                prev = 20
+                prev = 17
             else:
-                prev = 19
+                prev = 18
         case 4:
-            bg = 25
+            bg = 10
             if save["unlock"][n]:
-                center = 27
+                center = 17
             else:
-                center = 26
-            title = 28
+                center = 18
+            title = 43
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
-                    next = 20
+                    next = 17
                 else:
-                    next = 19
+                    next = 18
             else:
                 next = None
             if save["unlock"][n-1]:
-                prev = 20
+                prev = 17
             else:
-                prev = 19
+                prev = 18
         case 5:
             #require changing
             bg = 10
@@ -706,38 +717,38 @@ def draw_stage_selection(n):
             else:
                 center = 18
             # the title text, but in image format, Jeff can help gen
-            title = 21
+            title = 44
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
-                    next = 20
+                    next = 17
                 else:
-                    next = 19
+                    next = 18
             else:
                 next = None
             # image of previos stage
             if save["unlock"][n-1]:
-                prev = 27
+                prev = 17
             else:
-                prev = 26
+                prev = 18
         case 6:
             bg = 25
             if save["unlock"][n]:
-                center = 27
+                center = 17
             else:
-                center = 26
-            title = 28
+                center = 18
+            title = 45
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
-                    next = 20
+                    next = 17
                 else:
-                    next = 19
+                    next = 18
             else:
                 next = None
             if save["unlock"][n-1]:
-                prev = 20
+                prev = 17
             else:
-                prev = 19
+                prev = 18
         case 7:
             #require changing
             bg = 10
@@ -747,20 +758,20 @@ def draw_stage_selection(n):
             else:
                 center = 18
             # the title text, but in image format, Jeff can help gen
-            title = 21
+            title = 46
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
-                    next = 20
+                    next = 17
                 else:
-                    next = 19
+                    next = 18
             else:
                 next = None
             # image of previos stage
             if save["unlock"][n-1]:
-                prev = 27
+                prev = 17
             else:
-                prev = 26
+                prev = 18
         case 8:
             #require changing
             bg = 10
@@ -770,7 +781,7 @@ def draw_stage_selection(n):
             else:
                 center = 18
             # the title text, but in image format, Jeff can help gen
-            title = 21
+            title = 47
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
@@ -781,9 +792,9 @@ def draw_stage_selection(n):
                 next = None
             # image of previos stage
             if save["unlock"][n-1]:
-                prev = 27
+                prev = 17
             else:
-                prev = 26
+                prev = 18
         case 9:
             #require changing
             bg = 10
@@ -1246,20 +1257,20 @@ def draw_stage_selection(n):
                 prev = 26
         case 29:
             #require changing
-            bg = 10
+            bg = 25
             # image at center, if havent unlock then will show the gray version
             if save["unlock"][n]:
-                center = 17
+                center = 27
             else:
-                center = 18
+                center = 26
             # the title text, but in image format, Jeff can help gen
-            title = 21
+            title = 28
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
-                    next = 20
+                    next = 27
                 else:
-                    next = 19
+                    next = 26
             else:
                 next = None
             # image of previos stage
@@ -1269,12 +1280,12 @@ def draw_stage_selection(n):
                 prev = None
         case 30:
             #require changing
-            bg = 10
+            bg = 25
             # image at center, if havent unlock then will show the gray version
             if save["unlock"][n]:
-                center = 17
+                center = 27
             else:
-                center = 18
+                center = 26
             # the title text, but in image format, Jeff can help gen
             title = 21
             #image of next stage
@@ -1282,7 +1293,7 @@ def draw_stage_selection(n):
                 if save["unlock"][n+1]:
                     next = 27
                 else:
-                    next = 19
+                    next = 26
             else:
                 next = None
             # image of previos stage
@@ -1292,20 +1303,20 @@ def draw_stage_selection(n):
                 prev = 26
         case 31:
             #require changing
-            bg = 10
+            bg = 25
             # image at center, if havent unlock then will show the gray version
             if save["unlock"][n]:
-                center = 17
+                center = 27
             else:
-                center = 18
+                center = 26
             # the title text, but in image format, Jeff can help gen
             title = 21
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
-                    next = 20
+                    next = 27
                 else:
-                    next = 19
+                    next = 26
             else:
                 next = None
             # image of previos stage
@@ -1315,20 +1326,20 @@ def draw_stage_selection(n):
                 prev = 26
         case 32:
             #require changing
-            bg = 10
+            bg = 25
             # image at center, if havent unlock then will show the gray version
             if save["unlock"][n]:
-                center = 17
+                center = 27
             else:
-                center = 18
+                center = 26
             # the title text, but in image format, Jeff can help gen
             title = 21
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
-                    next = 20
+                    next = 27
                 else:
-                    next = 19
+                    next = 26
             else:
                 next = None
             # image of previos stage
@@ -1338,20 +1349,20 @@ def draw_stage_selection(n):
                 prev = 26
         case 33:
             #require changing
-            bg = 10
+            bg = 25
             # image at center, if havent unlock then will show the gray version
             if save["unlock"][n]:
-                center = 17
+                center = 27
             else:
-                center = 18
+                center = 26
             # the title text, but in image format, Jeff can help gen
             title = 21
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
-                    next = None
+                    next = 27
                 else:
-                    next = None
+                    next = 26
             else:
                 next = None
             # image of previos stage
@@ -1360,21 +1371,21 @@ def draw_stage_selection(n):
             else:
                 prev = 26
         case 34:
-            #require changing
-            bg = 10
+           #require changing
+            bg = 25
             # image at center, if havent unlock then will show the gray version
             if save["unlock"][n]:
-                center = 17
+                center = 27
             else:
-                center = 18
+                center = 26
             # the title text, but in image format, Jeff can help gen
-            title = 21
+            title = 28
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
-                    next = 20
+                    next = 27
                 else:
-                    next = 19
+                    next = 26
             else:
                 next = None
             # image of previos stage
@@ -1384,20 +1395,20 @@ def draw_stage_selection(n):
                 prev = None
         case 35:
             #require changing
-            bg = 10
+            bg = 25
             # image at center, if havent unlock then will show the gray version
             if save["unlock"][n]:
-                center = 17
+                center = 27
             else:
-                center = 18
+                center = 26
             # the title text, but in image format, Jeff can help gen
             title = 21
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
-                    next = 20
+                    next = 27
                 else:
-                    next = 19
+                    next = 26
             else:
                 next = None
             # image of previos stage
@@ -1407,20 +1418,20 @@ def draw_stage_selection(n):
                 prev = 26
         case 36:
             #require changing
-            bg = 10
+            bg = 25
             # image at center, if havent unlock then will show the gray version
             if save["unlock"][n]:
-                center = 17
+                center = 27
             else:
-                center = 18
+                center = 26
             # the title text, but in image format, Jeff can help gen
             title = 21
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
-                    next = 20
+                    next = 27
                 else:
-                    next = 19
+                    next = 26
             else:
                 next = None
             # image of previos stage
@@ -1430,20 +1441,20 @@ def draw_stage_selection(n):
                 prev = 26
         case 37:
             #require changing
-            bg = 10
+            bg = 25
             # image at center, if havent unlock then will show the gray version
             if save["unlock"][n]:
-                center = 17
+                center = 27
             else:
-                center = 18
+                center = 26
             # the title text, but in image format, Jeff can help gen
             title = 21
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
-                    next = 20
+                    next = 27
                 else:
-                    next = 19
+                    next = 26
             else:
                 next = None
             # image of previos stage
@@ -1453,12 +1464,12 @@ def draw_stage_selection(n):
                 prev = 26
         case 38:
             #require changing
-            bg = 10
+            bg = 25
             # image at center, if havent unlock then will show the gray version
             if save["unlock"][n]:
-                center = 17
+                center = 27
             else:
-                center = 18
+                center = 26
             # the title text, but in image format, Jeff can help gen
             title = 21
             #image of next stage
@@ -1483,11 +1494,12 @@ def draw_stage_selection(n):
     r.center = screen.get_rect().center
     r.y = HEIGHT*0.08
     screen.blit(images[title], r)
-
-    if next:
-        screen.blit(images[next], transform_scale([1287, 198]))
-    if prev:
-        screen.blit(images[prev], transform_scale([-694, 198]))
+    if prev is not None:
+        screen.blit(images[prev], transform_scale([-600, 198]))
+        
+    # Draw next stage image on the right (if it exists)
+    if next is not None:
+        screen.blit(images[next], transform_scale([1194, 198]))
 
 def draw_story_bg(stage):
     match stage:
@@ -1994,7 +2006,7 @@ images = [
     pygame.transform.scale(pygame.image.load(path+"media/purple_slime_1.png"),transform_scale([532, 572])),           # 9
     pygame.transform.scale(pygame.image.load(path+"media/forest_river_sky.png"),transform_scale([1440, 1080])),       #10
     pygame.transform.scale(pygame.image.load(path+"media/stage_arrow.png"),transform_scale([75, 110])),               #11
-    pygame.transform.scale(pygame.image.load(path+"media/stage1_title.png"),transform_scale([200, 60])),              #12
+    pygame.transform.scale(pygame.image.load(path+"media/stage1_title1.png"),transform_scale([200, 60])),              #12
     pygame.transform.scale(pygame.image.load(path+"media/star0.png"),transform_scale([360, 100])),                    #13
     pygame.transform.scale(pygame.image.load(path+"media/star1.png"),transform_scale([360, 100])),                    #14
     pygame.transform.scale(pygame.image.load(path+"media/star2.png"),transform_scale([360, 100])),                    #15
@@ -2003,10 +2015,10 @@ images = [
     pygame.transform.scale(pygame.image.load(path+"media/stage_type_1_img_dark.png"),transform_scale([847, 635])),    #18
     pygame.transform.scale(pygame.image.load(path+"media/stage_type_2_img_dark.png"),transform_scale([847, 635])),    #19
     pygame.transform.scale(pygame.image.load(path+"media/stage_type_2_img_light.png"),transform_scale([847, 635])),   #20
-    pygame.transform.scale(pygame.image.load(path+"media/stage2_title.png"),transform_scale([185, 60])),              #21
+    pygame.transform.scale(pygame.image.load(path+"media/stage2_title1.png"),transform_scale([185, 60])),              #21
     pygame.transform.scale(pygame.image.load(path+"media/continue.png"),transform_scale([520, 110])),                 #22
-    pygame.transform.scale(pygame.image.load(path+"media/stage3_title.png"), transform_scale([186, 60])),             #23
-    pygame.transform.scale(pygame.image.load(path+"media/stage4_title.png"), transform_scale([187, 60])),             #24
+    pygame.transform.scale(pygame.image.load(path+"media/stage3_title1.png"), transform_scale([186, 60])),             #23
+    pygame.transform.scale(pygame.image.load(path+"media/stage4_title1.png"), transform_scale([187, 60])),             #24
     pygame.transform.scale(pygame.image.load(path+"media/hell_bg.png"), [WIDTH, HEIGHT]),                             #25
     pygame.transform.scale(pygame.image.load(path+"media/hell_bg_dark.png"),transform_scale([847, 635])),             #26
     pygame.transform.scale(pygame.image.load(path+"media/hell_bg_light.png"),transform_scale([847, 635])),            #27
@@ -2021,6 +2033,15 @@ images = [
     pygame.transform.scale(pygame.image.load(path+"media/weapon2.png"), transform_scale([60, 60])),                   #36
     pygame.transform.scale(pygame.image.load(path+"media/weapon3.png"), transform_scale([60, 60])),                   #37
     pygame.transform.scale(pygame.image.load(path+"media/sp_armor_weapon.png"), transform_scale([60, 60])),           #38
+    pygame.transform.scale(pygame.image.load(path+"media/stage0_title.png"), transform_scale([220, 60])),              #39
+    pygame.transform.scale(pygame.image.load(path+"media/stage1_title.png"), transform_scale([220, 60])),              #40
+    pygame.transform.scale(pygame.image.load(path+"media/stage2_title.png"), transform_scale([220, 60])),              #41
+    pygame.transform.scale(pygame.image.load(path+"media/stage3_title.png"), transform_scale([220, 60])),              #42
+    pygame.transform.scale(pygame.image.load(path+"media/stage4_title.png"), transform_scale([220, 60])),              #43
+    pygame.transform.scale(pygame.image.load(path+"media/stage5_title.png"), transform_scale([220, 60])),              #44
+    pygame.transform.scale(pygame.image.load(path+"media/stage6_title.png"), transform_scale([220, 60])),              #45
+    pygame.transform.scale(pygame.image.load(path+"media/stage7_title.png"), transform_scale([220, 60])),              #46
+    pygame.transform.scale(pygame.image.load(path+"media/stage8_title.png"), transform_scale([220, 60])),              #47
 
 ]                                                              
 
