@@ -2072,6 +2072,9 @@ images = [
     pygame.transform.scale(pygame.image.load(path+"media/stage36_title.png"), transform_scale([220, 60])),             #75
     pygame.transform.scale(pygame.image.load(path+"media/stage37_title.png"), transform_scale([220, 60])),             #76
     pygame.transform.scale(pygame.image.load(path+"media/stage38_title.png"), transform_scale([220, 60])),             #77
+    pygame.transform.scale(pygame.image.load(path+"media/goblin_king.png"), transform_scale([532, 572])),              #78
+    pygame.transform.scale(pygame.image.load(path+"media/goblin_warrior.png"), transform_scale([532, 572])),           #79
+    pygame.transform.scale(pygame.image.load(path+"media/tenma.png"), transform_scale([532, 572])),                    #80
 
 ]                                                              
 
@@ -2151,30 +2154,35 @@ dialog = [
     ],
     #stage 3
     [
-        (1, '赤真：\n等一下... 前面那股強大的氣息是什麼？'),
-        (2, '莉子：\n糟了！是幻影虎，還有哥布林王！'),
-        (1, '赤真：\n幻影虎派哥布林王攻擊我們了！牠為什麼只盯著我們？！'),
-        (2, '莉子：\n因為我們看起來最弱啊！\n天啊，連C級冒險者都被幻影虎自己打敗了！'),
-        (1, '赤真：\n那我們還等什麼，快逃回城裡啊！'),
-        (2, '莉子：\n逃跑的時候也不能忘記詠唱魔法！快記住\n『た』行跟它的濁音『だ』行！'),
+        (1, '赤真：\n等一下... 前方那股令人窒息的壓迫感是什麼？'),
+        (2, '莉子：\n糟了！那是森林深處的精英怪... 哥布林王！\n為什麼這種級別的魔物會出現在外圍？！'),
+        (0, '系統：\n【警告】C級冒險者前輩被哥布林王一擊擊飛！生死未卜！'),
+        (1, '赤真：\n不會吧... 連C級前輩都被瞬間秒殺了？！\n那我們還等什麼，快逃啊！'),
+        (2, '莉子：\n來不及了，哥布林王發現我們了！\n小心，牠手下的哥布林戰士朝你衝過去了！'),
+        (1, '赤真：\n哇啊啊！衝著我來了！我該怎麼辦？！'),
+        (2, '莉子：\n快反擊！現在教你『た』行跟它的濁音『だ』行\n可以用來施展防禦打擊！'),
         (2, '莉子：\n「た」ta、「ち」chi、「つ」tsu、「て」te、「と」to\n '),
         (2, '莉子：\n「だ」da、「ぢ」ji、「づ」zu、「で」de、「ど」do'),
-        (1, '赤真：\n這種時候就別上課了啊啊啊！拼了！')
+        (1, '赤真：\n哪有人刀都架在脖子上了還在教書的啦！\n不管了，拼了！！')
     ],
     #stage 4
     [
-        (0, '系統：\n【警告】發現小Boss幻影虎與精英怪哥布林王！'),
-        (1, '赤真：\n糟了！連C級前輩都被那隻幻影虎瞬間打敗了！'),
-        (2, '莉子：\n牠們為什麼只盯著我們？！快，用『な』行魔法牽制牠們！\n「な」na、「に」ni、「ぬ」nu、「ね」ne、「の」no！'),
+        (0, '系統：\n【警告】精英怪『哥布林王』已鎖定目標！'),
+        (1, '赤真：\n呼... 呼... 終於解決掉那隻哥布林戰士了。\n等等，哥布林王親自舉起武器走過來了！'),
+        (2, '莉子：\n我們絕對打不贏牠的！現在唯一的目標就是逃回城裡！\n快跟我撤退！'),
+        (1, '赤真：\n那就快跑啊！可是牠的速度好快，馬上就要追上來了！'),
+        (2, '莉子：\n牠為什麼只盯著我們？！快，用『な』行魔法牽制牠！\n「な」na、「に」ni、「ぬ」nu、「ね」ne、「の」no！'),
         (1, '赤真：\n這種時候就別上課了啊啊啊！快逃啊！！'),
         (2, '莉子：\n邊逃跑邊詠唱！還有『ま』行，能製造迷霧掩護我們！\n「ま」ma、「み」mi、「む」mu、「め」me、「も」mo！'),
-        (1, '赤真：\n等等，「ぬ」跟「め」長得也太像了吧！\n不管了，拼了！！'),
-        (2, '莉子：\n邊逃跑邊詠唱！我們撤回城裡！')
+        (1, '赤真：\n等等，「ぬ」跟「め」長得也太像了吧！\n妳是想害死我嗎？！'),
+        (2, '莉子：\n別管那麼多了！大聲詠唱然後拼命跑！\n'),
+        (2, '莉子：\n千萬別回頭！撤回城裡！'),
+        (1, '赤真：\n啊啊啊啊！撤退！撤退！言靈魔法，發動！')
     ],
     #stage 5
     [
         (1, '赤真：\n呼... 呼... 終於逃回城了，好險。'),
-        (2, '莉子：\n工會知道幻影虎出現後，已經準備全面進攻了！\n國王陛下甚至賜予了我們『皇家守衛套裝』！'),
+        (2, '莉子：\n工會知道哥布林王出現後，已經準備全面進攻了！\n國王陛下甚至賜予了我們『皇家守衛套裝』！'),
         (1, '赤真：\n有了這套護甲裝備，我們的防禦力大增了！'),
         (2, '莉子：\n趁現在，快把『は』行、濁音\n『ば』和半濁音『ぱ』行學起來！'),
         (2, '莉子：「は、ひ、ふ、へ、ほ」、「ば、び、ぶ、べ、ぼ」、\n「ぱ、ぴ、ぷ、ぺ、ぽ」！'),
@@ -2186,19 +2194,19 @@ dialog = [
         (2, '莉子：\n「や」ya、「ゆ」yu、「よ」\n「ら」ra、「り」ri、「る」ru、「れ」re、「ろ」ro'),
         (2, '莉子：\n最後是「わ」wa、「を」wo、「ん」n！'),
         (1, '赤真：\n好！我已經把五十音全都學會了，魔力感覺源源不絕！'),
-        (2, '莉子：\n準備出發，我們去討伐那隻幻影虎！')
+        (2, '莉子：\n準備出發，我們去討伐那隻哥布林王！')
     ],
     #stage 7
     [
-        (0, '系統：\n【決戰】遭遇 幻影虎 與 哥布林王！'),
-        (1, '赤真：\n又是你們這兩隻怪物！這次我們可不會再退縮了！'),
+        (0, '系統：\n【決戰】遭遇 哥布林王！'),
+        (1, '赤真：\n又是你這隻怪物！這次我們可不會再退縮了！'),
         (2, '莉子：\n赤真，用你學會的五十音魔法，給牠們致命一擊！'),
         (1, '赤真：\n看我的！言靈魔法全開！！')
     ],
     #stage 8
     [
-        (1, '赤真：\n我們贏了！終於打敗幻影虎了！'),
-        (2, '莉子：\n太棒了！我們還用幻影虎的素材，\n請城內工匠打造了武器『名匠靈珠』！'),
+        (1, '赤真：\n我們贏了！終於打敗哥布林王了！'),
+        (2, '莉子：\n太棒了！我們還用哥布林王的素材，\n請城內工匠打造了武器『名匠靈珠』！'),
         (1, '赤真：\n裝備大升級！有了它，接下來的冒險就更有把握了。'),
         (2, '莉子：\n為了發揮新武器的威力，我現在把最後的發音規則\n「拗音」教給你！'),
         (2, '莉子：\n「きゃ」kya、「きゅ」kyu、「きょ」kyo\n「しゃ」sha、「しゅ」shu、「しょ」sho\n「ちゃ」cha、「ちゅ」chu、「ちょ」cho\n「にゃ」nya、「にゅ」nyu、「にょ」nyo\n「ひゃ」hya、「ひゅ」hyu、「ひょ」hyo\n「みゃ」mya、「みゅ」myu、「みょ」myo\n「りゃ」rya、「りゅ」ryu、「りょ」ryo！'),
@@ -2206,7 +2214,7 @@ dialog = [
     ],
     #stage 9
     [
-        (2, '莉子：\n工會發現幻影虎只是魔族派來的探子，經過一段冷靜期，\n魔族開始派更強大的魔物試探了。'),
+        (2, '莉子：\n工會發現哥布林王只是魔族派來的探子，經過一段冷靜期，\n魔族開始派更強大的魔物試探了。'),
         (2, '莉子：\n從今天開始，我們要學習漢字（Kanji），這是更高階的魔法！'),
         (1, '赤真：\n莉子，你臉色不太好，沒事吧？'),
         (2, '莉子：\n不知道為什麼，我的記憶中開始出現精靈族言靈魔法的傳承...\n (但我明明是人類啊...)'),
@@ -2545,7 +2553,7 @@ battle_detail = [
         },
         "word_size": 64,
         "order":[],
-        "enemy_surf": 9,
+        "enemy_surf": 79,
         "enemy_attack_word": "爪", 
         "target":[10, 14],
         "enemy_hp": 220 * (1.5 if save['hard'] else 1),
@@ -2570,7 +2578,7 @@ battle_detail = [
         },
         "word_size": 64,
         "order":[],
-        "enemy_surf": 29, 
+        "enemy_surf": 78, 
         "enemy_attack_word": "吼", 
         "target":[10, 14],
         "enemy_hp": 240 * (1.5 if save['hard'] else 1),
@@ -2718,7 +2726,7 @@ battle_detail = [
         },
         "word_size": 64,
         "order":[],
-        "enemy_surf": 29, 
+        "enemy_surf": 78, 
         "enemy_attack_word": "滅", 
         "target": [20, 25], 
         "enemy_hp": 400 * (1.5 if save['hard'] else 1),
@@ -2757,7 +2765,7 @@ battle_detail = [
         },
         "word_size": 64,
         "order":[],
-        "enemy_surf": 9,
+        "enemy_surf": 78,
         "enemy_attack_word": "咬", 
         "target":[12, 16],
         "enemy_hp": 240 * (1.5 if save['hard'] else 1),
@@ -3279,7 +3287,7 @@ battle_detail = [
         },
         "word_size": 36,
         "order":[],
-        "enemy_surf": 29,  # Mid Boss (Tenma)
+        "enemy_surf": 80,  # Mid Boss (Tenma)
         "enemy_attack_word": "死",
         "target": [20, 25],
         "enemy_hp": 400 * (1.5 if save['hard'] else 1),   # Requires 20 hits to defeat!
@@ -3822,7 +3830,7 @@ def reload_battle_detail():
         },
         "word_size": 64,
         "order":[],
-        "enemy_surf": 9,
+        "enemy_surf": 79,
         "enemy_attack_word": "爪", 
         "target":[10, 14],
         "enemy_hp": 220 * (1.5 if save['hard'] else 1),
@@ -3847,7 +3855,7 @@ def reload_battle_detail():
         },
         "word_size": 64,
         "order":[],
-        "enemy_surf": 29, 
+        "enemy_surf": 78, 
         "enemy_attack_word": "吼", 
         "target":[10, 14],
         "enemy_hp": 240 * (1.5 if save['hard'] else 1),
@@ -4556,7 +4564,7 @@ def reload_battle_detail():
         },
         "word_size": 36,
         "order":[],
-        "enemy_surf": 29,  # Mid Boss (Tenma)
+        "enemy_surf": 80,  # Mid Boss (Tenma)
         "enemy_attack_word": "死",
         "target": [20, 25],
         "enemy_hp": 400 * (1.5 if save['hard'] else 1),   # Requires 20 hits to defeat!
