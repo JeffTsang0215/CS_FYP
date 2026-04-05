@@ -732,7 +732,7 @@ def draw_stage_selection(n):
             else:
                 prev = 18
         case 6:
-            bg = 25
+            bg = 10
             if save["unlock"][n]:
                 center = 17
             else:
@@ -797,7 +797,7 @@ def draw_stage_selection(n):
                 prev = 18
         case 9:
             #require changing
-            bg = 10
+            bg = 88
             # image at center, if havent unlock then will show the gray version
             if save["unlock"][n]:
                 center = 17
@@ -820,7 +820,7 @@ def draw_stage_selection(n):
                 prev = None
         case 10:
             #require changing
-            bg = 10
+            bg = 88
             # image at center, if havent unlock then will show the gray version
             if save["unlock"][n]:
                 center = 17
@@ -843,7 +843,7 @@ def draw_stage_selection(n):
                 prev = 26
         case 11:
             #require changing
-            bg = 10
+            bg = 88
             # image at center, if havent unlock then will show the gray version
             if save["unlock"][n]:
                 center = 17
@@ -866,7 +866,7 @@ def draw_stage_selection(n):
                 prev = 26
         case 12:
             #require changing
-            bg = 10
+            bg = 88
             # image at center, if havent unlock then will show the gray version
             if save["unlock"][n]:
                 center = 17
@@ -889,7 +889,7 @@ def draw_stage_selection(n):
                 prev = 26
         case 13:
             #require changing
-            bg = 10
+            bg = 88
             # image at center, if havent unlock then will show the gray version
             if save["unlock"][n]:
                 center = 17
@@ -912,7 +912,7 @@ def draw_stage_selection(n):
                 prev = 26
         case 14:
             #require changing
-            bg = 10
+            bg = 88
             # image at center, if havent unlock then will show the gray version
             if save["unlock"][n]:
                 center = 17
@@ -935,7 +935,7 @@ def draw_stage_selection(n):
                 prev = 26
         case 15:
             #require changing
-            bg = 10
+            bg = 88
             # image at center, if havent unlock then will show the gray version
             if save["unlock"][n]:
                 center = 17
@@ -958,7 +958,7 @@ def draw_stage_selection(n):
                 prev = 26
         case 16:
             #require changing
-            bg = 10
+            bg = 88
             # image at center, if havent unlock then will show the gray version
             if save["unlock"][n]:
                 center = 17
@@ -981,7 +981,7 @@ def draw_stage_selection(n):
                 prev = 26
         case 17:
             #require changing
-            bg = 10
+            bg = 88
             # image at center, if havent unlock then will show the gray version
             if save["unlock"][n]:
                 center = 17
@@ -1004,7 +1004,7 @@ def draw_stage_selection(n):
                 prev = 26
         case 18:
             #require changing
-            bg = 10
+            bg = 88
             # image at center, if havent unlock then will show the gray version
             if save["unlock"][n]:
                 center = 17
@@ -1027,7 +1027,7 @@ def draw_stage_selection(n):
                 prev = 26
         case 19:
             #require changing
-            bg = 10
+            bg = 88
             # image at center, if havent unlock then will show the gray version
             if save["unlock"][n]:
                 center = 17
@@ -1050,7 +1050,7 @@ def draw_stage_selection(n):
                 prev = 26
         case 20:
             #require changing
-            bg = 10
+            bg = 87
             # image at center, if havent unlock then will show the gray version
             if save["unlock"][n]:
                 center = 17
@@ -1073,7 +1073,7 @@ def draw_stage_selection(n):
                 prev = None
         case 21:
             #require changing
-            bg = 10
+            bg = 87
             # image at center, if havent unlock then will show the gray version
             if save["unlock"][n]:
                 center = 17
@@ -1096,7 +1096,7 @@ def draw_stage_selection(n):
                 prev = 26
         case 22:
             #require changing
-            bg = 10
+            bg = 87
             # image at center, if havent unlock then will show the gray version
             if save["unlock"][n]:
                 center = 17
@@ -1119,7 +1119,7 @@ def draw_stage_selection(n):
                 prev = 26
         case 23:
             #require changing
-            bg = 10
+            bg = 87
             # image at center, if havent unlock then will show the gray version
             if save["unlock"][n]:
                 center = 17
@@ -1142,7 +1142,7 @@ def draw_stage_selection(n):
                 prev = 26
         case 24:
             #require changing
-            bg = 10
+            bg = 87
             # image at center, if havent unlock then will show the gray version
             if save["unlock"][n]:
                 center = 17
@@ -1165,7 +1165,7 @@ def draw_stage_selection(n):
                 prev = 26
         case 25:
             #require changing
-            bg = 10
+            bg = 87
             # image at center, if havent unlock then will show the gray version
             if save["unlock"][n]:
                 center = 17
@@ -1188,7 +1188,7 @@ def draw_stage_selection(n):
                 prev = 26
         case 26:
             #require changing
-            bg = 10
+            bg = 87
             # image at center, if havent unlock then will show the gray version
             if save["unlock"][n]:
                 center = 17
@@ -1211,7 +1211,7 @@ def draw_stage_selection(n):
                 prev = 26
         case 27:
             #require changing
-            bg = 10
+            bg = 87
             # image at center, if havent unlock then will show the gray version
             if save["unlock"][n]:
                 center = 17
@@ -1234,7 +1234,7 @@ def draw_stage_selection(n):
                 prev = 26
         case 28:
             #require changing
-            bg = 10
+            bg = 87
             # image at center, if havent unlock then will show the gray version
             if save["unlock"][n]:
                 center = 17
@@ -2075,6 +2075,14 @@ images = [
     pygame.transform.scale(pygame.image.load(path+"media/goblin_king.png"), transform_scale([532, 572])),              #78
     pygame.transform.scale(pygame.image.load(path+"media/goblin_warrior.png"), transform_scale([532, 572])),           #79
     pygame.transform.scale(pygame.image.load(path+"media/tenma.png"), transform_scale([532, 572])),                    #80
+    pygame.transform.scale(pygame.image.load(path+"media/dragon.png"), transform_scale([532, 572])),                   #81
+    pygame.transform.scale(pygame.image.load(path+"media/demon_king.png"), transform_scale([532, 572])),               #82
+    pygame.transform.scale(pygame.image.load(path+"media/demon_general1.png"), transform_scale([532, 572])),           #83
+    pygame.transform.scale(pygame.image.load(path+"media/demon_general2.png"), transform_scale([532, 572])),           #84
+    pygame.transform.scale(pygame.image.load(path+"media/demon_general3.png"), transform_scale([532, 572])),           #85
+    pygame.transform.scale(pygame.image.load(path+"media/demon_general4.png"), transform_scale([532, 572])),           #86
+    pygame.transform.scale(pygame.image.load(path+"media/forest_night.png"), transform_scale([1440, 1080])),           #87
+    pygame.transform.scale(pygame.image.load(path+"media/forest_village.png"), transform_scale([1440, 1080])),         #88
 
 ]                                                              
 
@@ -3540,7 +3548,7 @@ battle_detail = [
         "question_type": "input",
         "question": "verb_ru",
         "answer": "verb_kanou",
-        "enemy_surf": 29,  # Demon Dragon Boss Sprite
+        "enemy_surf": 81,  # Demon Dragon Boss Sprite
         "counter": 0,
         "enemy_attack_word": "滅",
         "target": [20, 25], # 20 hits required! A true test of endurance.
@@ -3554,7 +3562,7 @@ battle_detail = [
         "question_type": "input",
         "question": "verb_ru",
         "answer": "verb_ro",
-        "enemy_surf": 29,
+        "enemy_surf": 83,
         "counter": 0,
         "enemy_attack_word": "殺",
         "target": [8, 10],
@@ -3568,7 +3576,7 @@ battle_detail = [
         "question_type": "input",
         "question": "verb_ru",
         "answer": "verb_na",
-        "enemy_surf": 29,
+        "enemy_surf": 84,
         "counter": 0,
         "enemy_attack_word": "怨",
         "target": [10, 12],
@@ -3600,7 +3608,7 @@ battle_detail = [
             { "meaning": "結束了 (It's over)", "answer_order": ["おわり", "です"], "options": ["おわり", "です", "はじまり", "は", "が"] }
         ],
         "order":[],
-        "enemy_surf": 29,
+        "enemy_surf": 85,
         "enemy_attack_word": "恨",
         "target": [4, 5],
         "enemy_hp": 300 * (1.5 if save['hard'] else 1),
@@ -3612,7 +3620,7 @@ battle_detail = [
         "question_type": "input",
         "question": "verb_ru",
         "answer": "verb_ba",
-        "enemy_surf": 29,
+        "enemy_surf": 86,
         "counter": 0,
         "enemy_attack_word": "悔",
         "target":[12, 14],
@@ -3626,7 +3634,7 @@ battle_detail = [
         "question_type": "input",
         "question": "verb_ru",
         "answer": "verb_saseru_rareru",
-        "enemy_surf": 29,
+        "enemy_surf": 82,
         "counter": 0,
         "enemy_attack_word": "終",
         "target": [20, 25],
@@ -3640,7 +3648,7 @@ battle_detail = [
         "question_type": "input",
         "question": "verb_ru",
         "answer": "verb_ikou",
-        "enemy_surf": 29,
+        "enemy_surf": 83,
         "counter": 0,
         "enemy_attack_word": "炎",
         "target": [8, 10],
@@ -3671,7 +3679,7 @@ battle_detail = [
             { "meaning": "拯救大家 (Save everyone)", "answer_order": ["みんな", "を", "たすけます"], "options": ["みんな", "を", "たすけます", "が", "に", "ころします"] }
         ],
         "order":[],
-        "enemy_surf": 29,
+        "enemy_surf": 84,
         "enemy_attack_word": "風",
         "target": [4, 5],
         "enemy_hp": 300 * (1.5 if save['hard'] else 1),
@@ -3683,7 +3691,7 @@ battle_detail = [
         "question_type": "input",
         "question": "verb_ru",
         "answer": "verb_kanou",
-        "enemy_surf": 29,
+        "enemy_surf": 85,
         "counter": 0,
         "enemy_attack_word": "冰",
         "target":[10, 12],
@@ -3697,7 +3705,7 @@ battle_detail = [
         "question_type": "input",
         "question": "verb_ru",
         "answer": "verb_te",
-        "enemy_surf": 29,
+        "enemy_surf": 86,
         "counter": 0,
         "enemy_attack_word": "壁",
         "target": [12, 14],
@@ -3729,7 +3737,7 @@ battle_detail = [
             { "meaning": "我感謝莉子 (I thank Riko)", "answer_order": ["わたし", "は", "りこ", "に", "かんしゃします"], "options": ["わたし", "は", "りこ", "に", "かんしゃします", "を", "で", "あやまります"] }
         ],
         "order":[],
-        "enemy_surf": 29,
+        "enemy_surf": 82,
         "enemy_attack_word": "滅",
         "target": [5, 6],
         "enemy_hp": 800 * (1.5 if save['hard'] else 1), # Demon King has very high HP!
@@ -4817,7 +4825,7 @@ def reload_battle_detail():
         "question_type": "input",
         "question": "verb_ru",
         "answer": "verb_kanou",
-        "enemy_surf": 29,  # Demon Dragon Boss Sprite
+        "enemy_surf": 81,  # Demon Dragon Boss Sprite
         "counter": 0,
         "enemy_attack_word": "滅",
         "target": [20, 25], # 20 hits required! A true test of endurance.
@@ -4831,7 +4839,7 @@ def reload_battle_detail():
         "question_type": "input",
         "question": "verb_ru",
         "answer": "verb_ro",
-        "enemy_surf": 29,
+        "enemy_surf": 83,
         "counter": 0,
         "enemy_attack_word": "殺",
         "target": [8, 10],
@@ -4845,7 +4853,7 @@ def reload_battle_detail():
         "question_type": "input",
         "question": "verb_ru",
         "answer": "verb_na",
-        "enemy_surf": 29,
+        "enemy_surf": 84,
         "counter": 0,
         "enemy_attack_word": "怨",
         "target": [10, 12],
@@ -4877,7 +4885,7 @@ def reload_battle_detail():
             { "meaning": "結束了 (It's over)", "answer_order": ["おわり", "です"], "options": ["おわり", "です", "はじまり", "は", "が"] }
         ],
         "order":[],
-        "enemy_surf": 29,
+        "enemy_surf": 85,
         "enemy_attack_word": "恨",
         "target": [4, 5],
         "enemy_hp": 300 * (1.5 if save['hard'] else 1),
@@ -4889,7 +4897,7 @@ def reload_battle_detail():
         "question_type": "input",
         "question": "verb_ru",
         "answer": "verb_ba",
-        "enemy_surf": 29,
+        "enemy_surf": 86,
         "counter": 0,
         "enemy_attack_word": "悔",
         "target":[12, 14],
@@ -4903,7 +4911,7 @@ def reload_battle_detail():
         "question_type": "input",
         "question": "verb_ru",
         "answer": "verb_saseru_rareru",
-        "enemy_surf": 29,
+        "enemy_surf": 82,
         "counter": 0,
         "enemy_attack_word": "終",
         "target": [20, 25],
@@ -4917,7 +4925,7 @@ def reload_battle_detail():
         "question_type": "input",
         "question": "verb_ru",
         "answer": "verb_ikou",
-        "enemy_surf": 29,
+        "enemy_surf": 83,
         "counter": 0,
         "enemy_attack_word": "炎",
         "target": [8, 10],
@@ -4948,7 +4956,7 @@ def reload_battle_detail():
             { "meaning": "拯救大家 (Save everyone)", "answer_order": ["みんな", "を", "たすけます"], "options": ["みんな", "を", "たすけます", "が", "に", "ころします"] }
         ],
         "order":[],
-        "enemy_surf": 29,
+        "enemy_surf": 84,
         "enemy_attack_word": "風",
         "target": [4, 5],
         "enemy_hp": 300 * (1.5 if save['hard'] else 1),
@@ -4960,7 +4968,7 @@ def reload_battle_detail():
         "question_type": "input",
         "question": "verb_ru",
         "answer": "verb_kanou",
-        "enemy_surf": 29,
+        "enemy_surf": 85,
         "counter": 0,
         "enemy_attack_word": "冰",
         "target":[10, 12],
@@ -4974,7 +4982,7 @@ def reload_battle_detail():
         "question_type": "input",
         "question": "verb_ru",
         "answer": "verb_te",
-        "enemy_surf": 29,
+        "enemy_surf": 86,
         "counter": 0,
         "enemy_attack_word": "壁",
         "target": [12, 14],
@@ -5006,7 +5014,7 @@ def reload_battle_detail():
             { "meaning": "我感謝莉子 (I thank Riko)", "answer_order": ["わたし", "は", "りこ", "に", "かんしゃします"], "options": ["わたし", "は", "りこ", "に", "かんしゃします", "を", "で", "あやまります"] }
         ],
         "order":[],
-        "enemy_surf": 29,
+        "enemy_surf": 82,
         "enemy_attack_word": "滅",
         "target": [5, 6],
         "enemy_hp": 800 * (1.5 if save['hard'] else 1), # Demon King has very high HP!
