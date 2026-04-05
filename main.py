@@ -804,7 +804,7 @@ def draw_stage_selection(n):
             else:
                 center = 18
             # the title text, but in image format, Jeff can help gen
-            title = 21
+            title = 48
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
@@ -827,7 +827,7 @@ def draw_stage_selection(n):
             else:
                 center = 18
             # the title text, but in image format, Jeff can help gen
-            title = 21
+            title = 49
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
@@ -850,7 +850,7 @@ def draw_stage_selection(n):
             else:
                 center = 18
             # the title text, but in image format, Jeff can help gen
-            title = 21
+            title = 50
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
@@ -873,7 +873,7 @@ def draw_stage_selection(n):
             else:
                 center = 18
             # the title text, but in image format, Jeff can help gen
-            title = 21
+            title = 51
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
@@ -896,7 +896,7 @@ def draw_stage_selection(n):
             else:
                 center = 18
             # the title text, but in image format, Jeff can help gen
-            title = 21
+            title = 52
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
@@ -919,7 +919,7 @@ def draw_stage_selection(n):
             else:
                 center = 18
             # the title text, but in image format, Jeff can help gen
-            title = 21
+            title = 53
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
@@ -942,7 +942,7 @@ def draw_stage_selection(n):
             else:
                 center = 18
             # the title text, but in image format, Jeff can help gen
-            title = 21
+            title = 54
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
@@ -965,7 +965,7 @@ def draw_stage_selection(n):
             else:
                 center = 18
             # the title text, but in image format, Jeff can help gen
-            title = 21
+            title = 55
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
@@ -988,7 +988,7 @@ def draw_stage_selection(n):
             else:
                 center = 18
             # the title text, but in image format, Jeff can help gen
-            title = 21
+            title = 56
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
@@ -1011,7 +1011,7 @@ def draw_stage_selection(n):
             else:
                 center = 18
             # the title text, but in image format, Jeff can help gen
-            title = 21
+            title = 57
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
@@ -1034,7 +1034,7 @@ def draw_stage_selection(n):
             else:
                 center = 18
             # the title text, but in image format, Jeff can help gen
-            title = 21
+            title = 58
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
@@ -1057,7 +1057,7 @@ def draw_stage_selection(n):
             else:
                 center = 18
             # the title text, but in image format, Jeff can help gen
-            title = 21
+            title = 59
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
@@ -1080,7 +1080,7 @@ def draw_stage_selection(n):
             else:
                 center = 18
             # the title text, but in image format, Jeff can help gen
-            title = 21
+            title = 60
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
@@ -1103,7 +1103,7 @@ def draw_stage_selection(n):
             else:
                 center = 18
             # the title text, but in image format, Jeff can help gen
-            title = 21
+            title = 61
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
@@ -1126,7 +1126,7 @@ def draw_stage_selection(n):
             else:
                 center = 18
             # the title text, but in image format, Jeff can help gen
-            title = 21
+            title = 62
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
@@ -1149,7 +1149,7 @@ def draw_stage_selection(n):
             else:
                 center = 18
             # the title text, but in image format, Jeff can help gen
-            title = 21
+            title = 63
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
@@ -1172,7 +1172,7 @@ def draw_stage_selection(n):
             else:
                 center = 18
             # the title text, but in image format, Jeff can help gen
-            title = 21
+            title = 64
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
@@ -1195,7 +1195,7 @@ def draw_stage_selection(n):
             else:
                 center = 18
             # the title text, but in image format, Jeff can help gen
-            title = 21
+            title = 65
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
@@ -1218,7 +1218,7 @@ def draw_stage_selection(n):
             else:
                 center = 18
             # the title text, but in image format, Jeff can help gen
-            title = 21
+            title = 66
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
@@ -1241,7 +1241,7 @@ def draw_stage_selection(n):
             else:
                 center = 18
             # the title text, but in image format, Jeff can help gen
-            title = 21
+            title = 67
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
@@ -1264,7 +1264,7 @@ def draw_stage_selection(n):
             else:
                 center = 26
             # the title text, but in image format, Jeff can help gen
-            title = 28
+            title = 68
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
@@ -1287,7 +1287,7 @@ def draw_stage_selection(n):
             else:
                 center = 26
             # the title text, but in image format, Jeff can help gen
-            title = 21
+            title = 69
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
@@ -1310,7 +1310,7 @@ def draw_stage_selection(n):
             else:
                 center = 26
             # the title text, but in image format, Jeff can help gen
-            title = 21
+            title = 70
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
@@ -1333,7 +1333,7 @@ def draw_stage_selection(n):
             else:
                 center = 26
             # the title text, but in image format, Jeff can help gen
-            title = 21
+            title = 71
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
@@ -1356,7 +1356,7 @@ def draw_stage_selection(n):
             else:
                 center = 26
             # the title text, but in image format, Jeff can help gen
-            title = 21
+            title = 72
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
@@ -1379,7 +1379,7 @@ def draw_stage_selection(n):
             else:
                 center = 26
             # the title text, but in image format, Jeff can help gen
-            title = 28
+            title = 73
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
@@ -1402,7 +1402,7 @@ def draw_stage_selection(n):
             else:
                 center = 26
             # the title text, but in image format, Jeff can help gen
-            title = 21
+            title = 74
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
@@ -1425,7 +1425,7 @@ def draw_stage_selection(n):
             else:
                 center = 26
             # the title text, but in image format, Jeff can help gen
-            title = 21
+            title = 75
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
@@ -1448,7 +1448,7 @@ def draw_stage_selection(n):
             else:
                 center = 26
             # the title text, but in image format, Jeff can help gen
-            title = 21
+            title = 76
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
@@ -1471,7 +1471,7 @@ def draw_stage_selection(n):
             else:
                 center = 26
             # the title text, but in image format, Jeff can help gen
-            title = 21
+            title = 77
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
@@ -1994,45 +1994,45 @@ win_lose_effect_timer = 0
 changing = None
 
 images = [
-    pygame.transform.scale(pygame.image.load(path+"media/dungeon_crystal_1.png"), [WIDTH, HEIGHT]),                   # 0
-    pygame.transform.scale(pygame.image.load(path+"media/title_text.png"), transform_scale([816, 144])),              # 1
-    pygame.transform.scale(pygame.image.load(path+"media/press_to_start.png"), transform_scale([269, 36])),           # 2
-    pygame.transform.scale(pygame.image.load(path+"media/forest_1.png"), [WIDTH, HEIGHT]),                            # 3
-    pygame.transform.scale(pygame.image.load(path+"media/main_char.png"), transform_scale([640, 768])),               # 4
-    pygame.transform.scale(pygame.image.load(path+"media/teacher_no_glasses.png"), transform_scale([517, 680])),      # 5
-    pygame.transform.scale(pygame.image.load(path+"media/skip.png"), transform_scale([310, 80])),                     # 6
-    pygame.transform.scale(pygame.image.load(path+"media/main_char_gray.png"), transform_scale([640, 768])),          # 7
-    pygame.transform.scale(pygame.image.load(path+"media/teacher_no_glasses_gray.png"), transform_scale([517, 680])), # 8
-    pygame.transform.scale(pygame.image.load(path+"media/purple_slime_1.png"),transform_scale([532, 572])),           # 9
-    pygame.transform.scale(pygame.image.load(path+"media/forest_river_sky.png"),transform_scale([1440, 1080])),       #10
-    pygame.transform.scale(pygame.image.load(path+"media/stage_arrow.png"),transform_scale([75, 110])),               #11
+    pygame.transform.scale(pygame.image.load(path+"media/dungeon_crystal_1.png"), [WIDTH, HEIGHT]),                    # 0
+    pygame.transform.scale(pygame.image.load(path+"media/title_text.png"), transform_scale([816, 144])),               # 1
+    pygame.transform.scale(pygame.image.load(path+"media/press_to_start.png"), transform_scale([269, 36])),            # 2
+    pygame.transform.scale(pygame.image.load(path+"media/forest_1.png"), [WIDTH, HEIGHT]),                             # 3
+    pygame.transform.scale(pygame.image.load(path+"media/main_char.png"), transform_scale([640, 768])),                # 4
+    pygame.transform.scale(pygame.image.load(path+"media/teacher_no_glasses.png"), transform_scale([517, 680])),       # 5
+    pygame.transform.scale(pygame.image.load(path+"media/skip.png"), transform_scale([310, 80])),                      # 6
+    pygame.transform.scale(pygame.image.load(path+"media/main_char_gray.png"), transform_scale([640, 768])),           # 7
+    pygame.transform.scale(pygame.image.load(path+"media/teacher_no_glasses_gray.png"), transform_scale([517, 680])),  # 8
+    pygame.transform.scale(pygame.image.load(path+"media/purple_slime_1.png"),transform_scale([532, 572])),            # 9
+    pygame.transform.scale(pygame.image.load(path+"media/forest_river_sky.png"),transform_scale([1440, 1080])),        #10
+    pygame.transform.scale(pygame.image.load(path+"media/stage_arrow.png"),transform_scale([75, 110])),                #11
     pygame.transform.scale(pygame.image.load(path+"media/stage1_title1.png"),transform_scale([200, 60])),              #12
-    pygame.transform.scale(pygame.image.load(path+"media/star0.png"),transform_scale([360, 100])),                    #13
-    pygame.transform.scale(pygame.image.load(path+"media/star1.png"),transform_scale([360, 100])),                    #14
-    pygame.transform.scale(pygame.image.load(path+"media/star2.png"),transform_scale([360, 100])),                    #15
-    pygame.transform.scale(pygame.image.load(path+"media/star3.png"),transform_scale([360, 100])),                    #16
-    pygame.transform.scale(pygame.image.load(path+"media/stage_type_1_img_light.png"),transform_scale([847, 635])),   #17
-    pygame.transform.scale(pygame.image.load(path+"media/stage_type_1_img_dark.png"),transform_scale([847, 635])),    #18
-    pygame.transform.scale(pygame.image.load(path+"media/stage_type_2_img_dark.png"),transform_scale([847, 635])),    #19
-    pygame.transform.scale(pygame.image.load(path+"media/stage_type_2_img_light.png"),transform_scale([847, 635])),   #20
+    pygame.transform.scale(pygame.image.load(path+"media/star0.png"),transform_scale([360, 100])),                     #13
+    pygame.transform.scale(pygame.image.load(path+"media/star1.png"),transform_scale([360, 100])),                     #14
+    pygame.transform.scale(pygame.image.load(path+"media/star2.png"),transform_scale([360, 100])),                     #15
+    pygame.transform.scale(pygame.image.load(path+"media/star3.png"),transform_scale([360, 100])),                     #16
+    pygame.transform.scale(pygame.image.load(path+"media/stage_type_1_img_light.png"),transform_scale([847, 635])),    #17
+    pygame.transform.scale(pygame.image.load(path+"media/stage_type_1_img_dark.png"),transform_scale([847, 635])),     #18
+    pygame.transform.scale(pygame.image.load(path+"media/stage_type_2_img_dark.png"),transform_scale([847, 635])),     #19
+    pygame.transform.scale(pygame.image.load(path+"media/stage_type_2_img_light.png"),transform_scale([847, 635])),    #20
     pygame.transform.scale(pygame.image.load(path+"media/stage2_title1.png"),transform_scale([185, 60])),              #21
-    pygame.transform.scale(pygame.image.load(path+"media/continue.png"),transform_scale([520, 110])),                 #22
+    pygame.transform.scale(pygame.image.load(path+"media/continue.png"),transform_scale([520, 110])),                  #22
     pygame.transform.scale(pygame.image.load(path+"media/stage3_title1.png"), transform_scale([186, 60])),             #23
     pygame.transform.scale(pygame.image.load(path+"media/stage4_title1.png"), transform_scale([187, 60])),             #24
-    pygame.transform.scale(pygame.image.load(path+"media/hell_bg.png"), [WIDTH, HEIGHT]),                             #25
-    pygame.transform.scale(pygame.image.load(path+"media/hell_bg_dark.png"),transform_scale([847, 635])),             #26
-    pygame.transform.scale(pygame.image.load(path+"media/hell_bg_light.png"),transform_scale([847, 635])),            #27
-    pygame.transform.scale(pygame.image.load(path+"media/finalstage1_title.png"),transform_scale([299, 60])),         #28
-    pygame.transform.scale(pygame.image.load(path+"media/demon_1.png"), transform_scale([685, 400])),                 #29
+    pygame.transform.scale(pygame.image.load(path+"media/hell_bg.png"), [WIDTH, HEIGHT]),                              #25
+    pygame.transform.scale(pygame.image.load(path+"media/hell_bg_dark.png"),transform_scale([847, 635])),              #26
+    pygame.transform.scale(pygame.image.load(path+"media/hell_bg_light.png"),transform_scale([847, 635])),             #27
+    pygame.transform.scale(pygame.image.load(path+"media/finalstage1_title.png"),transform_scale([299, 60])),          #28
+    pygame.transform.scale(pygame.image.load(path+"media/demon_1.png"), transform_scale([685, 400])),                  #29
     pygame.transform.scale(pygame.image.load(path+"media/high_demon_1.png"), transform_scale([187, 60])),  # unused
-    pygame.transform.scale(pygame.image.load(path+"media/world_map.png"), transform_scale([WIDTH, HEIGHT])),          #31
-    pygame.transform.scale(pygame.image.load(path+"media/armor1.png"), transform_scale([60, 60])),                    #32
-    pygame.transform.scale(pygame.image.load(path+"media/armor2.png"), transform_scale([60, 60])),                    #33
-    pygame.transform.scale(pygame.image.load(path+"media/armor3.png"), transform_scale([60, 60])),                    #34
-    pygame.transform.scale(pygame.image.load(path+"media/weapon1.png"), transform_scale([60, 60])),                   #35
-    pygame.transform.scale(pygame.image.load(path+"media/weapon2.png"), transform_scale([60, 60])),                   #36
-    pygame.transform.scale(pygame.image.load(path+"media/weapon3.png"), transform_scale([60, 60])),                   #37
-    pygame.transform.scale(pygame.image.load(path+"media/sp_armor_weapon.png"), transform_scale([60, 60])),           #38
+    pygame.transform.scale(pygame.image.load(path+"media/world_map.png"), transform_scale([WIDTH, HEIGHT])),           #31
+    pygame.transform.scale(pygame.image.load(path+"media/armor1.png"), transform_scale([60, 60])),                     #32
+    pygame.transform.scale(pygame.image.load(path+"media/armor2.png"), transform_scale([60, 60])),                     #33
+    pygame.transform.scale(pygame.image.load(path+"media/armor3.png"), transform_scale([60, 60])),                     #34
+    pygame.transform.scale(pygame.image.load(path+"media/weapon1.png"), transform_scale([60, 60])),                    #35
+    pygame.transform.scale(pygame.image.load(path+"media/weapon2.png"), transform_scale([60, 60])),                    #36
+    pygame.transform.scale(pygame.image.load(path+"media/weapon3.png"), transform_scale([60, 60])),                    #37
+    pygame.transform.scale(pygame.image.load(path+"media/sp_armor_weapon.png"), transform_scale([60, 60])),            #38
     pygame.transform.scale(pygame.image.load(path+"media/stage0_title.png"), transform_scale([220, 60])),              #39
     pygame.transform.scale(pygame.image.load(path+"media/stage1_title.png"), transform_scale([220, 60])),              #40
     pygame.transform.scale(pygame.image.load(path+"media/stage2_title.png"), transform_scale([220, 60])),              #41
@@ -2042,6 +2042,36 @@ images = [
     pygame.transform.scale(pygame.image.load(path+"media/stage6_title.png"), transform_scale([220, 60])),              #45
     pygame.transform.scale(pygame.image.load(path+"media/stage7_title.png"), transform_scale([220, 60])),              #46
     pygame.transform.scale(pygame.image.load(path+"media/stage8_title.png"), transform_scale([220, 60])),              #47
+    pygame.transform.scale(pygame.image.load(path+"media/stage9_title.png"), transform_scale([220, 60])),              #48
+    pygame.transform.scale(pygame.image.load(path+"media/stage10_title.png"), transform_scale([220, 60])),             #49
+    pygame.transform.scale(pygame.image.load(path+"media/stage11_title.png"), transform_scale([220, 60])),             #50
+    pygame.transform.scale(pygame.image.load(path+"media/stage12_title.png"), transform_scale([220, 60])),             #51
+    pygame.transform.scale(pygame.image.load(path+"media/stage13_title.png"), transform_scale([220, 60])),             #52
+    pygame.transform.scale(pygame.image.load(path+"media/stage14_title.png"), transform_scale([220, 60])),             #53
+    pygame.transform.scale(pygame.image.load(path+"media/stage15_title.png"), transform_scale([220, 60])),             #54
+    pygame.transform.scale(pygame.image.load(path+"media/stage16_title.png"), transform_scale([220, 60])),             #55
+    pygame.transform.scale(pygame.image.load(path+"media/stage17_title.png"), transform_scale([220, 60])),             #56
+    pygame.transform.scale(pygame.image.load(path+"media/stage18_title.png"), transform_scale([220, 60])),             #57
+    pygame.transform.scale(pygame.image.load(path+"media/stage19_title.png"), transform_scale([220, 60])),             #58
+    pygame.transform.scale(pygame.image.load(path+"media/stage20_title.png"), transform_scale([400, 60])),             #59
+    pygame.transform.scale(pygame.image.load(path+"media/stage21_title.png"), transform_scale([400, 60])),             #60
+    pygame.transform.scale(pygame.image.load(path+"media/stage22_title.png"), transform_scale([400, 60])),             #61
+    pygame.transform.scale(pygame.image.load(path+"media/stage23_title.png"), transform_scale([400, 60])),             #62
+    pygame.transform.scale(pygame.image.load(path+"media/stage24_title.png"), transform_scale([220, 60])),             #63
+    pygame.transform.scale(pygame.image.load(path+"media/stage25_title.png"), transform_scale([220, 60])),             #64
+    pygame.transform.scale(pygame.image.load(path+"media/stage26_title.png"), transform_scale([220, 60])),             #65
+    pygame.transform.scale(pygame.image.load(path+"media/stage27_title.png"), transform_scale([220, 60])),             #66
+    pygame.transform.scale(pygame.image.load(path+"media/stage28_title.png"), transform_scale([220, 60])),             #67
+    pygame.transform.scale(pygame.image.load(path+"media/stage29_title.png"), transform_scale([220, 60])),             #68
+    pygame.transform.scale(pygame.image.load(path+"media/stage30_title.png"), transform_scale([220, 60])),             #69
+    pygame.transform.scale(pygame.image.load(path+"media/stage31_title.png"), transform_scale([220, 60])),             #70
+    pygame.transform.scale(pygame.image.load(path+"media/stage32_title.png"), transform_scale([220, 60])),             #71
+    pygame.transform.scale(pygame.image.load(path+"media/stage33_title.png"), transform_scale([220, 60])),             #72
+    pygame.transform.scale(pygame.image.load(path+"media/stage34_title.png"), transform_scale([220, 60])),             #73
+    pygame.transform.scale(pygame.image.load(path+"media/stage35_title.png"), transform_scale([220, 60])),             #74
+    pygame.transform.scale(pygame.image.load(path+"media/stage36_title.png"), transform_scale([220, 60])),             #75
+    pygame.transform.scale(pygame.image.load(path+"media/stage37_title.png"), transform_scale([220, 60])),             #76
+    pygame.transform.scale(pygame.image.load(path+"media/stage38_title.png"), transform_scale([220, 60])),             #77
 
 ]                                                              
 
