@@ -1623,73 +1623,80 @@ def end_stage_achievement_check(recover_times, damage_taken_times, attack_times,
     else:
         save['last_play'] = [0, 0]
 
-    if(stage == 8 and not(save["achievement"][10])):
-        save["achievement"][10] = True
-        achievement_stack.append([10, fps])
+
+        
+    if(stage == 8):
+        if not(save["achievement"][10]):
+            save["achievement"][10] = True
+            achievement_stack.append([10, fps])
+        if not(save["achievement"][14]):
+            save["achievement"][14] = True
+            achievement_stack.append([14, fps])
+            save["obtain"][0] = True
+            save["obtain_w_n"] += 1
+    elif(stage == 19):
+        if not(save["achievement"][12]):
+            save["achievement"][12] = True
+            achievement_stack.append([12, fps])
+        if not(save["achievement"][16]):
+            save["achievement"][16] = True
+            achievement_stack.append([16, fps])
+            save["obtain"][2] = True
+            save["obtain_w_n"] += 1
+        if(not(save["achievement"][17])):
+            save["achievement"][17] = True
+            achievement_stack.append([17, fps])
+            save["obtain"][3] = True
+            save["obtain_e_n"] += 1
     elif(stage == 23 and not(save["achievement"][11])):
         save["achievement"][11] = True
         achievement_stack.append([11, fps])
-    elif(stage == 19 and not(save["achievement"][12])):
-        save["achievement"][12] = True
-        achievement_stack.append([12, fps])
-    elif(stage == 28 and not(save["achievement"][13])):
-        save["achievement"][13] = True
-        achievement_stack.append([13, fps])
+    elif(stage == 28 and not(save["achievement"][19])):
+        if not(save["achievement"][13]):
+            save["achievement"][13] = True
+            achievement_stack.append([13, fps])
+        if not(save["achievement"][19]):
+            save["achievement"][19] = True
+            achievement_stack.append([19, fps])
+            save["obtain"][5] = True
+            save["obtain_e_n"] += 1
+        if not(save["achievement"][22]):
+            save["achievement"][22] = True
+            achievement_stack.append([22, fps])
+            save["obtain"][6] = True
+            save["obtain_w_n"] += 1
+            save["obtain_e_n"] += 1
     elif(stage == 33 and not(save["achievement"][23])):
         save["achievement"][23] = True
         achievement_stack.append([23, fps])
-    elif(stage == 38 and not(save["achievement"][24])):
-        save["achievement"][24] = True
-        achievement_stack.append([24, fps])
-    elif(stage == 33 and not(save["achievement"][27]) and save['equipt'][0] == 7 and save['equipt'][1] == 8): # here, no equiptment
-        save["achievement"][27] = True
-        achievement_stack.append([27])
-    elif(stage == 38 and not(save["achievement"][27]) and save['equipt'][0] == 7 and save['equipt'][1] == 8): # here, no equiptment
-        save["achievement"][27] = True
-        achievement_stack.append([27, fps])
-    elif(stage == 33 and not(save["achievement"][26]) and save['hard']): # here, 2nd round
-        save["achievement"][26] = True
-        achievement_stack.append([26])
-    elif(stage == 38 and not(save["achievement"][26]) and save['hard']): # here, 2nd round
-        save["achievement"][26] = True
-        achievement_stack.append([26])
-
-    elif(stage == 8 and not(save["achievement"][14])):
-        save["achievement"][14] = True
-        achievement_stack.append([14, fps])
-        save["obtain"][0] = True
-        save["obtain_w_n"] += 1
-    elif(stage == 5 and not(save["achievement"][15])):
-        save["achievement"][15] = True
-        achievement_stack.append([15, fps])
-        save["obtain"][1] = True
-        save["obtain_e_n"] += 1
-    elif(stage == 19 and not(save["achievement"][16])):
-        save["achievement"][16] = True
-        achievement_stack.append([16, fps])
-        save["obtain"][2] = True
-        save["obtain_w_n"] += 1
-    elif(stage == 19 and not(save["achievement"][17])):
-        save["achievement"][17] = True
-        achievement_stack.append([17, fps])
-        save["obtain"][3] = True
-        save["obtain_e_n"] += 1
     elif(stage == 34 and not(save["achievement"][18])):
         save["achievement"][18] = True
         achievement_stack.append([18, fps])
         save["obtain"][4] = True
         save["obtain_w_n"] += 1
-    elif(stage == 28 and not(save["achievement"][19])):
-        save["achievement"][19] = True
-        achievement_stack.append([19, fps])
-        save["obtain"][5] = True
+    elif(stage == 38 and not(save["achievement"][24])):
+        save["achievement"][24] = True
+        achievement_stack.append([24, fps])
+    elif(stage == 5 and not(save["achievement"][15])):
+        save["achievement"][15] = True
+        achievement_stack.append([15, fps])
+        save["obtain"][1] = True
         save["obtain_e_n"] += 1
-    elif(stage == 28 and not(save["achievement"][22])):
-        save["achievement"][22] = True
-        achievement_stack.append([22, fps])
-        save["obtain"][6] = True
-        save["obtain_w_n"] += 1
-        save["obtain_e_n"] += 1
+        
+
+    if(stage == 33 and not(save["achievement"][27]) and save['equipt'][0] == 7 and save['equipt'][1] == 8): # here, no equiptment
+        save["achievement"][27] = True
+        achievement_stack.append([27])
+    elif(stage == 38 and not(save["achievement"][27]) and save['equipt'][0] == 7 and save['equipt'][1] == 8): # here, no equiptment
+        save["achievement"][27] = True
+        achievement_stack.append([27, fps])
+        
+    if(stage == 33 and not(save["achievement"][26]) and save['hard']): # here, 2nd round
+        save["achievement"][26] = True
+        achievement_stack.append([26])
+    elif(stage == 38 and not(save["achievement"][26]) and save['hard']): # here, 2nd round
+        save["achievement"][26] = True
+        achievement_stack.append([26])
     
     if(attack_times == 1 and click_times == 0 and not(save["achievement"][28])):
         save["achievement"][28] = True
@@ -5047,7 +5054,7 @@ attack_times = 0
 click_times = 0
 
 achievement_stack = []
-    
+confirming = False
 
 s = pygame.Surface((WIDTH,HEIGHT))
 s.fill((0,0,0))
@@ -5071,23 +5078,39 @@ while running:
             pygame.draw.rect(screen, [0, 0, 0], transform_scale([570, 550, 300, 50]), br, br)
             text(screen, "輪迴", [0, 0, 0], 30, transform_scale([570+150, 550+25]), "center")
 
-        pygame.draw.rect(screen, [186, 148, 45], transform_scale([570, 620, 300, 50]), border_radius=br)
-        pygame.draw.rect(screen, [0, 0, 0], transform_scale([570, 620, 300, 50]), br, br)
-        text(screen, "繼續" if save["unlock"][1] or save['hard'] else "新遊戲", [0, 0, 0], 30, transform_scale([570+150, 620+25]), "center")
+        if confirming:
+            pygame.draw.rect(screen, [217, 217, 217], transform_scale([130, 143, 1180, 675]), border_radius=br)
+            pygame.draw.rect(screen, [0, 0, 0], transform_scale([130, 143, 1180, 675]), br, br)
+            text(screen, "輪迴", [0, 0, 0], 50, transform_scale([130+590, 143+50]), "center")
+            text(screen, "輪迴將會開啟二週目，並重置主線進度！", [0, 0, 0], 30, transform_scale([130+590, 405]), "center")
+            text(screen, "獲得的「名匠靈珠」、「皇家守衛套裝」、「天魔杖」、「天神甲」及成就\n將會保留，但魔物的生命值與攻擊值皆為一周目的1.5倍。", [0, 0, 0], 30, transform_scale([130+590, 480]), "center")
+            text(screen, "確定進行輪迴？", [0, 0, 0], 30, transform_scale([130+590, 555]), "center")
 
-        pygame.draw.rect(screen, [186, 148, 45], transform_scale([570, 690, 300, 50]), border_radius=br)
-        pygame.draw.rect(screen, [0, 0, 0], transform_scale([570, 690, 300, 50]), br, br)
-        text(screen, "設定", [0, 0, 0], 30, transform_scale([570+150, 690+25]), "center")
+            pygame.draw.rect(screen, [186, 148, 45], transform_scale([328, 692, 295, 80]), border_radius=br)
+            pygame.draw.rect(screen, [0, 0, 0], transform_scale([328, 692, 295, 80]), br, br)
+            text(screen, "取消", [0, 0, 0], 30, transform_scale([328+148, 692+40]), "center")
 
-        pygame.draw.rect(screen, [186, 148, 45], transform_scale([570, 760, 300, 50]), border_radius=br)
-        pygame.draw.rect(screen, [0, 0, 0], transform_scale([570, 760, 300, 50]), br, br)
-        text(screen, "成就", [0, 0, 0], 30, transform_scale([570+150, 760+25]), "center")
+            pygame.draw.rect(screen, [186, 148, 45], transform_scale([817, 692, 295, 80]), border_radius=br)
+            pygame.draw.rect(screen, [0, 0, 0], transform_scale([817, 692, 295, 80]), br, br)
+            text(screen, "輪迴", [0, 0, 0], 30, transform_scale([817+148, 692+40]), "center")
 
-        pygame.draw.rect(screen, [186, 148, 45], transform_scale([570, 830, 300, 50]), border_radius=br)
-        pygame.draw.rect(screen, [0, 0, 0], transform_scale([570, 830, 300, 50]), br, br)
-        text(screen, "退出", [0, 0, 0], 30, transform_scale([570+150, 830+25]), "center")
+        else:
+            pygame.draw.rect(screen, [186, 148, 45], transform_scale([570, 620, 300, 50]), border_radius=br)
+            pygame.draw.rect(screen, [0, 0, 0], transform_scale([570, 620, 300, 50]), br, br)
+            text(screen, "繼續" if save["unlock"][1] or save['hard'] else "新遊戲", [0, 0, 0], 30, transform_scale([570+150, 620+25]), "center")
 
-        
+            pygame.draw.rect(screen, [186, 148, 45], transform_scale([570, 690, 300, 50]), border_radius=br)
+            pygame.draw.rect(screen, [0, 0, 0], transform_scale([570, 690, 300, 50]), br, br)
+            text(screen, "設定", [0, 0, 0], 30, transform_scale([570+150, 690+25]), "center")
+
+            pygame.draw.rect(screen, [186, 148, 45], transform_scale([570, 760, 300, 50]), border_radius=br)
+            pygame.draw.rect(screen, [0, 0, 0], transform_scale([570, 760, 300, 50]), br, br)
+            text(screen, "成就", [0, 0, 0], 30, transform_scale([570+150, 760+25]), "center")
+
+            pygame.draw.rect(screen, [186, 148, 45], transform_scale([570, 830, 300, 50]), border_radius=br)
+            pygame.draw.rect(screen, [0, 0, 0], transform_scale([570, 830, 300, 50]), br, br)
+            text(screen, "退出", [0, 0, 0], 30, transform_scale([570+150, 830+25]), "center")
+
         if(time != 0):
             time += 1
             s.set_alpha(int(time/fps/1*255))
@@ -5098,53 +5121,60 @@ while running:
                 running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if pygame.mouse.get_pressed()[0]:
-                    if click_check(pygame.mouse.get_pos(), transform_scale([570, 550, 300, 50])) and save["star"][-1] > 0:  # new round
-                        if (time == 0):
-                            play_sfx("click")
-                            time += 1
-                            menu_action = "start"
-                            save.update({
-                                'unlock': [True] + [False]*38,
-                                'star': [0]*39,
-                                'current_stage': 0,
-                                'equipt': [7, 8],  # weapon, equiptment. 7, 8 mean empty. number follow 'obtain' index
-                                'obtain_w_n': 2,
-                                'obtain_e_n': 2,
-                                'last_play': [0, 0], # stage_number, continus_times
-                                'hard': True,
-                                'chosen_path': 34,
-                            })
-                            save["obtain"][4] = False
-                            save["obtain"][5] = False
-                            save["obtain"][6] = False
-                            battle_detail = reload_battle_detail()
-                            if not(save["achievement"][25]):
-                                save["achievement"][25] = True
-                                achievement_stack.append([25, fps])
-                            if (not(save["achievement"][29])):
-                                if(sum(save["achievement"]) == 29):
-                                    save["achievement"][29] = True
-                                    achievement_stack.append([29, fps])
-                    if click_check(pygame.mouse.get_pos(), transform_scale([570, 620, 300, 50])):  #start
-                        if (time == 0):
-                            play_sfx("click")
-                            time += 1
-                            menu_action = "start"
-                    if click_check(pygame.mouse.get_pos(), transform_scale([570, 690, 300, 50])):  #option
-                        if (time == 0):
-                            play_sfx("click")
-                            play_sfx("click")
-                            time += 1
-                            menu_action = "option"
-                    if click_check(pygame.mouse.get_pos(), transform_scale([570, 760, 300, 50])):  #option
-                        if (time == 0):
-                            play_sfx("click")
-                            time += 1
-                            menu_action = "achievement"
-                    if click_check(pygame.mouse.get_pos(), transform_scale([570, 830, 300, 50])):  #exit
-                        if (time == 0):
-                            time += 1
-                            menu_action = "exit"
+                    if confirming:
+                        if click_check(pygame.mouse.get_pos(), transform_scale([328, 692, 295, 80])):
+                            confirming = False
+                        elif click_check(pygame.mouse.get_pos(), transform_scale([817, 692, 295, 80])):
+                            confirming = False
+                            if (time == 0):
+                                play_sfx("click")
+                                time += 1
+                                menu_action = "start"
+                                save.update({
+                                    'unlock': [True] + [False]*38,
+                                    'star': [0]*39,
+                                    'current_stage': 0,
+                                    'equipt': [7, 8],  # weapon, equiptment. 7, 8 mean empty. number follow 'obtain' index
+                                    'obtain_w_n': 2,
+                                    'obtain_e_n': 2,
+                                    'last_play': [0, 0], # stage_number, continus_times
+                                    'hard': True,
+                                    'chosen_path': 34,
+                                })
+                                save["obtain"][4] = False
+                                save["obtain"][5] = False
+                                save["obtain"][6] = False
+                                battle_detail = reload_battle_detail()
+                                if not(save["achievement"][25]):
+                                    save["achievement"][25] = True
+                                    achievement_stack.append([25, fps])
+                                if (not(save["achievement"][29])):
+                                    if(sum(save["achievement"]) == 29):
+                                        save["achievement"][29] = True
+                                        achievement_stack.append([29, fps])
+                    else:
+                        if click_check(pygame.mouse.get_pos(), transform_scale([570, 550, 300, 50])) and save["star"][-1] > 0:  # new round
+                            confirming = True
+                        if click_check(pygame.mouse.get_pos(), transform_scale([570, 620, 300, 50])):  #start
+                            if (time == 0):
+                                play_sfx("click")
+                                time += 1
+                                menu_action = "start"
+                        if click_check(pygame.mouse.get_pos(), transform_scale([570, 690, 300, 50])):  #option
+                            if (time == 0):
+                                play_sfx("click")
+                                play_sfx("click")
+                                time += 1
+                                menu_action = "option"
+                        if click_check(pygame.mouse.get_pos(), transform_scale([570, 760, 300, 50])):  #option
+                            if (time == 0):
+                                play_sfx("click")
+                                time += 1
+                                menu_action = "achievement"
+                        if click_check(pygame.mouse.get_pos(), transform_scale([570, 830, 300, 50])):  #exit
+                            if (time == 0):
+                                time += 1
+                                menu_action = "exit"
                             
 
         # enter game
@@ -5167,7 +5197,7 @@ while running:
                 time=0
         if(len(achievement_stack)>0):
             draw_achievemet_stack()
-                    
+
     if game_state == "story":
         # end story
         if dialog_num == len(dialog[story_num]):
@@ -5352,6 +5382,7 @@ while running:
             draw_achievemet_stack()
 
     if game_state == "playing":
+        print(stage, save['equipt'])
         if battle_detail[stage]["question_type"] == "MC":
             # BG image
             draw_story_bg(stage)
@@ -6697,11 +6728,7 @@ while running:
                 game_state = "menu"
             time = 0
 
-
-    # stage select
     if game_state == "select_stage":
-        
-
         # bg image, text, center image, nearby image
         draw_stage_selection(save['current_stage'])
         
@@ -6785,7 +6812,6 @@ while running:
                 dialog_num = 0
                 time = 0
 
-    # this is game state of winning the game
     if game_state == "win" or game_state == "lose":
         # BG image
         draw_story_bg(stage)
@@ -6843,7 +6869,6 @@ while running:
             game_state = "select_stage"
             time = 0
 
-    # control the setting of game sound, game voice, full screen
     if game_state == "option":
         # BG image
         screen.blit(images[0], (0, 0))
@@ -6994,7 +7019,6 @@ while running:
 # 已獲得所有成就
     }
 
-    # 30 achievements
     if game_state == "achievement":
         # BG image
         screen.blit(images[0], (0, 0))
@@ -7059,6 +7083,5 @@ while running:
             game_state = "menu"
             time=0
                         
-
     clock.tick(fps)
     pygame.display.update()
