@@ -578,19 +578,6 @@ def load():
     try:
         with open('udata.sf') as load_file:
             save = deepcopy(json.load(load_file))
-            # try to ensure save fiel is complitable with new stages
-            if len(save['unlock']) < 39:
-                save['unlock'].extend([False] * (39 - len(save['unlock'])))
-                save['star'].extend([0] * (39 - len(save['star'])))
-            if 'chosen_path' not in save:
-                save['chosen_path'] = 34
-            if 'hard' not in save:
-                save['hard'] = False
-            if 'equipt' in save:
-                if save['equipt'][0] not in [0, 2, 4, 6, 7]:
-                    save['equipt'][0] = 7  # 7 代表未裝備武器
-                if save['equipt'][1] not in [1, 3, 5, 6, 8]:
-                    save['equipt'][1] = 8  # 8 代表未裝備防具
             write()
             print("Loaded data:", save)
     except:
@@ -7109,7 +7096,6 @@ while running:
                         changing = 'sound'
                     if click_check(pos, transform_scale([320, 170+100+3*44, 3*20, 3*20])):
                         save["full_screen"] = not(save["full_screen"])
-                        # WIDTH, WIDTH_switch, HEIGHT, HEIGHT_switch = WIDTH_switch, WIDTH, HEIGHT_switch, HEIGHT
                         if save["full_screen"]:
                             screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN | pygame.SCALED)
                         else:
