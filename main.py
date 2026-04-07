@@ -12,7 +12,7 @@ path = os.path.dirname(os.path.abspath(__file__)) + '/'
 # this is for running the executable file
 # path = os.path.dirname(os.path.realpath(sys.executable)) + '/'
 
-new_game = False
+new_game = True
 god_mod = True
 chapter_ranges =[(0, 8), (9, 19), (20, 28), (29, 38)] # (Start Stage, End Stage) for Ch 1, 2, 3, 4
 current_chapter = 0
@@ -31,7 +31,7 @@ save = {
     'music': 100,
     'full_screen': False,
     'hard': False,
-    'chosen_path': 34,
+    'chosen_path': 0,
 }
 
 WIDTH  = int(pygame.display.Info().current_w * 0.65)
@@ -1360,9 +1360,9 @@ def draw_stage_selection(n):
             #image of next stage
             if n+1 < len(save["unlock"]):
                 if save["unlock"][n+1]:
-                    next = 27
+                    next = None
                 else:
-                    next = 26
+                    next = None
             else:
                 next = None
             # image of previos stage
@@ -1583,31 +1583,20 @@ def draw_story_bg(stage):
             screen.blit(images[3], (0, 0))             
 
 def end_stage_achievement_check(recover_times, damage_taken_times, attack_times, click_times, player_hp, idle_times, stage):
-    if(sum(save["star"]) >= int(len(battle_detail)*3/2) and not(save["achievement"][4])):
+    if(sum(save["star"]) >= int(34*3/2) and not(save["achievement"][4])):
         save["achievement"][4] = True
         achievement_stack.append([4, fps])
-    if(sum(save["star"]) >= int(len(battle_detail)*3) and not(save["achievement"][5])):
+    if(sum(save["star"]) >= int(34*3) and not(save["achievement"][5])):
         save["achievement"][5] = True
         achievement_stack.append([5, fps])
 
-    if (recover_times > 5 and not(save["achievement"][0])):
-        save["achievement"][0] = True
-        achievement_stack.append([0, fps])
-    if (recover_times > 15 and not(save["achievement"][1])):
-        save["achievement"][1] = True
-        achievement_stack.append([1, fps])
-    if (recover_times > 30 and not(save["achievement"][2])):
-        save["achievement"][2] = True
-        achievement_stack.append([2, fps])
+
     if (damage_taken_times == 0 and not(save["achievement"][6])):
         save["achievement"][6] = True
         achievement_stack.append([6, fps])
     if (0 < player_hp <= 100*0.1 and not(save["achievement"][7])):
         save["achievement"][7] = True
         achievement_stack.append([7, fps])
-    if (idle_times >= fps*60*15 and not(save["achievement"][21])):
-        save["achievement"][21] = True
-        achievement_stack.append([21, fps])
     if(attack_times == 0 and not(save["achievement"][20])):
         save["achievement"][20] = True
         achievement_stack.append([20, fps])
@@ -1633,7 +1622,7 @@ def end_stage_achievement_check(recover_times, damage_taken_times, attack_times,
             save["achievement"][14] = True
             achievement_stack.append([14, fps])
             save["obtain"][0] = True
-            save["obtain_w_n"] += 1
+            save["obtain_w_n"] = save["obtain"][0]+save["obtain"][2]+save["obtain"][4]+save["obtain"][6]
     elif(stage == 19):
         if not(save["achievement"][12]):
             save["achievement"][12] = True
@@ -1642,12 +1631,12 @@ def end_stage_achievement_check(recover_times, damage_taken_times, attack_times,
             save["achievement"][16] = True
             achievement_stack.append([16, fps])
             save["obtain"][2] = True
-            save["obtain_w_n"] += 1
+            save["obtain_w_n"] = save["obtain"][0]+save["obtain"][2]+save["obtain"][4]+save["obtain"][6]
         if(not(save["achievement"][17])):
             save["achievement"][17] = True
             achievement_stack.append([17, fps])
             save["obtain"][3] = True
-            save["obtain_e_n"] += 1
+            save["obtain_e_n"] = save["obtain"][1]+save["obtain"][3]+save["obtain"][5]+save["obtain"][6]
     elif(stage == 23 and not(save["achievement"][11])):
         save["achievement"][11] = True
         achievement_stack.append([11, fps])
@@ -1655,17 +1644,11 @@ def end_stage_achievement_check(recover_times, damage_taken_times, attack_times,
         if not(save["achievement"][13]):
             save["achievement"][13] = True
             achievement_stack.append([13, fps])
-        if not(save["achievement"][19]):
+        if not(save["achievement"][19] and save["chosen_path"] == 34):
             save["achievement"][19] = True
             achievement_stack.append([19, fps])
             save["obtain"][5] = True
-            save["obtain_e_n"] += 1
-        if not(save["achievement"][22]):
-            save["achievement"][22] = True
-            achievement_stack.append([22, fps])
-            save["obtain"][6] = True
-            save["obtain_w_n"] += 1
-            save["obtain_e_n"] += 1
+            save["obtain_e_n"] = save["obtain"][1]+save["obtain"][3]+save["obtain"][5]+save["obtain"][6]
     elif(stage == 33 and not(save["achievement"][23])):
         save["achievement"][23] = True
         achievement_stack.append([23, fps])
@@ -1673,7 +1656,7 @@ def end_stage_achievement_check(recover_times, damage_taken_times, attack_times,
         save["achievement"][18] = True
         achievement_stack.append([18, fps])
         save["obtain"][4] = True
-        save["obtain_w_n"] += 1
+        save["obtain_w_n"] = save["obtain"][0]+save["obtain"][2]+save["obtain"][4]+save["obtain"][6]
     elif(stage == 38 and not(save["achievement"][24])):
         save["achievement"][24] = True
         achievement_stack.append([24, fps])
@@ -1681,7 +1664,7 @@ def end_stage_achievement_check(recover_times, damage_taken_times, attack_times,
         save["achievement"][15] = True
         achievement_stack.append([15, fps])
         save["obtain"][1] = True
-        save["obtain_e_n"] += 1
+        save["obtain_e_n"] = save["obtain"][1]+save["obtain"][3]+save["obtain"][5]+save["obtain"][6]
         
 
     if(stage == 33 and not(save["achievement"][27]) and save['equipt'][0] == 7 and save['equipt'][1] == 8): # here, no equiptment
@@ -1693,10 +1676,10 @@ def end_stage_achievement_check(recover_times, damage_taken_times, attack_times,
         
     if(stage == 33 and not(save["achievement"][26]) and save['hard']): # here, 2nd round
         save["achievement"][26] = True
-        achievement_stack.append([26])
+        achievement_stack.append([26, fps])
     elif(stage == 38 and not(save["achievement"][26]) and save['hard']): # here, 2nd round
         save["achievement"][26] = True
-        achievement_stack.append([26])
+        achievement_stack.append([26, fps])
     
     if(attack_times == 1 and click_times == 0 and not(save["achievement"][28])):
         save["achievement"][28] = True
@@ -1745,30 +1728,26 @@ if new_game:
         'music': 100,
         'full_screen': False,
         'hard': False,
-        'chosen_path': 34,
+        'chosen_path': 0,
     }
-if god_mod:
-    save = {
-        'unlock': [True]*39,
-        'star': [0]*39,
-        'current_stage': 0,
-        # 'achievement': [True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, ],
-        'achievement': [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, ],
-        'obtain': [True, True, True, True, True, True, True],  # C_weapon, C_equiptment, A_weapon, A_equiptment, SS_weapon, SS_equiptment, ex_weapon
-        'equipt': [7, 8],  # weapon, equiptment. 7, 8 mean empty. number follow 'obtain' index
-        'obtain_w_n': 4,
-        'obtain_e_n': 4,
-        'last_play': [0, 0], # stage_number, continus_times
-        'sound': 100,
-        'music': 100,
-        'full_screen': False,
-        'hard': False,
-        'chosen_path': 34,
-    }
-# question bank: verb form convertion
-# size: 27
-# choose_list = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-# not_chosen_list = []
+# if god_mod:
+#     save = {
+#         'unlock': [True]*39,
+#         'star': [0]*39,
+#         'current_stage': 0,
+#         # 'achievement': [True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, ],
+#         'achievement': [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, ],
+#         'obtain': [True, True, True, True, True, True, True],  # C_weapon, C_equiptment, A_weapon, A_equiptment, SS_weapon, SS_equiptment, ex_weapon
+#         'equipt': [7, 8],  # weapon, equiptment. 7, 8 mean empty. number follow 'obtain' index
+#         'obtain_w_n': 4,
+#         'obtain_e_n': 4,
+#         'last_play': [0, 0], # stage_number, continus_times
+#         'sound': 100,
+#         'music': 100,
+#         'full_screen': False,
+#         'hard': False,
+#         'chosen_path': 34,
+#     }
 
 
 if save["full_screen"]:
@@ -1795,31 +1774,31 @@ verb = {
         "verb_ta_hira": ["いた", "いった", "きた", "かえった", "でかけた", "した", "たべた", "のんだ", "みた", "よんだ", "かいた", "きいた", "かった", "おきた", "ねた", "のった", "うった", "おりた", "むかえた", "あった", "はたらいた", "やすんだ", "はいった", "でた", "きた", "はいた", "ぬいだ", "すわった", "わたった", "とおった", "おいた", "つかった", "さした", "おした", "はなした", "いった", "かえた", "はしった", "もどった", "とまった", "やんだ", "おしえた", "ならった", "およいだ", "ひいた", "あけた", "しめた", "つけた", "けした", "あらった", "いれた", "とった", "うった", "つくった", "やいた", "あるいた", "まがった"],
 
         "verb_nai": ["いない", "行かない", "来ない", "帰らない", "出掛けない", "しない", "食べない", "飲まない", "見ない", "読まない", "書かない", "聞かない", "買わない", "起きない", "寝ない", "乗らない", "売らない", "降(お)りない", "迎えない", "会わない", "働かない", "休まない", "入らない", "出ない", "着ない", "履かない", "脱がない", "座らない", "渡らない", "通らない", "置かない", "使わない", "刺さない", "押さない", "話さない", "言わない", "替えない", "走らない", "戻らない", "泊まらない", "止めない", "教えない", "習わない", "泳がない", "弾かない", "開けない", "閉めない", "付けない", "消さない", "洗わない", "入れない", "取らない", "打たない", "作らない", "焼かない", "歩かない", "曲がらない"],
-        "verb_nai_hira": ["いない", "いかない", "こない", "かえらない", "でかけない", "しない", "たべない", "のまない", "みない", "よまない", "かかない", "きかない", "かわない", "おきない", "ねない", "のらない", "うらない", "おりない", "むかえない", "あわない", "はたらかない", "やすまない", "はいらない", "でない", "こない", "きない", "はかない", "ぬがない", "すわらない", "わたらない", "とおらない", "おかない", "つかわない", "ささない", "おさない", "はなさない", "いわない", "かえない", "はしらない", "もどらない", "とまらない", "やめない", "おしえない", "ならわない", "およがない", "ひかない", "あけない", "しめない", "つけない", "けさない", "あらわない", "いれない", "とらない", "うたない", "つくらない", "やかない", "あるかない", "まがらない"],
+        "verb_nai_hira": ["いない", "いかない", "こない", "かえらない", "でかけない", "しない", "たべない", "のまない", "みない", "よまない", "かかない", "きかない", "かわない", "おきない", "ねない", "のらない", "うらない", "おりない", "むかえない", "あわない", "はたらかない", "やすまない", "はいらない", "でない", "きない", "はかない", "ぬがない", "すわらない", "わたらない", "とおらない", "おかない", "つかわない", "ささない", "おさない", "はなさない", "いわない", "かえない", "はしらない", "もどらない", "とまらない", "やめない", "おしえない", "ならわない", "およがない", "ひかない", "あけない", "しめない", "つけない", "けさない", "あらわない", "いれない", "とらない", "うたない", "つくらない", "やかない", "あるかない", "まがらない"],
 
         "verb_ikou": ["いよう", "行こう", "来よう", "帰ろう", "出掛けよう", "しよう", "食べよう", "飲もう", "見よう", "読もう", "書こう", "聞こう", "買おう", "起きよう", "寝よう", "乗ろう", "売ろう", "降(お)りよう", "迎えよう", "会おう", "働こう", "休もう", "入ろう", "出よう", "着よう", "履こう", "脱ごう", "座ろう", "渡ろう", "通ろう", "置こう", "使おう", "刺そう", "押そう", "話そう", "言おう", "替えよう", "走ろう", "戻ろう", "泊まろう", "止めよう", "教えよう", "習おう", "泳ごう", "弾こう", "開けよう", "閉めよう", "付けよう", "消そう", "洗おう", "入れよう", "取ろう", "打とう", "作ろう", "焼こう", "歩こう", "曲がろう"],
-        "verb_ikou_hira": ["いよう", "いこう", "こよう", "かえろう", "でかけよう", "しよう", "たべよう", "のもう", "みよう", "よもう", "かこう", "きこう", "かおう", "おきよう", "ねよう", "のろう", "うろう", "おりよう", "むかえよう", "あおう", "はたらこう", "やすもう", "はいろう", "でよう", "きよう", "きよう", "はこう", "ぬごう", "すわろう", "わたろう", "とおろう", "おこう", "つかおう", "さそう", "おそう", "はなそう", "いおう", "かえよう", "はしろう", "もどろう", "とまろう", "やめよう", "おしえよう", "ならおう", "およごう", "ひこう", "あけよう", "しめよう", "つけよう", "けそう", "あらおう", "いれよう", "とろう", "うとう", "つくろう", "やこう", "あるこう", "まがろう"],
+        "verb_ikou_hira": ["いこう", "いこう", "こよう", "かえろう", "でかけよう", "しよう", "たべよう", "のもう", "みよう", "よもう", "かこう", "きこう", "かおう", "おきよう", "ねよう", "のろう", "うろう", "おりよう", "むかえよう", "あおう", "はたらこう", "やすもう", "はいろう", "でよう", "きよう", "はこう", "ぬごう", "すわろう", "わたろう", "とおろう", "おこう", "つかおう", "さそう", "おそう", "はなそう", "いおう", "かえよう", "はしろう", "もどろう", "とまろう", "やめよう", "おしえよう", "ならおう", "およごう", "ひこう", "あけよう", "しめよう", "つけよう", "けそう", "あらおう", "いれよう", "とろう", "うとう", "つくろう", "やこう", "あるこう", "まがろう"],
 
         "verb_kanou": ["いられる", "行ける", "来られる", "帰れる", "出掛けられる", "できる", "食べられる", "飲める", "見られる", "読める", "書ける", "聞ける", "買える", "起きられる", "寝られる", "乗れる", "売れる", "降(お)りられる", "迎えられる", "会える", "働ける", "休める", "入れる", "出られる", "着られる", "履ける", "脱げる", "座れる", "渡れる", "通れる", "置ける", "使える", "刺せる", "押せる", "話せる", "言える", "替えられる", "走れる", "戻れる", "泊まれる", "止められる", "教えられる", "習える", "泳げる", "弾ける", "開けられる", "閉められる", "付けられる", "消せる", "洗える", "入れられる", "取れる", "打てる", "作れる", "焼ける", "歩ける", "曲がれる"],
-        "verb_kanou_hira": ["いられる", "いける", "こられる", "かえれる", "でかけられる", "できる", "たべられる", "のめる", "みられる", "よめる", "かける", "きける", "かえる", "おきられる", "ねられる", "のれる", "うれる", "おりられる", "むかえられる", "あえる", "はたらける", "やすめる", "はいれる", "でられる", "きられる", "きれる", "はける", "ぬげる", "すわれる", "わたれる", "とおれる", "おける", "つかえる", "させる", "おせる", "はなせる", "いえる", "かえられる", "はしれる", "もどれる", "とまれる", "やめられる", "おしえられる", "ならえる", "およげる", "ひける", "あけられる", "しめられる", "つけられる", "けせる", "あらえる", "いれられる", "とれる", "うてる", "つくれる", "やける", "あるける", "まがれる"],
+        "verb_kanou_hira": ["いられる", "いける", "こられる", "かえれる", "でかけられる", "できる", "たべられる", "のめる", "みられる", "よめる", "かける", "きける", "かえる", "おきられる", "ねられる", "のれる", "うれる", "おりられる", "むかえられる", "あえる", "はたらける", "やすめる", "はいれる", "でられる", "きられる", "はける", "ぬげる", "すわれる", "わたれる", "とおれる", "おける", "つかえる", "させる", "おせる", "はなせる", "いえる", "かえられる", "はしれる", "もどれる", "とまれる", "やめられる", "おしえられる", "ならえる", "およげる", "ひける", "あけられる", "しめられる", "つけられる", "けせる", "あらえる", "いれられる", "とれる", "うてる", "つくれる", "やける", "あるける", "まがれる"],
 
         "verb_ba": ["いれば", "行けば", "来れば", "帰れば", "出掛ければ", "すれば", "食べれば", "飲めば", "見れば", "読めば", "書けば", "聞けば", "買えば", "起きれば", "寝れば", "乗れば", "売れば", "降(お)りれば", "迎えれば", "会えば", "働けば", "休めば", "入れば", "出れば", "着れば", "履けば", "脱げば", "座れば", "渡れば", "通れば", "置けば", "使えば", "刺せば", "押せば", "話せば", "言えば", "替えれば", "走れば", "戻れば", "泊まれば", "止められれば", "教えれば", "習えば", "泳げば", "弾けば", "開ければ", "閉めれば", "付ければ", "消せば", "洗えば", "入れれば", "取れば", "打てば", "作れば", "焼けば", "歩けば", "曲がれば"],
-        "verb_ba_hira": ["いれば", "いけば", "これば", "かえれば", "でかければ", "すれば", "たべれば", "のめば", "みれば", "よめば", "かけば", "きけば", "かえば", "おきれば", "ねれば", "のれば", "うれば", "おりれば", "むかえれば", "あえば", "はたらけば", "やすめば", "はいれば", "でれば", "きれば", "きれば", "はけば", "ぬげば", "すわれば", "わたれば", "とおれば", "おけば", "つかえば", "させば", "おせば", "はなせば", "いえば", "かえれば", "はしれば", "もどれば", "とまれば", "やめれば", "おしえれば", "ならえば", "およげば", "ひけば", "あければ", "しめれば", "つければ", "けせば", "あらえば", "いれれば", "とれば", "うてば", "つくれば", "やけば", "あるけば", "まがれば"],
+        "verb_ba_hira": ["いれば", "いけば", "くれば", "かえれば", "でかければ", "すれば", "たべれば", "のめば", "みれば", "よめば", "かけば", "きけば", "かえば", "おきれば", "ねれば", "のれば", "うれば", "おりれば", "むかえれば", "あえば", "はたらけば", "やすめば", "はいれば", "でれば", "きれば", "はけば", "ぬげば", "すわれば", "わたれば", "とおれば", "おけば", "つかえば", "させば", "おせば", "はなせば", "いえば", "かえれば", "はしれば", "もどれば", "とまれば", "やめれば", "おしえれば", "ならえば", "およげば", "ひけば", "あければ", "しめれば", "つければ", "けせば", "あらえば", "いれれば", "とれば", "うてば", "つくれば", "やけば", "あるけば", "まがれば"],
 
         "verb_ro": ["いろ", "行け", "来い", "帰れ", "出掛けろ", "しろ", "食べろ", "飲め", "見ろ", "読め", "書け", "聞け", "買え", "起きろ", "寝ろ", "乗れ", "売れ", "降(お)りろ", "迎えろ", "会え", "働け", "休め", "入れ", "出ろ", "着ろ", "履け", "脱げ", "座れ", "渡れ", "通れ", "置け", "使え", "刺せ", "押せ", "話せ", "言え", "替えろ", "走れ", "戻れ", "泊まれ", "止められろ", "教えろ", "習え", "泳げ", "弾け", "開けろ", "閉めろ", "付けろ", "消せ", "洗え", "入れろ", "取れ", "打て", "作れ", "焼けろ", "歩け", "曲がれ"],
-        "verb_ro_hira": ["いろ", "いけ", "こい", "かえれ", "でかけろ", "しろ", "たべろ", "のめ", "みろ", "よめ", "かけ", "きけ", "かえ", "おきろ", "ねろ", "のれ", "うれ", "おりろ", "むかえろ", "あえ", "はたらけ", "やすめ", "はいれ", "でろ", "きろ", "きれ", "はけ", "ぬげ", "すわれ", "わたれ", "とおれ", "おけ", "つかえ", "させ", "おせ", "はなせ", "いえ", "かえろ", "はしれ", "もどれ", "とまれ", "やめろ", "おしえろ", "ならえ", "およげ", "ひけ", "あけろ", "しめろ", "つけろ", "けせ", "あらえ", "いれろ", "とれ", "うて", "つくれ", "やけろ", "あるけ", "まがれ"],
+        "verb_ro_hira": ["いろ", "いけ", "こい", "かえれ", "でかけろ", "しろ", "たべろ", "のめ", "みろ", "よめ", "かけ", "きけ", "かえ", "おきろ", "ねろ", "のれ", "うれ", "おりろ", "むかえろ", "あえ", "はたらけ", "やすめ", "はいれ", "でろ", "きろ", "はけ", "ぬげ", "すわれ", "わたれ", "とおれ", "おけ", "つかえ", "させ", "おせ", "はなせ", "いえ", "かえろ", "はしれ", "もどれ", "とまれ", "やめろ", "おしえろ", "ならえ", "およげ", "ひけ", "あけろ", "しめろ", "つけろ", "けせ", "あらえ", "いれろ", "とれ", "うて", "つくれ", "やけ", "あるけ", "まがれ"],
 
         "verb_na": ["いるな", "行くな", "来るな", "帰るな", "出掛けるな", "するな", "食べるな", "飲むな", "見るな", "読むな", "書くな", "聞くな", "買うな", "起きるな", "寝るな", "乗るな", "売るな", "降(お)りるな", "迎えるな", "会うな", "働くな", "休むな", "入るな", "出るな", "着るな", "履くな", "脱ぐな", "座るな", "渡るな", "通るな", "置くな", "使うな", "刺すな", "押すな", "話すな", "言うな", "替えるな", "走るな", "戻るな", "泊まるな", "止められるな", "教えるな", "習うな", "泳ぐな", "弾くな", "開けるな", "閉めるな", "付けるな", "消すな", "洗うな", "入れるな", "取るな", "打つな", "作るな", "焼けるな", "歩くな", "曲がるな"],
-        "verb_na_hira": ["いるな", "いくな", "くるな", "かえるな", "でかけるな", "するな", "たべるな", "のむな", "みるな", "よむな", "かくな", "きくな", "かうな", "おきるな", "ねるな", "のるな", "うるな", "おりるな", "むかえるな", "あうな", "はたらくな", "やすむな", "はいるな", "でるな", "きるな", "きるな", "はくな", "ぬぐな", "すわるな", "わたるな", "とおるな", "おくな", "つかうな", "させな", "おすな", "はなすな", "いうな", "かえるな", "はしるな", "もどるな", "とまるな", "やめるな", "おしえるな", "ならうな", "およぐな", "ひくな", "あけるな", "しめるな", "つけるな", "けすな", "あらうな", "いれるな", "とるな", "うつな", "つくるな", "やけるな", "あるくな", "まがるな"],
+        "verb_na_hira": ["いるな", "いくな", "くるな", "かえるな", "でかけるな", "するな", "たべるな", "のむな", "みるな", "よむな", "かくな", "きくな", "かうな", "おきるな", "ねるな", "のるな", "うるな", "おりるな", "むかえるな", "あうな", "はたらくな", "やすむな", "はいるな", "でるな", "きるな", "はくな", "ぬぐな", "すわるな", "わたるな", "とおるな", "おくな", "つかうな", "さすな", "おすな", "はなすな", "いうな", "かえるな", "はしるな", "もどるな", "とまるな", "やめるな", "おしえるな", "ならうな", "およぐな", "ひくな", "あけるな", "しめるな", "つけるな", "けすな", "あらうな", "いれるな", "とるな", "うつな", "つくるな", "やくな", "あるくな", "まがるな"],
 
         "verb_rareru": ["いられる", "行かれる", "来られる", "帰られる", "出掛けられる", "される", "食べられる", "飲まれる", "見られる", "読まれる", "書かれる", "聞かれる", "買われる", "起きられる", "寝られる", "乗られる", "売られる", "降(お)りられる", "迎えられる", "会われる", "働かれる", "休まれる", "入られる", "出られる", "着られる", "履かれる", "脱がれる", "座られる", "渡られる", "通られる", "置かれる", "使われる", "刺される", "押される", "話される", "言われる", "替えられる", "走られる", "戻られる", "泊まられる", "止められる", "教えられる", "習われる", "泳がれる", "弾かれる", "開けられる", "閉められる", "付けられる", "消される", "洗われる", "入れられる", "取られる", "打たれる", "作られる", "焼かれる", "歩かれる", "曲げられる"],
-        "verb_rareru_hira": ["いられる", "いかれる", "こられる", "かえられる", "でかけられる", "される", "たべられる", "のまれる", "みられる", "よまれる", "かかれる", "きかれる", "かわれる", "おきられる", "ねられる", "のられる", "うられる", "おりられる", "むかえられる", "あわれる", "はたらかれる", "やすまれる", "はいられる", "でられる", "きられる", "きられる", "はかれる", "ぬがれる", "すわられる", "わたられる", "とおられる", "おかれる", "つかわれる", "される", "おされる", "はなされる", "いわれる", "かえられる", "はされる", "もどられる", "とまられる", "やめられる", "おしえられる", "ならわれる", "およがれる", "ひかれる", "あけられる", "しめられる", "つけられる", "keされる", "あられる", "いれられる", "とられる", "うたれる", "つくられる", "やかれる", "あるかれる", "まげられる"],
+        "verb_rareru_hira": ["いられる", "いかれる", "こられる", "かえられる", "でかけられる", "される", "たべられる", "のまれる", "みられる", "よまれる", "かかれる", "きかれる", "かわれる", "おきられる", "ねられる", "のられる", "うられる", "おりられる", "むかえられる", "あわれる", "はたらかれる", "やすまれる", "はいられる", "でられる", "きられる", "はかれる", "ぬがれる", "すわられる", "わたられる", "とおられる", "おかれる", "つかわれる", "さされる", "おされる", "はなされる", "いわれる", "かえられる", "はしられる", "もどられる", "とまられる", "やめられる", "おしえられる", "ならわれる", "およがれる", "ひかれる", "あけられる", "しめられる", "つけられる", "けされる", "あらわれる", "いれられる", "とられる", "うたれる", "つくられる", "やかれる", "あるかれる", "まがられる"],
 
         "verb_saseru": ["いらせる", "行かせる", "来させる", "帰らせる", "出掛けさせる", "させる", "食べさせる", "飲ませる", "見させる", "読ませる", "書かせる", "聞かせる", "買わせる", "起きさせる", "寝させる", "乗らせる", "売らせる", "降(お)りさせる", "迎えさせる", "会わせる", "働かせる", "休ませる", "入らせる", "出させる", "着させる", "履かせる", "脱がせる", "座らせる", "渡らせる", "通らせる", "置かせる", "使わせる", "刺させる", "押させる", "話させる", "言わせる", "替えさせる", "走らせる", "戻らせる", "泊まらせる", "止めさせる", "教えさせる", "習わせる", "泳がせる", "弾かせる", "開けさせる", "閉めさせる", "付けさせる", "消させる", "洗わせる", "入れさせる", "取らせる", "打たせる", "作らせる", "焼かせる", "歩かせる", "曲げさせる"],
-        "verb_saseru_hira": ["いらせる", "いかせる", "こさせる", "かえらせる", "でかけさせる", "させる", "たべさせる", "のませる", "みさせる", "よませる", "かかせる", "きかせる", "かわせる", "おきさせる", "ねさせる", "のらせる", "うらせる", "おりさせる", "むかえさせる", "あわせる", "はたらかせる", "やすませる", "はいらせる", "ださせる", "きさせる", "きさせる", "はかせる", "ぬがせる", "すわらせる", "わたらせる", "とおらせる", "おかせる", "つかわせる", "させる", "おさせる", "はなさせる", "いわせる", "かえさせる", "はさせる", "もどらせる", "とまらせる", "やめさせる", "おしえさせる", "ならわせる", "およがせる", "ひかせる", "あけさせる", "しめさせる", "つけさせる", "keさせる", "あらわせる", "いれさせる", "とらせる", "うたせる", "つくらせる", "やかせる", "あるかせる", "まげさせる"],
+        "verb_saseru_hira": ["いさせる", "いかせる", "こさせる", "かえらせる", "でかけさせる", "させる", "たべさせる", "のませる", "みさせる", "よませる", "かかせる", "きかせる", "かわせる", "おきさせる", "ねさせる", "のらせる", "うらせる", "おりさせる", "むかえさせる", "あわせる", "はたらかせる", "やすませる", "はいらせる", "でさせる", "きさせる", "はかせる", "ぬがせる", "すわらせる", "わたらせる", "とおらせる", "おかせる", "つかわせる", "ささせる", "おさせる", "はなさせる", "いわせる", "かえさせる", "はしらせる", "もどらせる", "とまらせる", "やめさせる", "おしえさせる", "ならわせる", "およがせる", "ひかせる", "あけさせる", "しめさせる", "つけさせる", "けさせる", "あらわせる", "いれさせる", "とらせる", "うたせる", "つくらせる", "やかせる", "あるかせる", "まがらせる"],
 
         "verb_saseru_rareru": ["いらせられる", "行かせられる", "来させられる", "帰らせられる", "出掛けさせられる", "させられる", "食べさせられる", "飲ませられる", "見させられる", "読ませられる", "書かせられる", "聞かせられる", "買わせられる", "起きさせられる", "寝させられる", "乗らせられる", "売らせられる", "降(お)りさせられる", "迎えさせられる", "会わせられる", "働かせられる", "休ませられる", "入らせられる", "出させられる", "着させられる", "履かせられる", "脱がせられる", "座らせられる", "渡らせられる", "通らせられる", "置かせられる", "使わせられる", "刺させられる", "押させられる", "話させられる", "言わせられる", "替えさせられる", "走らせられる", "戻らせられる", "泊まらせられる", "止めさせられる", "教えさせられる", "習わせられる", "泳がせられる", "弾かせられる", "開けさせられる", "閉めさせられる", "付けさせられる", "消させられる", "洗わせられる", "入れさせられる", "取らせられる", "打たせられる", "作らせられる", "焼かせられる", "歩かせられる", "曲げさせられる"],
-        "verb_saseru_rareru_hira": ["いらせられる", "いかせられる", "こさせられる", "かえらせられる", "でかけさせられる", "させられる", "たべさせられる", "のませられる", "みさせられる", "よませられる", "かかせられる", "きかせられる", "かわせられる", "おきさせられる", "ねさせられる", "のらせられる", "うらせられる", "おりさせられる", "むかえさせられる", "あわせられる", "はたらかせられる", "やすませられる", "はいらせられる", "ださせられる", "きさせられる", "きさせられる", "はかせられる", "ぬがせられる", "すわらせられる", "わたらせられる", "とおらせられる", "おかせられる", "つかわせられる", "させられる", "おさせられる", "はなさせられる", "いわせられる", "かえさせられる", "はさせられる", "もどらせられる", "とまらせられる", "やめさせられる", "おしえさせられる", "ならわせられる", "およがせられる", "ひかせられる", "あけさせられる", "しめさせられる", "つけさせられる", "keさせられる", "あらわせられる", "いれさせられる", "とらせられる", "うたせられる", "つくらせられる", "やかせられる", "あるかせられる", "まげさせられる"],
+        "verb_saseru_rareru_hira": ["いさせられる", "いかせられる", "こさせられる", "かえらせられる", "でかけさせられる", "させられる", "たべさせられる", "のませられる", "みさせられる", "よませられる", "かかせられる", "きかせられる", "かわせられる", "おきさせられる", "ねさせられる", "のらせられる", "うらせられる", "おりさせられる", "むかえさせられる", "あわせられる", "はたらかせられる", "やすませられる", "はいらせられる", "でさせられる", "きさせられる", "はかせられる", "ぬがせられる", "すわらせられる", "わたらせられる", "とおらせられる", "おかせられる", "つかわせられる", "ささせられる", "おさせられる", "はなさせられる", "いわせられる", "かえさせられる", "はしらせられる", "もどらせられる", "とまらせられる", "やめさせられる", "おしえさせられる", "ならわせられる", "およがせられる", "ひかせられる", "あけさせられる", "しめさせられる", "つけさせられる", "けさせられる", "あらわせられる", "いれさせられる", "とらせられる", "うたせられる", "つくらせられる", "やかせられる", "あるかせられる", "まがらせられる"],
 
 }
 # basic initialize of variables for the game loop
@@ -5060,9 +5039,9 @@ s = pygame.Surface((WIDTH,HEIGHT))
 s.fill((0,0,0))
 br = transform_scale([4])[0]
 
-print(br)
 # main game loop
 while running: 
+    # print(int(idle_times/fps/60), idle_times/fps-60*int(idle_times/fps/60))
     if game_state == "menu":
 
         # BG image
@@ -5139,7 +5118,7 @@ while running:
                                     'obtain_e_n': 2,
                                     'last_play': [0, 0], # stage_number, continus_times
                                     'hard': True,
-                                    'chosen_path': 34,
+                                    'chosen_path': 0,
                                 })
                                 save["obtain"][4] = False
                                 save["obtain"][5] = False
@@ -5148,10 +5127,12 @@ while running:
                                 if not(save["achievement"][25]):
                                     save["achievement"][25] = True
                                     achievement_stack.append([25, fps])
+                                    write()
                                 if (not(save["achievement"][29])):
                                     if(sum(save["achievement"]) == 29):
                                         save["achievement"][29] = True
                                         achievement_stack.append([29, fps])
+                                        write()
                     else:
                         if click_check(pygame.mouse.get_pos(), transform_scale([570, 550, 300, 50])) and save["star"][-1] > 0:  # new round
                             confirming = True
@@ -5195,14 +5176,14 @@ while running:
             else:
                 game_state = menu_action
                 time=0
-        if(len(achievement_stack)>0):
-            draw_achievemet_stack()
 
     if game_state == "story":
         # end story
         if dialog_num == len(dialog[story_num]):
             battle_detail = deepcopy(battle_detail_backup)
             time = 0
+            # idle_times = fps*60*14+50*fps
+            # recover_times = 29
             idle_times = 0
             recover_times = 0
             damage_taken_times = 0
@@ -5291,7 +5272,7 @@ while running:
             pygame.draw.rect(screen, [0, 0, 0], transform_scale([40, 40, 80, 80]), br, br)
             text(screen, "返回", [0, 0, 0], 25, transform_scale([80, 80]), "center")
 
-            if stage == 28 and dialog_num == len(dialog[28]) - 1:
+            if stage == 28 and dialog_num == len(dialog[28]) - 1 and save["chosen_path"] == 0:
                 choice_1_rect = pygame.Rect(transform_scale([220, 450, 400, 100]))
                 choice_2_rect = pygame.Rect(transform_scale([820, 450, 400, 100]))
                 
@@ -5336,7 +5317,7 @@ while running:
                         pos = pygame.mouse.get_pos()
                         
                         # Process choices if on Stage 28 choice screen
-                        if stage == 28 and dialog_num == len(dialog[28]) - 1:
+                        if stage == 28 and dialog_num == len(dialog[28]) - 1 and save["chosen_path"] == 0:
                             choice_1_rect = pygame.Rect(transform_scale([220, 450, 400, 100]))
                             choice_2_rect = pygame.Rect(transform_scale([820, 450, 400, 100]))
                             if click_check(pos, choice_1_rect):
@@ -5344,6 +5325,21 @@ while running:
                                 save["chosen_path"] = 29
                                 write()
                                 dialog_num += 1
+                                save["obtain"][6] = True
+                                save["obtain_w_n"] = save["obtain"][0]+save["obtain"][2]+save["obtain"][4]+save["obtain"][6]
+                                save["obtain_e_n"] = save["obtain"][1]+save["obtain"][3]+save["obtain"][5]+save["obtain"][6]
+                                save["equipt"][0] = 6
+                                save["equipt"][1] = 6
+                                if not(save["achievement"][22]):
+                                    save["achievement"][22] = True
+                                    achievement_stack.append([22, fps])
+                                    write()
+                                if (not(save["achievement"][29])):
+                                    if(sum(save["achievement"]) == 29):
+                                        save["achievement"][29] = True
+                                        achievement_stack.append([29, fps])
+                                        write()
+                                    
                             elif click_check(pos, choice_2_rect):
                                 play_sfx("click")
                                 save["chosen_path"] = 34
@@ -5378,11 +5374,9 @@ while running:
                 game_state = "menu"
                 time=0
 
-        if(len(achievement_stack)>0):
-            draw_achievemet_stack()
 
     if game_state == "playing":
-        print(stage, save['equipt'])
+        
         if battle_detail[stage]["question_type"] == "MC":
             # BG image
             draw_story_bg(stage)
@@ -5430,6 +5424,16 @@ while running:
                 text(screen, "回復", (0, 0, 0), 64, transform_scale([937, 813]), "center")
 
             idle_times += 1
+            if (idle_times >= fps*60*15 and not(save["achievement"][21])):
+                save["achievement"][21] = True
+                achievement_stack.append([21, fps])
+                write()
+            if (not(save["achievement"][29])):
+                if(sum(save["achievement"]) == 29):
+                    save["achievement"][29] = True
+                    achievement_stack.append([29, fps])
+                    write()
+
 
 
 
@@ -5443,17 +5447,18 @@ while running:
                         if action == "attack" or action == "recover":
                             if time == 0:
                                 if click_check(pos, transform_scale(list(enemy))):
+                                    idle_times = 0
                                     click_times += 1
                                     enemy_hp = max(0, enemy_hp-1)
                                     if enemy_hp <= 0:
                                         play_sfx("win")
                                         time = -1*fps
-                                        if (len(battle_detail[stage]["order"]) <= battle_detail[stage]["target"][0]):
+                                        if (question_num <= battle_detail[stage]["target"][0]):
                                             save["star"][stage] = 3
                                             if(not(save["achievement"][3])):
                                                 save["achievement"][3] = True
                                                 achievement_stack.append([3, fps])
-                                        elif (len(battle_detail[stage]["order"]) <= battle_detail[stage]["target"][1]):
+                                        elif (question_num <= battle_detail[stage]["target"][1]):
                                             if save["star"][stage] < 2:
                                                 save["star"][stage] = 2
                                         else:
@@ -5500,7 +5505,6 @@ while running:
                                 action = "attack"
                             elif click_check(pos, transform_scale([840, 729, 194, 207])):
                                 idle_times = 0
-                                recover_times += 1
                                 action = "recover"
 
             if correct == True:
@@ -5523,12 +5527,12 @@ while running:
                         if enemy_hp <= 0:
                             play_sfx("win")
                             time = -1*fps
-                            if (len(battle_detail[stage]["order"]) <= battle_detail[stage]["target"][0]):
+                            if (question_num <= battle_detail[stage]["target"][0]):
                                 save["star"][stage] = 3
                                 if(not(save["achievement"][3])):
                                     save["achievement"][3] = True
                                     achievement_stack.append([3, fps])
-                            elif (len(battle_detail[stage]["order"]) <= battle_detail[stage]["target"][1]):
+                            elif (question_num <= battle_detail[stage]["target"][1]):
                                 if save["star"][stage] < 2:
                                     save["star"][stage] = 2
                             else:
@@ -5555,6 +5559,24 @@ while running:
                     elif(time >= fps*1):
                         time = 0
                     if time == 0:
+                        recover_times += 1
+                        if (recover_times >= 5 and not(save["achievement"][0])):
+                            save["achievement"][0] = True
+                            achievement_stack.append([0, fps])
+                            write()
+                        if (recover_times >= 15 and not(save["achievement"][1])):
+                            save["achievement"][1] = True
+                            achievement_stack.append([1, fps])
+                            write()
+                        if (recover_times >= 30 and not(save["achievement"][2])):
+                            save["achievement"][2] = True
+                            achievement_stack.append([2, fps])
+                            write()
+                        if (not(save["achievement"][29])):
+                            if(sum(save["achievement"]) == 29):
+                                save["achievement"][29] = True
+                                achievement_stack.append([29, fps])
+                                write()
                         player_hp = min(player_hp+20, 100)
                         correct = None
                         action = None
@@ -5606,6 +5628,25 @@ while running:
                     elif(time >= fps*1):
                         time = 0
                     if time == 0:
+                        recover_times += 1
+                        if (recover_times >= 5 and not(save["achievement"][0])):
+                            save["achievement"][0] = True
+                            achievement_stack.append([0, fps])
+                            write()
+                        if (recover_times >= 15 and not(save["achievement"][1])):
+                            save["achievement"][1] = True
+                            achievement_stack.append([1, fps])
+                            write()
+                        if (recover_times >= 30 and not(save["achievement"][2])):
+                            save["achievement"][2] = True
+                            achievement_stack.append([2, fps])
+                            write()
+                        if (not(save["achievement"][29])):
+                            if(sum(save["achievement"]) == 29):
+                                save["achievement"][29] = True
+                                achievement_stack.append([29, fps])
+                                write()
+
                         player_hp -= 10
                         damage_taken_times += 1
                         correct = None
@@ -5649,11 +5690,20 @@ while running:
             else:
                 text(screen, battle_detail[stage]["discription"], (20, 20, 20), transform_scale([35])[0], transform_scale([720, 48]), "center")
 
-            if(len(achievement_stack)>0):
-                draw_achievemet_stack()
 
             q_index = battle_detail[stage]["order"][question_num]
             current_q = battle_detail[stage]["questions"][q_index]
+
+            idle_times += 1
+            if (idle_times >= fps*60*15 and not(save["achievement"][21])):
+                save["achievement"][21] = True
+                achievement_stack.append([21, fps])
+                write()
+            if (not(save["achievement"][29])):
+                if(sum(save["achievement"]) == 29):
+                    save["achievement"][29] = True
+                    achievement_stack.append([29, fps])
+                    write()
 
             # If no action is chosen, show Attack/Recover options
             if action is None:
@@ -5720,39 +5770,45 @@ while running:
                 if event.type == pygame.QUIT:
                     running = False
                 if time == 0:
-                    if click_check(pos, transform_scale(list(enemy))):
-                        click_times += 1
-                        enemy_hp = max(0, enemy_hp-1)
-                        if enemy_hp <= 0:
-                            play_sfx("win")
-                            time = -1*fps
-                            if (len(battle_detail[stage]["order"]) <= battle_detail[stage]["target"][0]):
-                                save["star"][stage] = 3
-                                if(not(save["achievement"][3])):
-                                    save["achievement"][3] = True
-                                    achievement_stack.append([3, fps])
-                            elif (len(battle_detail[stage]["order"]) <= battle_detail[stage]["target"][1]):
-                                if save["star"][stage] < 2:
-                                    save["star"][stage] = 2
-                            else:
-                                if save["star"][stage] < 1:
-                                    save["star"][stage] = 1
-                            if save["current_stage"] == 28:
-                                save["unlock"][save.get("chosen_path", 34)] = True
-                            elif len(save["unlock"])>save["current_stage"]+1:
-                                save["unlock"][save["current_stage"]+1]=True
-                            end_stage_achievement_check(recover_times, damage_taken_times, attack_times, click_times, player_hp, idle_times, stage)
-                            write()
-                            game_state = "win"
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        if pygame.mouse.get_pressed()[0]:
+                            if click_check(pos, transform_scale(list(enemy))):
+                                idle_times = 0
+                                click_times += 1
+                                enemy_hp = max(0, enemy_hp-1)
+                                if enemy_hp <= 0:
+                                    play_sfx("win")
+                                    time = -1*fps
+                                    if (question_num <= battle_detail[stage]["target"][0]):
+                                        save["star"][stage] = 3
+                                        if(not(save["achievement"][3])):
+                                            save["achievement"][3] = True
+                                            achievement_stack.append([3, fps])
+                                    elif (question_num <= battle_detail[stage]["target"][1]):
+                                        if save["star"][stage] < 2:
+                                            save["star"][stage] = 2
+                                    else:
+                                        if save["star"][stage] < 1:
+                                            save["star"][stage] = 1
+                                    if save["current_stage"] == 28:
+                                        save["unlock"][save.get("chosen_path", 34)] = True
+                                    elif len(save["unlock"])>save["current_stage"]+1:
+                                        save["unlock"][save["current_stage"]+1]=True
+                                    end_stage_achievement_check(recover_times, damage_taken_times, attack_times, click_times, player_hp, idle_times, stage)
+                                    write()
+                                    game_state = "win"
                     if action is None:
                         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                             pos = pygame.mouse.get_pos()
                             if click_check(pos, transform_scale([407, 729, 194, 207])):
+                                idle_times = 0
                                 action = "attack"
                             elif click_check(pos, transform_scale([840, 729, 194, 207])):
+                                idle_times = 0
                                 action = "recover"
                     else: # Action is "attack" or "recover"
                         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and not is_dragging:
+                            idle_times = 0
                             for i, rect in enumerate(draggable_rects):
                                 if rect.collidepoint(event.pos):
                                     is_dragging = True
@@ -5762,9 +5818,11 @@ while running:
                                     break
                         elif event.type == pygame.MOUSEMOTION and is_dragging:
                             if dragged_item_index != -1:
+                                idle_times = 0
                                 draggable_rects[dragged_item_index].x = event.pos[0] - drag_offset_x
                                 draggable_rects[dragged_item_index].y = event.pos[1] - drag_offset_y
                         elif event.type == pygame.MOUSEBUTTONUP and event.button == 1 and is_dragging:
+                            idle_times = 0
                             if drop_target_rect.colliderect(draggable_rects[dragged_item_index]):
                                 selected_option = current_q["options"][dragged_item_index]
                                 correct = (selected_option == current_q["answer"])
@@ -5875,6 +5933,25 @@ while running:
 
                     if time == 0:
                         player_hp -= 10
+                        recover_times += 1
+                        if (recover_times >= 5 and not(save["achievement"][0])):
+                            save["achievement"][0] = True
+                            achievement_stack.append([0, fps])
+                            write()
+                        if (recover_times >= 15 and not(save["achievement"][1])):
+                            save["achievement"][1] = True
+                            achievement_stack.append([1, fps])
+                            write()
+                        if (recover_times >= 30 and not(save["achievement"][2])):
+                            save["achievement"][2] = True
+                            achievement_stack.append([2, fps])
+                            write()
+                        if (not(save["achievement"][29])):
+                            if(sum(save["achievement"]) == 29):
+                                save["achievement"][29] = True
+                                achievement_stack.append([29, fps])
+                                write()
+
                         correct = None
                         question_num += 1
                         action = None
@@ -5917,6 +5994,17 @@ while running:
             else:
                 text(screen, battle_detail[stage]["discription"], (20, 20, 20), transform_scale([35])[0], transform_scale([720, 48]), "center")
 
+            idle_times += 1
+            if (idle_times >= fps*60*15 and not(save["achievement"][21])):
+                save["achievement"][21] = True
+                achievement_stack.append([21, fps])
+                write()
+            if (not(save["achievement"][29])):
+                if(sum(save["achievement"]) == 29):
+                    save["achievement"][29] = True
+                    achievement_stack.append([29, fps])
+                    write()
+
             # Main Action Selection (Attack/Recover)
             if action is None:
                 #draggable_rects.clear() 
@@ -5927,8 +6015,6 @@ while running:
                 text(screen, "攻擊", (0, 0, 0), 64, transform_scale([504, 813]), "center")
                 text(screen, "回復", (0, 0, 0), 64, transform_scale([937, 813]), "center")
         
-            
-            
             # The Puzzle Logic
             else:
                 q_index = battle_detail[stage]["order"][question_num]
@@ -6052,8 +6138,6 @@ while running:
 
                 # Determine Positions and Draw Blocks
                 # We arrange blocks based on whether they are in 'current_sentence_indices' or not
-                if(len(achievement_stack)>0):
-                    draw_achievemet_stack()
 
             # Event Loop
             for event in pygame.event.get():
@@ -6061,43 +6145,49 @@ while running:
                     running = False
                 
                 if time == 0:
-                    if click_check(pos, transform_scale(list(enemy))):
-                        click_times += 1
-                        enemy_hp = max(0, enemy_hp-1)
-                        if enemy_hp <= 0:
-                            play_sfx("win")
-                            time = -1*fps
-                            if (len(battle_detail[stage]["order"]) <= battle_detail[stage]["target"][0]):
-                                save["star"][stage] = 3
-                                if(not(save["achievement"][3])):
-                                    save["achievement"][3] = True
-                                    achievement_stack.append([3, fps])
-                            elif (len(battle_detail[stage]["order"]) <= battle_detail[stage]["target"][1]):
-                                if save["star"][stage] < 2:
-                                    save["star"][stage] = 2
-                            else:
-                                if save["star"][stage] < 1:
-                                    save["star"][stage] = 1
-                            if save["current_stage"] == 28:
-                                save["unlock"][save.get("chosen_path", 34)] = True
-                            elif len(save["unlock"])>save["current_stage"]+1:
-                                save["unlock"][save["current_stage"]+1]=True
-                            end_stage_achievement_check(recover_times, damage_taken_times, attack_times, click_times, player_hp, idle_times, stage)
-                            write()
-                            game_state = "win"
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        if pygame.mouse.get_pressed()[0]:
+                            if click_check(pos, transform_scale(list(enemy))):
+                                idle_times = 0
+                                click_times += 1
+                                enemy_hp = max(0, enemy_hp-1)
+                                if enemy_hp <= 0:
+                                    play_sfx("win")
+                                    time = -1*fps
+                                    if (question_num <= battle_detail[stage]["target"][0]):
+                                        save["star"][stage] = 3
+                                        if(not(save["achievement"][3])):
+                                            save["achievement"][3] = True
+                                            achievement_stack.append([3, fps])
+                                    elif (question_num <= battle_detail[stage]["target"][1]):
+                                        if save["star"][stage] < 2:
+                                            save["star"][stage] = 2
+                                    else:
+                                        if save["star"][stage] < 1:
+                                            save["star"][stage] = 1
+                                    if save["current_stage"] == 28:
+                                        save["unlock"][save.get("chosen_path", 34)] = True
+                                    elif len(save["unlock"])>save["current_stage"]+1:
+                                        save["unlock"][save["current_stage"]+1]=True
+                                    end_stage_achievement_check(recover_times, damage_taken_times, attack_times, click_times, player_hp, idle_times, stage)
+                                    write()
+                                    game_state = "win"
                     if action is None:
                         # Select Attack/Recover
                         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                             pos = pygame.mouse.get_pos()
                             if click_check(pos, transform_scale([407, 729, 194, 207])):
+                                idle_times = 0
                                 action = "attack"
                             elif click_check(pos, transform_scale([840, 729, 194, 207])):
+                                idle_times = 0
                                 action = "recover"
                     else:
                         # Drag Logic
                         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                             # 1. Check Submit Button
                             if submit_rect.collidepoint(event.pos):
+                                idle_times = 0
                                 time = 1 # Start validation
                                 # Construct user sentence from indices
                                 user_sentence =[current_q["options"][i] for i in current_sentence_indices]
@@ -6109,12 +6199,14 @@ while running:
                             # 2. Check Reset Button
                             elif reset_rect.collidepoint(event.pos):
                                 # play_sfx("click")  # Uncomment this if you added the sound manager!
+                                idle_times = 0
                                 current_sentence_indices.clear() # This empties the answer line instantly!
                             
                             # 3. Check Words
                             elif not is_dragging:
                                 for i, rect in enumerate(draggable_rects):
                                     if rect.collidepoint(event.pos):
+                                        idle_times = 0
                                         is_dragging = True
                                         dragged_item_index = i
                                         drag_offset_x = event.pos[0] - rect.x
@@ -6126,10 +6218,12 @@ while running:
                         
                         elif event.type == pygame.MOUSEMOTION and is_dragging:
                             #if dragged_item_index != -1:
+                            idle_times = 0
                             draggable_rects[dragged_item_index].x = event.pos[0] - drag_offset_x
                             draggable_rects[dragged_item_index].y = event.pos[1] - drag_offset_y
                         
                         elif event.type == pygame.MOUSEBUTTONUP and event.button == 1 and is_dragging:
+                            idle_times = 0
                             if zone_answer.colliderect(draggable_rects[dragged_item_index]):
                                 if hover_insertion_index != -1:
                                     current_sentence_indices.insert(hover_insertion_index, dragged_item_index)
@@ -6195,6 +6289,24 @@ while running:
                         text_sp(screen, "回復成功", (120, 255, 120), 100, transform_scale([WIDTH/2, 520]), int((fps*1-time)/(fps*1)*255), "center")
                     elif(time >= fps*1): time = 0
                     if time == 0:
+                        recover_times += 1
+                        if (recover_times >= 5 and not(save["achievement"][0])):
+                            save["achievement"][0] = True
+                            achievement_stack.append([0, fps])
+                            write()
+                        if (recover_times >= 15 and not(save["achievement"][1])):
+                            save["achievement"][1] = True
+                            achievement_stack.append([1, fps])
+                            write()
+                        if (recover_times >= 30 and not(save["achievement"][2])):
+                            save["achievement"][2] = True
+                            achievement_stack.append([2, fps])
+                            write()
+                        if (not(save["achievement"][29])):
+                            if(sum(save["achievement"]) == 29):
+                                save["achievement"][29] = True
+                                achievement_stack.append([29, fps])
+                                write()
                         player_hp = min(player_hp+20, 100)
                         correct = None
                         question_num += 1
@@ -6222,6 +6334,26 @@ while running:
                         player_hp -= round(battle_detail[stage]["enemy_attack"] * scale[save["equipt"][1]]/100)
                     elif action == "recover": 
                         player_hp -= 10
+                        recover_times += 1
+                        if (recover_times >= 5 and not(save["achievement"][0])):
+                            save["achievement"][0] = True
+                            achievement_stack.append([0, fps])
+                            write()
+                        if (recover_times >= 15 and not(save["achievement"][1])):
+                            save["achievement"][1] = True
+                            achievement_stack.append([1, fps])
+                            write()
+                        if (recover_times >= 30 and not(save["achievement"][2])):
+                            save["achievement"][2] = True
+                            achievement_stack.append([2, fps])
+                            write()
+                        if (not(save["achievement"][29])):
+                            if(sum(save["achievement"]) == 29):
+                                save["achievement"][29] = True
+                                achievement_stack.append([29, fps])
+                                write()
+                                
+
                     
                     correct = None
                     question_num += 1
@@ -6264,6 +6396,17 @@ while running:
 
             pygame.draw.rect(screen, pygame.Color("#d9d9d9"), transform_scale([324, 702, 791, 258]))
 
+            idle_times += 1
+            if (idle_times >= fps*60*15 and not(save["achievement"][21])):
+                save["achievement"][21] = True
+                achievement_stack.append([21, fps])
+                write()
+            if (not(save["achievement"][29])):
+                if(sum(save["achievement"]) == 29):
+                    save["achievement"][29] = True
+                    achievement_stack.append([29, fps])
+                    write()
+
             if action == "attack" or action == "recover":
                 # quesrion
                 text(screen, verb[battle_detail[stage]["question"]][battle_detail[stage]["curr_qs"]], (0, 0, 0), transform_scale([64])[0], transform_scale([720, 751]), "center")
@@ -6280,8 +6423,6 @@ while running:
                 text(screen, "攻擊", (0, 0, 0), 64, transform_scale([504, 813]), "center")
                 text(screen, "回復", (0, 0, 0), 64, transform_scale([937, 813]), "center")
 
-            if(len(achievement_stack)>0):
-                draw_achievemet_stack()
             
             
             for event in pygame.event.get():
@@ -6293,40 +6434,45 @@ while running:
                     if pygame.mouse.get_pressed()[0]:
                         pos = pygame.mouse.get_pos()
                         if action == None:
-                            if click_check(pos, transform_scale([407, 729, 194, 207])):
+                            if click_check(pos, transform_scale(list(enemy))):
+                                idle_times = 0
+                                click_times += 1
+                                enemy_hp = max(0, enemy_hp-1)
+                                if enemy_hp <= 0:
+                                    play_sfx("win")
+                                    time = -1*fps
+                                    if (question_num <= battle_detail[stage]["target"][0]):
+                                        save["star"][stage] = 3
+                                        if(not(save["achievement"][3])):
+                                            save["achievement"][3] = True
+                                            achievement_stack.append([3, fps])
+                                    elif (question_num <= battle_detail[stage]["target"][1]):
+                                        if save["star"][stage] < 2:
+                                            save["star"][stage] = 2
+                                    else:
+                                        if save["star"][stage] < 1:
+                                            save["star"][stage] = 1
+                                    if save["current_stage"] == 28:
+                                        save["unlock"][save.get("chosen_path", 34)] = True
+                                    elif len(save["unlock"])>save["current_stage"]+1:
+                                        save["unlock"][save["current_stage"]+1]=True
+                                    end_stage_achievement_check(recover_times, damage_taken_times, attack_times, click_times, player_hp, idle_times, stage)
+                                    write()
+                                    game_state = "win"
+                            elif click_check(pos, transform_scale([407, 729, 194, 207])):
+                                idle_times = 0
                                 action = "attack"
                             elif click_check(pos, transform_scale([840, 729, 194, 207])):
+                                idle_times = 0
                                 action = "recover"
-                        
+
+                            
                 if event.type == pygame.KEYDOWN and time == 0:
-                    if click_check(pos, transform_scale(list(enemy))):
-                        click_times += 1
-                        enemy_hp = max(0, enemy_hp-1)
-                        if enemy_hp <= 0:
-                            play_sfx("win")
-                            time = -1*fps
-                            if (len(battle_detail[stage]["order"]) <= battle_detail[stage]["target"][0]):
-                                save["star"][stage] = 3
-                                if(not(save["achievement"][3])):
-                                    save["achievement"][3] = True
-                                    achievement_stack.append([3, fps])
-                            elif (len(battle_detail[stage]["order"]) <= battle_detail[stage]["target"][1]):
-                                if save["star"][stage] < 2:
-                                    save["star"][stage] = 2
-                            else:
-                                if save["star"][stage] < 1:
-                                    save["star"][stage] = 1
-                            if save["current_stage"] == 28:
-                                save["unlock"][save.get("chosen_path", 34)] = True
-                            elif len(save["unlock"])>save["current_stage"]+1:
-                                save["unlock"][save["current_stage"]+1]=True
-                            end_stage_achievement_check(recover_times, damage_taken_times, attack_times, click_times, player_hp, idle_times, stage)
-                            write()
-                            game_state = "win"
                     if action == "attack" or action == "recover":
                         if event.type == pygame.KEYDOWN and time == 0:
                             print(verb[battle_detail[stage]["answer"]+"_hira"][battle_detail[stage]["curr_qs"]])
                             if event.key != pygame.K_RETURN and event.key != pygame.K_KP_ENTER:
+                                idle_times = 0
                                 if event.key == pygame.K_a:
                                     inputArr = inputArr + 'a'
                                 if event.key == pygame.K_b:
@@ -6390,13 +6536,16 @@ while running:
                                     if(my_font.size(outputArr)[0]>660):
                                         save["achievement"][8] = True
                                         achievement_stack.append([8, fps])
-                                    if (not(save["achievement"][29])):
-                                        if(sum(save["achievement"]) == 29):
-                                            save["achievement"][29] = True
-                                            achievement_stack.append([29, fps])
+                                        write()
+                                if (not(save["achievement"][29])):
+                                    if(sum(save["achievement"]) == 29):
+                                        save["achievement"][29] = True
+                                        achievement_stack.append([29, fps])
+                                        write()
                             else:
                                 # event after pressing Enter key
                                 time = 1
+                                idle_times = 0
                                 battle_detail[stage]["counter"] += 1
                                 if verb[battle_detail[stage]["answer"]+"_hira"][battle_detail[stage]["curr_qs"]] == outputArr:
                                     correct = True
@@ -6413,18 +6562,19 @@ while running:
                         time = 0
                     if time == 0:
                         attack_times += 1
+                        question_num += 1
                         enemy_hp -= 20*scale[save["equipt"][0]] if not(god_mod) else 9999
                         correct = None
                         action = None
                         if enemy_hp <= 0:
                             play_sfx("win")
                             time = -1*fps
-                            if (battle_detail[stage]["counter"] <= battle_detail[stage]["target"][0]):
+                            if (question_num <= battle_detail[stage]["target"][0]):
                                 save["star"][stage] = 3
                                 if(not(save["achievement"][3])):
                                     save["achievement"][3] = True
                                     achievement_stack.append([3, fps])
-                            elif (battle_detail[stage]["counter"] <= battle_detail[stage]["target"][1]):
+                            elif (question_num <= battle_detail[stage]["target"][1]):
                                 if save["star"][stage] < 2:
                                     save["star"][stage] = 2
                             else:
@@ -6452,7 +6602,26 @@ while running:
                     elif(time >= fps*1):
                         time = 0
                     if time == 0:
+                        recover_times += 1
+                        if (recover_times >= 5 and not(save["achievement"][0])):
+                            save["achievement"][0] = True
+                            achievement_stack.append([0, fps])
+                            write()
+                        if (recover_times >= 15 and not(save["achievement"][1])):
+                            save["achievement"][1] = True
+                            achievement_stack.append([1, fps])
+                            write()
+                        if (recover_times >= 30 and not(save["achievement"][2])):
+                            save["achievement"][2] = True
+                            achievement_stack.append([2, fps])
+                            write()
+                        if (not(save["achievement"][29])):
+                            if(sum(save["achievement"]) == 29):
+                                save["achievement"][29] = True
+                                achievement_stack.append([29, fps])
+                                write()
                         player_hp = min(player_hp+20, 100)
+                        question_num += 1
                         correct = None
                         action = None
                         temp = random.randint(0, len(verb[battle_detail[stage]["question"]])-1)
@@ -6473,6 +6642,7 @@ while running:
                         time = 0
                     if time == 0:
                         attack_times += 1
+                        question_num += 1
                         player_hp -= round(battle_detail[stage]["enemy_attack"] * scale[save["equipt"][1]]/100)
                         correct = None
                         if stage == 0:
@@ -6502,7 +6672,26 @@ while running:
                     elif(time >= fps*1):
                         time = 0
                     if time == 0:
+                        recover_times += 1
+                        if (recover_times >= 5 and not(save["achievement"][0])):
+                            save["achievement"][0] = True
+                            achievement_stack.append([0, fps])
+                            write()
+                        if (recover_times >= 15 and not(save["achievement"][1])):
+                            save["achievement"][1] = True
+                            achievement_stack.append([1, fps])
+                            write()
+                        if (recover_times >= 30 and not(save["achievement"][2])):
+                            save["achievement"][2] = True
+                            achievement_stack.append([2, fps])
+                            write()
+                        if (not(save["achievement"][29])):
+                            if(sum(save["achievement"]) == 29):
+                                save["achievement"][29] = True
+                                achievement_stack.append([29, fps])
+                                write()
                         player_hp -= 10
+                        question_num += 1
                         correct = None
                         action = None
                         if player_hp <= 0:
@@ -6516,8 +6705,6 @@ while running:
                             battle_detail[stage]["curr_qs"] = temp
                         inputArr = ""
                         outputArr = ""
-        if(len(achievement_stack)>0):
-            draw_achievemet_stack()
     
     if game_state == "select_world":
         screen.blit(pygame.transform.scale(images[31], (WIDTH, HEIGHT)), (0, 0))
@@ -6611,8 +6798,6 @@ while running:
             s.set_alpha(int(time/fps/1*255))
             screen.blit(s, (0,0))
 
-        if(len(achievement_stack)>0):
-            draw_achievemet_stack()
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT: running = False
@@ -6765,8 +6950,6 @@ while running:
             s.set_alpha(int(time/fps/1*255))
             screen.blit(s, (0,0))
 
-        if(len(achievement_stack)>0):
-            draw_achievemet_stack()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -6861,9 +7044,6 @@ while running:
             s.set_alpha(int(time/fps/1*255))
             screen.blit(s, (0,0))
 
-        if(len(achievement_stack)>0):
-            draw_achievemet_stack()
-
         # enter story
         if(time > fps*1):
             game_state = "select_stage"
@@ -6913,9 +7093,6 @@ while running:
             time += 1
             s.set_alpha(int(time/fps/1*255))
             screen.blit(s, (0,0))
-
-        if(len(achievement_stack)>0):
-            draw_achievemet_stack()
         
         pos = pygame.mouse.get_pos()
         for event in pygame.event.get():
@@ -6942,14 +7119,12 @@ while running:
                     changing=None
                     write()
 
-
         if(changing == 'music'):
             a, b, r = transform_scale([380, 380+680, 680])
             save["music"] = min(max(0, int((pos[0]-a)/r*100)), 100)
         elif(changing == 'sound'):
             a, b, r = transform_scale([380, 380+680, 680])
             save["sound"] = min(max(0, int((pos[0]-a)/r*100)), 100)
-
         
         #  back
         if(time > fps*1):
@@ -7046,8 +7221,6 @@ while running:
                         text(screen, achievement_data["hidden_description"][i*6+j], [0, 0, 0], 3*15, transform_scale([1120, 480]), "center")
                         pygame.draw.rect(screen, [250, 178, 178], transform_scale([40+120*j, 180+120*i, 120, 120]), border_radius=br)
                         pygame.draw.rect(screen, [0, 0, 0], transform_scale([40+120*j, 180+120*i, 120, 120]), br, br)
-                        
-
                 else:
                     if(save["achievement"][i*6+j]):
                         pygame.draw.rect(screen, [128, 200, 128], transform_scale([40+120*j, 180+120*i, 120, 120]), border_radius=br)
@@ -7058,17 +7231,11 @@ while running:
 
                 text_sp(screen, achievement_data["icon"][i*6+j][0], achievement_data["icon"][i*6+j][1], 3*18, transform_scale([100+120*j, 240+120*i]), 255, "center")
         
-        
-
-
         if(time != 0):
             time += 1
             s.set_alpha(int(time/fps*255))
             screen.blit(s, (0,0))
 
-        if(len(achievement_stack)>0):
-            draw_achievemet_stack()
-        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -7082,6 +7249,8 @@ while running:
         if(time > fps):
             game_state = "menu"
             time=0
-                        
+
+    if(len(achievement_stack)>0):
+        draw_achievemet_stack()
     clock.tick(fps)
     pygame.display.update()
