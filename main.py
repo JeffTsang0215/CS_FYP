@@ -12,7 +12,7 @@ path = os.path.dirname(os.path.abspath(__file__)) + '/'
 # this is for running the executable file
 # path = os.path.dirname(os.path.realpath(sys.executable)) + '/'
 
-new_game = True
+new_game = False
 god_mod = True
 chapter_ranges =[(0, 8), (9, 19), (20, 28), (29, 38)] # (Start Stage, End Stage) for Ch 1, 2, 3, 4
 current_chapter = 0
@@ -1717,24 +1717,24 @@ if new_game:
         'hard': False,
         'chosen_path': 0,
     }
-# if god_mod:
-#     save = {
-#         'unlock': [True]*39,
-#         'star': [0]*39,
-#         'current_stage': 0,
-#         # 'achievement': [True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, ],
-#         'achievement': [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, ],
-#         'obtain': [True, True, True, True, True, True, True],  # C_weapon, C_equiptment, A_weapon, A_equiptment, SS_weapon, SS_equiptment, ex_weapon
-#         'equipt': [7, 8],  # weapon, equiptment. 7, 8 mean empty. number follow 'obtain' index
-#         'obtain_w_n': 4,
-#         'obtain_e_n': 4,
-#         'last_play': [0, 0], # stage_number, continus_times
-#         'sound': 100,
-#         'music': 100,
-#         'full_screen': False,
-#         'hard': False,
-#         'chosen_path': 34,
-#     }
+if god_mod:
+    save = {
+        'unlock': [True]*39,
+        'star': [0]*39,
+        'current_stage': 0,
+        # 'achievement': [True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, ],
+        'achievement': [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, ],
+        'obtain': [True, True, True, True, True, True, True],  # C_weapon, C_equiptment, A_weapon, A_equiptment, SS_weapon, SS_equiptment, ex_weapon
+        'equipt': [7, 8],  # weapon, equiptment. 7, 8 mean empty. number follow 'obtain' index
+        'obtain_w_n': 4,
+        'obtain_e_n': 4,
+        'last_play': [0, 0], # stage_number, continus_times
+        'sound': 100,
+        'music': 100,
+        'full_screen': False,
+        'hard': False,
+        'chosen_path': 0,
+    }
 
 
 if save["full_screen"]:
@@ -2311,7 +2311,7 @@ dialog = [
         (2, '莉子：\n赤真！在生死存亡之際，你必須作出抉擇！\n殺了我！你就能得到『混血靈心』，往後的攻擊力會翻倍！'),
         (1, '赤真：\n我說過，我絕對不會犧牲你！！'),
         (2, '莉子：\n不這樣做，我們都會被魔龍殺死！求求你，動手吧！'),
-        (3, '系統：\n【命運的分歧點】\n接下來的戰鬥表現/選擇將決定莉子的生死，並導向完全不同的結局。')
+        (3, '系統：【命運的分歧點】\n接下來的戰鬥表現/選擇將決定\n莉子的生死，並導向完全不同的結局。')
     ],
      #stage 29
     [
