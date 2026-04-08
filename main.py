@@ -7,10 +7,10 @@ pygame.font.init()
 pygame.mixer.init()
 
 # this is for running python main.py
-path = os.path.dirname(os.path.abspath(__file__)) + '/'
+# path = os.path.dirname(os.path.abspath(__file__)) + '/'
 
 # this is for running the executable file
-# path = os.path.dirname(os.path.realpath(sys.executable)) + '/'
+path = os.path.dirname(os.path.realpath(sys.executable)) + '/'
 
 new_game = True
 god_mod = True
