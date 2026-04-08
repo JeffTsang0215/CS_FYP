@@ -2469,7 +2469,7 @@ battle_detail = [
         "target": [5, 7],
         "enemy_hp": 100 * (1.5 if save['hard'] else 1),
         "enemy_attack": 20 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊正確的選項",
+        "description": "以滑鼠點擊正確的選項",
     },
     # 1
     {
@@ -2494,7 +2494,7 @@ battle_detail = [
         "target": [10, 14],
         "enemy_hp": 200 * (1.5 if save['hard'] else 1),
         "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "以滑, 鼠點擊正確的選項",
+        "description": "以滑, 鼠點擊正確的選項",
     },
     # 2
     {
@@ -2519,7 +2519,7 @@ battle_detail = [
         "target": [10, 14],
         "enemy_hp": 200 * (1.5 if save['hard'] else 1),
         "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊正確的選項",
+        "description": "以滑鼠點擊正確的選項",
     },
     # 3
     {
@@ -2544,7 +2544,7 @@ battle_detail = [
         "target":[10, 14],
         "enemy_hp": 220 * (1.5 if save['hard'] else 1),
         "enemy_attack": 40 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊正確的選項",
+        "description": "以滑鼠點擊正確的選項",
     },
     # 4
     {
@@ -2569,7 +2569,7 @@ battle_detail = [
         "target":[10, 14],
         "enemy_hp": 240 * (1.5 if save['hard'] else 1),
         "enemy_attack": 50 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊正確的選項",
+        "description": "以滑鼠點擊正確的選項",
     },
     # 5
     {
@@ -2599,7 +2599,7 @@ battle_detail = [
         "target": [15, 18],
         "enemy_hp": 260 * (1.5 if save['hard'] else 1),
         "enemy_attack": 60 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊正確的選項",
+        "description": "以滑鼠點擊正確的選項",
     },
     # 6
     {
@@ -2625,7 +2625,7 @@ battle_detail = [
         "target": [11, 15], # Adjusted for 11 questions
         "enemy_hp": 280 * (1.5 if save['hard'] else 1),
         "enemy_attack": 70 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊正確的選項",
+        "description": "以滑鼠點擊正確的選項",
     },
     # 7
     {
@@ -2717,7 +2717,7 @@ battle_detail = [
         "target": [20, 25], 
         "enemy_hp": 400 * (1.5 if save['hard'] else 1),
         "enemy_attack": 80 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊正確的選項",
+        "description": "以滑鼠點擊正確的選項",
     },
     # 8
     {
@@ -2756,7 +2756,7 @@ battle_detail = [
         "target":[12, 16],
         "enemy_hp": 240 * (1.5 if save['hard'] else 1),
         "enemy_attack": 50 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊正確的選項",
+        "description": "以滑鼠點擊正確的選項",
     },
     # 9 (Kanji - Numbers)
     {
@@ -2806,7 +2806,7 @@ battle_detail = [
         "target": [10, 12],
         "enemy_hp": 200 * (1.5 if save['hard'] else 1),
         "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊漢字正確的平假名讀音",
+        "description": "以滑鼠點擊漢字正確的平假名讀音",
     },
     # 10 (Kanji - Elements)
     {
@@ -2854,7 +2854,7 @@ battle_detail = [
         "target": [6, 7],
         "enemy_hp": 140 * (1.5 if save['hard'] else 1),
         "enemy_attack": 20 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊漢字正確的平假名讀音",
+        "description": "以滑鼠點擊漢字正確的平假名讀音",
     },
     # 11 (kanji - Animals & Objects)
     {
@@ -2897,7 +2897,7 @@ battle_detail = [
         "target": [7, 9],
         "enemy_hp": 140 * (1.5 if save['hard'] else 1),
         "enemy_attack": 20 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠拖拉正確的選項至空格內",
+        "description": "以滑鼠拖拉正確的選項至空格內",
     },
     # 12 (kanji - Nature)
     {
@@ -2945,7 +2945,7 @@ battle_detail = [
         "target": [9, 12],
         "enemy_hp": 180 * (1.5 if save['hard'] else 1),
         "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊漢字正確的平假名讀音",
+        "description": "以滑鼠點擊漢字正確的平假名讀音",
     },
     # 13 (kanji - Directions)
     {
@@ -2988,7 +2988,7 @@ battle_detail = [
         "target": [9, 12],
         "enemy_hp": 180 * (1.5 if save['hard'] else 1),
         "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "將正確的方向漢字拖拉至對應的中文意思旁",
+        "description": "將正確的方向漢字拖拉至對應的中文意思旁",
     },
     # 14 (MC - Body & People)
     {
@@ -3038,7 +3038,7 @@ battle_detail = [
         "target": [10, 13],
         "enemy_hp": 200 * (1.5 if save['hard'] else 1),
         "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊漢字正確的平假名讀音",
+        "description": "以滑鼠點擊漢字正確的平假名讀音",
     },
     # 15 (Drag - Time & Periods)
     {
@@ -3081,7 +3081,7 @@ battle_detail = [
         "target": [10, 13],
         "enemy_hp": 200 * (1.5 if save['hard'] else 1),
         "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "將正確的時間漢字拖拉至對應的中文意思旁",
+        "description": "將正確的時間漢字拖拉至對應的中文意思旁",
     },
     # 16 (MC - Adjectives)
     {
@@ -3131,7 +3131,7 @@ battle_detail = [
         "target": [11, 14],
         "enemy_hp": 220 * (1.5 if save['hard'] else 1),
         "enemy_attack": 40 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊形容詞正確的平假名讀音",
+        "description": "以滑鼠點擊形容詞正確的平假名讀音",
     },
     # 17 (kanji to hiragana 1 )
     {
@@ -3179,7 +3179,7 @@ battle_detail = [
         "target": [5, 7],
         "enemy_hp": 100 * (1.5 if save['hard'] else 1),
         "enemy_attack": 20 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊正確的選項",
+        "description": "以滑鼠點擊正確的選項",
     },
     # 18 (kanji - Days of the week)
     {
@@ -3222,7 +3222,7 @@ battle_detail = [
         "target":[6, 7],
         "enemy_hp": 140 * (1.5 if save['hard'] else 1),
         "enemy_attack": 20 * (1.5 if save['hard'] else 1),
-        "discription": "將正確的星期拖拉至對應的中文意思旁",
+        "description": "將正確的星期拖拉至對應的中文意思旁",
     },
     # 19 (MC - Mid Boss "Tenma" - Grand Kanji Exam)
     {
@@ -3279,7 +3279,7 @@ battle_detail = [
         "target": [20, 25],
         "enemy_hp": 400 * (1.5 if save['hard'] else 1),   # Requires 20 hits to defeat!
         "enemy_attack": 50 * (1.5 if save['hard'] else 1),
-        "discription": "中級Boss『天魔』降臨！點擊漢字正確的讀音！",
+        "description": "中級Boss『天魔』降臨！點擊漢字正確的讀音！",
     },
     # 20 (Sentence Order - Basic A is B)
     {
@@ -3372,7 +3372,7 @@ battle_detail = [
         "target": [5, 6],
         "enemy_hp": 100 * (1.5 if save['hard'] else 1), # 5 hits to defeat
         "enemy_attack": 20 * (1.5 if save['hard'] else 1),
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+        "description": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
     },
     # 21 (Sentence Order - Particles を, に, へ)
     {
@@ -3403,7 +3403,7 @@ battle_detail = [
         "target": [6, 7],
         "enemy_hp": 120 * (1.5 if save['hard'] else 1), # 6 hits to defeat
         "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+        "description": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
     },
     # 22 (Sentence Order - Subject + Object + Verb)
     {
@@ -3433,7 +3433,7 @@ battle_detail = [
         "target": [7, 8],
         "enemy_hp": 140 * (1.5 if save['hard'] else 1), # 7 hits to defeat\
         "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+        "description": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
     },
     # 23 (Sentence Order - Expansion with Time & Location)
     {
@@ -3463,7 +3463,7 @@ battle_detail = [
         "target": [8, 9],
         "enemy_hp": 160 * (1.5 if save['hard'] else 1), # 8 hits to defeat
         "enemy_attack": 40 * (1.5 if save['hard'] else 1),
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+        "description": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
     },
 
     #24 (masu to ru)
@@ -3478,7 +3478,7 @@ battle_detail = [
         "enemy_hp": 140 * (1.5 if save['hard'] else 1),
         "enemy_attack": 30 * (1.5 if save['hard'] else 1),
         "curr_qs": None,
-        "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\nます形 → 辞書形",
+        "description": "以鍵盤輸入答案的羅馬拼音後，按Enter\nます形 → 辞書形",
     },
     # 25 (Input - Ru to Te Form)
     {
@@ -3492,7 +3492,7 @@ battle_detail = [
         "enemy_hp": 180 * (1.5 if save['hard'] else 1),
         "enemy_attack": 30 * (1.5 if save['hard'] else 1),
         "curr_qs": None,
-        "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → て形",
+        "description": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → て形",
     },
     # 26 (Input - Ru to Nai Form)
     {
@@ -3506,7 +3506,7 @@ battle_detail = [
         "enemy_hp": 200 * (1.5 if save['hard'] else 1),
         "enemy_attack": 40 * (1.5 if save['hard'] else 1),
         "curr_qs": None,
-        "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → ない形 (否定)",
+        "description": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → ない形 (否定)",
     },
     # 27 (Input - Ru to Ta Form)
     {
@@ -3520,7 +3520,7 @@ battle_detail = [
         "enemy_hp": 220 * (1.5 if save['hard'] else 1),
         "enemy_attack": 40 * (1.5 if save['hard'] else 1),
         "curr_qs": None,
-        "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → た形 (過去式)",
+        "description": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → た形 (過去式)",
     },
     # 28 (Input - Ru to Kanou Form / Boss Fight)
     {
@@ -3534,7 +3534,7 @@ battle_detail = [
         "enemy_hp": 400 * (1.5 if save['hard'] else 1),
         "enemy_attack": 50 * (1.5 if save['hard'] else 1),
         "curr_qs": None,
-        "discription": "【魔龍降臨】以鍵盤輸入羅馬拼音後，按Enter\n辞書形 → 可能形 (能/可以)",
+        "description": "【魔龍降臨】以鍵盤輸入羅馬拼音後，按Enter\n辞書形 → 可能形 (能/可以)",
     },
     # 29 chapter 4 Bad Ending (Stage 29)
     {
@@ -3548,7 +3548,7 @@ battle_detail = [
         "enemy_hp": 260 * (1.5 if save['hard'] else 1),
         "enemy_attack": 50 * (1.5 if save['hard'] else 1),
         "curr_qs": None,
-        "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → 命令形 (強制...)",
+        "description": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → 命令形 (強制...)",
     },
     #30
     {
@@ -3562,7 +3562,7 @@ battle_detail = [
         "enemy_hp": 280 * (1.5 if save['hard'] else 1),
         "enemy_attack": 60 * (1.5 if save['hard'] else 1),
         "curr_qs": None,
-        "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → 禁止形 (不准...)",
+        "description": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → 禁止形 (不准...)",
     },
     #31
     {
@@ -3592,7 +3592,7 @@ battle_detail = [
         "target": [4, 5],
         "enemy_hp": 300 * (1.5 if save['hard'] else 1),
         "enemy_attack": 70 * (1.5 if save['hard'] else 1),
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+        "description": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
     },
     #32
     {
@@ -3606,7 +3606,7 @@ battle_detail = [
         "enemy_hp": 320 * (1.5 if save['hard'] else 1),
         "enemy_attack": 75 * (1.5 if save['hard'] else 1),
         "curr_qs": None,
-        "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → 條件形 (ば形)",
+        "description": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → 條件形 (ば形)",
     },
     #33
     {
@@ -3620,7 +3620,7 @@ battle_detail = [
         "enemy_hp": 500 * (1.5 if save['hard'] else 1),
         "enemy_attack": 80 * (1.5 if save['hard'] else 1),
         "curr_qs": None,
-        "discription": "【魔王降臨】以鍵盤輸入羅馬拼音後，按Enter\n辞書形 → 使役被動形 (被迫...)",
+        "description": "【魔王降臨】以鍵盤輸入羅馬拼音後，按Enter\n辞書形 → 使役被動形 (被迫...)",
     },
     # 34 chapter 4 True Ending (Stage 34)
     {
@@ -3634,7 +3634,7 @@ battle_detail = [
         "enemy_hp": 260 * (1.5 if save['hard'] else 1),
         "enemy_attack": 50 * (1.5 if save['hard'] else 1),
         "curr_qs": None,
-        "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → 意向形 (一起...吧！)",
+        "description": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → 意向形 (一起...吧！)",
     },
     #35
     {
@@ -3663,7 +3663,7 @@ battle_detail = [
         "target": [4, 5],
         "enemy_hp": 300 * (1.5 if save['hard'] else 1),
         "enemy_attack": 60 * (1.5 if save['hard'] else 1),
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+        "description": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
     },
     #36
     {
@@ -3677,7 +3677,7 @@ battle_detail = [
         "enemy_hp": 320 * (1.5 if save['hard'] else 1),
         "enemy_attack": 65 * (1.5 if save['hard'] else 1),
         "curr_qs": None,
-        "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → 可能形 (能/可以)",
+        "description": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → 可能形 (能/可以)",
     },
     #37
     {
@@ -3691,7 +3691,7 @@ battle_detail = [
         "enemy_hp": 340 * (1.5 if save['hard'] else 1),
         "enemy_attack": 70 * (1.5 if save['hard'] else 1),
         "curr_qs": None,
-        "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → て形 (連續行動)",
+        "description": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → て形 (連續行動)",
     },
     #38
     {
@@ -3721,7 +3721,7 @@ battle_detail = [
         "target": [5, 6],
         "enemy_hp": 800 * (1.5 if save['hard'] else 1), # Demon King has very high HP!
         "enemy_attack": 80 * (1.5 if save['hard'] else 1),
-        "discription": "【魔王降臨】將單字拖入橫線組成句子，發動最終詠唱！",
+        "description": "【魔王降臨】將單字拖入橫線組成句子，發動最終詠唱！",
     }
     
     
@@ -3747,7 +3747,7 @@ def reload_battle_detail():
         "target": [5, 7],
         "enemy_hp": 100 * (1.5 if save['hard'] else 1),
         "enemy_attack": 20 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊正確的選項",
+        "description": "以滑鼠點擊正確的選項",
     },
     # 1
     {
@@ -3772,7 +3772,7 @@ def reload_battle_detail():
         "target": [10, 14],
         "enemy_hp": 200 * (1.5 if save['hard'] else 1),
         "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "以滑, 鼠點擊正確的選項",
+        "description": "以滑, 鼠點擊正確的選項",
     },
     # 2
     {
@@ -3797,7 +3797,7 @@ def reload_battle_detail():
         "target": [10, 14],
         "enemy_hp": 200 * (1.5 if save['hard'] else 1),
         "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊正確的選項",
+        "description": "以滑鼠點擊正確的選項",
     },
     # 3
     {
@@ -3822,7 +3822,7 @@ def reload_battle_detail():
         "target":[10, 14],
         "enemy_hp": 220 * (1.5 if save['hard'] else 1),
         "enemy_attack": 40 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊正確的選項",
+        "description": "以滑鼠點擊正確的選項",
     },
     # 4
     {
@@ -3847,7 +3847,7 @@ def reload_battle_detail():
         "target":[10, 14],
         "enemy_hp": 240 * (1.5 if save['hard'] else 1),
         "enemy_attack": 50 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊正確的選項",
+        "description": "以滑鼠點擊正確的選項",
     },
     # 5
     {
@@ -3877,7 +3877,7 @@ def reload_battle_detail():
         "target": [15, 18],
         "enemy_hp": 260 * (1.5 if save['hard'] else 1),
         "enemy_attack": 60 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊正確的選項",
+        "description": "以滑鼠點擊正確的選項",
     },
     # 6
     {
@@ -3903,7 +3903,7 @@ def reload_battle_detail():
         "target": [11, 15], # Adjusted for 11 questions
         "enemy_hp": 280 * (1.5 if save['hard'] else 1),
         "enemy_attack": 70 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊正確的選項",
+        "description": "以滑鼠點擊正確的選項",
     },
     # 7
     {
@@ -3995,7 +3995,7 @@ def reload_battle_detail():
         "target": [20, 25], 
         "enemy_hp": 400 * (1.5 if save['hard'] else 1),
         "enemy_attack": 80 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊正確的選項",
+        "description": "以滑鼠點擊正確的選項",
     },
     # 8
     {
@@ -4034,7 +4034,7 @@ def reload_battle_detail():
         "target":[12, 16],
         "enemy_hp": 240 * (1.5 if save['hard'] else 1),
         "enemy_attack": 50 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊正確的選項",
+        "description": "以滑鼠點擊正確的選項",
     },
     # 9 (Kanji - Numbers)
     {
@@ -4084,7 +4084,7 @@ def reload_battle_detail():
         "target": [10, 12],
         "enemy_hp": 200 * (1.5 if save['hard'] else 1),
         "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊漢字正確的平假名讀音",
+        "description": "以滑鼠點擊漢字正確的平假名讀音",
     },
     # 10 (Kanji - Elements)
     {
@@ -4132,7 +4132,7 @@ def reload_battle_detail():
         "target": [6, 7],
         "enemy_hp": 140 * (1.5 if save['hard'] else 1),
         "enemy_attack": 20 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊漢字正確的平假名讀音",
+        "description": "以滑鼠點擊漢字正確的平假名讀音",
     },
     # 11 (kanji - Animals & Objects)
     {
@@ -4175,7 +4175,7 @@ def reload_battle_detail():
         "target": [7, 9],
         "enemy_hp": 140 * (1.5 if save['hard'] else 1),
         "enemy_attack": 20 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠拖拉正確的選項至空格內",
+        "description": "以滑鼠拖拉正確的選項至空格內",
     },
     # 12 (kanji - Nature)
     {
@@ -4223,7 +4223,7 @@ def reload_battle_detail():
         "target": [9, 12],
         "enemy_hp": 180 * (1.5 if save['hard'] else 1),
         "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊漢字正確的平假名讀音",
+        "description": "以滑鼠點擊漢字正確的平假名讀音",
     },
     # 13 (kanji - Directions)
     {
@@ -4266,7 +4266,7 @@ def reload_battle_detail():
         "target": [9, 12],
         "enemy_hp": 180 * (1.5 if save['hard'] else 1),
         "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "將正確的方向漢字拖拉至對應的中文意思旁",
+        "description": "將正確的方向漢字拖拉至對應的中文意思旁",
     },
     # 14 (MC - Body & People)
     {
@@ -4316,7 +4316,7 @@ def reload_battle_detail():
         "target": [10, 13],
         "enemy_hp": 200 * (1.5 if save['hard'] else 1),
         "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊漢字正確的平假名讀音",
+        "description": "以滑鼠點擊漢字正確的平假名讀音",
     },
     # 15 (Drag - Time & Periods)
     {
@@ -4359,7 +4359,7 @@ def reload_battle_detail():
         "target": [10, 13],
         "enemy_hp": 200 * (1.5 if save['hard'] else 1),
         "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "將正確的時間漢字拖拉至對應的中文意思旁",
+        "description": "將正確的時間漢字拖拉至對應的中文意思旁",
     },
     # 16 (MC - Adjectives)
     {
@@ -4409,7 +4409,7 @@ def reload_battle_detail():
         "target": [11, 14],
         "enemy_hp": 220 * (1.5 if save['hard'] else 1),
         "enemy_attack": 40 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊形容詞正確的平假名讀音",
+        "description": "以滑鼠點擊形容詞正確的平假名讀音",
     },
     # 17 (kanji to hiragana 1 )
     {
@@ -4457,7 +4457,7 @@ def reload_battle_detail():
         "target": [5, 7],
         "enemy_hp": 100 * (1.5 if save['hard'] else 1),
         "enemy_attack": 20 * (1.5 if save['hard'] else 1),
-        "discription": "以滑鼠點擊正確的選項",
+        "description": "以滑鼠點擊正確的選項",
     },
     # 18 (kanji - Days of the week)
     {
@@ -4500,7 +4500,7 @@ def reload_battle_detail():
         "target":[6, 7],
         "enemy_hp": 140 * (1.5 if save['hard'] else 1),
         "enemy_attack": 20 * (1.5 if save['hard'] else 1),
-        "discription": "將正確的星期拖拉至對應的中文意思旁",
+        "description": "將正確的星期拖拉至對應的中文意思旁",
     },
     # 19 (MC - Mid Boss "Tenma" - Grand Kanji Exam)
     {
@@ -4557,7 +4557,7 @@ def reload_battle_detail():
         "target": [20, 25],
         "enemy_hp": 400 * (1.5 if save['hard'] else 1),   # Requires 20 hits to defeat!
         "enemy_attack": 50 * (1.5 if save['hard'] else 1),
-        "discription": "中級Boss『天魔』降臨！點擊漢字正確的讀音！",
+        "description": "中級Boss『天魔』降臨！點擊漢字正確的讀音！",
     },
     # 20 (Sentence Order - Basic A is B)
     {
@@ -4650,7 +4650,7 @@ def reload_battle_detail():
         "target": [5, 6],
         "enemy_hp": 100 * (1.5 if save['hard'] else 1), # 5 hits to defeat
         "enemy_attack": 20 * (1.5 if save['hard'] else 1),
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+        "description": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
     },
     # 21 (Sentence Order - Particles を, に, へ)
     {
@@ -4681,7 +4681,7 @@ def reload_battle_detail():
         "target": [6, 7],
         "enemy_hp": 120 * (1.5 if save['hard'] else 1), # 6 hits to defeat
         "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+        "description": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
     },
     # 22 (Sentence Order - Subject + Object + Verb)
     {
@@ -4711,7 +4711,7 @@ def reload_battle_detail():
         "target": [7, 8],
         "enemy_hp": 140 * (1.5 if save['hard'] else 1), # 7 hits to defeat\
         "enemy_attack": 30 * (1.5 if save['hard'] else 1),
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+        "description": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
     },
     # 23 (Sentence Order - Expansion with Time & Location)
     {
@@ -4741,7 +4741,7 @@ def reload_battle_detail():
         "target": [8, 9],
         "enemy_hp": 160 * (1.5 if save['hard'] else 1), # 8 hits to defeat
         "enemy_attack": 40 * (1.5 if save['hard'] else 1),
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+        "description": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
     },
 
     #24 (masu to ru)
@@ -4756,7 +4756,7 @@ def reload_battle_detail():
         "enemy_hp": 140 * (1.5 if save['hard'] else 1),
         "enemy_attack": 30 * (1.5 if save['hard'] else 1),
         "curr_qs": None,
-        "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\nます形 → 辞書形",
+        "description": "以鍵盤輸入答案的羅馬拼音後，按Enter\nます形 → 辞書形",
     },
     # 25 (Input - Ru to Te Form)
     {
@@ -4770,7 +4770,7 @@ def reload_battle_detail():
         "enemy_hp": 180 * (1.5 if save['hard'] else 1),
         "enemy_attack": 30 * (1.5 if save['hard'] else 1),
         "curr_qs": None,
-        "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → て形",
+        "description": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → て形",
     },
     # 26 (Input - Ru to Nai Form)
     {
@@ -4784,7 +4784,7 @@ def reload_battle_detail():
         "enemy_hp": 200 * (1.5 if save['hard'] else 1),
         "enemy_attack": 40 * (1.5 if save['hard'] else 1),
         "curr_qs": None,
-        "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → ない形 (否定)",
+        "description": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → ない形 (否定)",
     },
     # 27 (Input - Ru to Ta Form)
     {
@@ -4798,7 +4798,7 @@ def reload_battle_detail():
         "enemy_hp": 220 * (1.5 if save['hard'] else 1),
         "enemy_attack": 40 * (1.5 if save['hard'] else 1),
         "curr_qs": None,
-        "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → た形 (過去式)",
+        "description": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → た形 (過去式)",
     },
     # 28 (Input - Ru to Kanou Form / Boss Fight)
     {
@@ -4812,7 +4812,7 @@ def reload_battle_detail():
         "enemy_hp": 400 * (1.5 if save['hard'] else 1),
         "enemy_attack": 50 * (1.5 if save['hard'] else 1),
         "curr_qs": None,
-        "discription": "【魔龍降臨】以鍵盤輸入羅馬拼音後，按Enter\n辞書形 → 可能形 (能/可以)",
+        "description": "【魔龍降臨】以鍵盤輸入羅馬拼音後，按Enter\n辞書形 → 可能形 (能/可以)",
     },
     # 29 chapter 4 Bad Ending (Stage 29)
     {
@@ -4826,7 +4826,7 @@ def reload_battle_detail():
         "enemy_hp": 260 * (1.5 if save['hard'] else 1),
         "enemy_attack": 50 * (1.5 if save['hard'] else 1),
         "curr_qs": None,
-        "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → 命令形 (強制...)",
+        "description": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → 命令形 (強制...)",
     },
     #30
     {
@@ -4840,7 +4840,7 @@ def reload_battle_detail():
         "enemy_hp": 280 * (1.5 if save['hard'] else 1),
         "enemy_attack": 60 * (1.5 if save['hard'] else 1),
         "curr_qs": None,
-        "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → 禁止形 (不准...)",
+        "description": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → 禁止形 (不准...)",
     },
     #31
     {
@@ -4870,7 +4870,7 @@ def reload_battle_detail():
         "target": [4, 5],
         "enemy_hp": 300 * (1.5 if save['hard'] else 1),
         "enemy_attack": 70 * (1.5 if save['hard'] else 1),
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+        "description": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
     },
     #32
     {
@@ -4884,7 +4884,7 @@ def reload_battle_detail():
         "enemy_hp": 320 * (1.5 if save['hard'] else 1),
         "enemy_attack": 75 * (1.5 if save['hard'] else 1),
         "curr_qs": None,
-        "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → 條件形 (ば形)",
+        "description": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → 條件形 (ば形)",
     },
     #33
     {
@@ -4898,7 +4898,7 @@ def reload_battle_detail():
         "enemy_hp": 500 * (1.5 if save['hard'] else 1),
         "enemy_attack": 80 * (1.5 if save['hard'] else 1),
         "curr_qs": None,
-        "discription": "【魔王降臨】以鍵盤輸入羅馬拼音後，按Enter\n辞書形 → 使役被動形 (被迫...)",
+        "description": "【魔王降臨】以鍵盤輸入羅馬拼音後，按Enter\n辞書形 → 使役被動形 (被迫...)",
     },
     # 34 chapter 4 True Ending (Stage 34)
     {
@@ -4912,7 +4912,7 @@ def reload_battle_detail():
         "enemy_hp": 260 * (1.5 if save['hard'] else 1),
         "enemy_attack": 50 * (1.5 if save['hard'] else 1),
         "curr_qs": None,
-        "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → 意向形 (一起...吧！)",
+        "description": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → 意向形 (一起...吧！)",
     },
     #35
     {
@@ -4941,7 +4941,7 @@ def reload_battle_detail():
         "target": [4, 5],
         "enemy_hp": 300 * (1.5 if save['hard'] else 1),
         "enemy_attack": 60 * (1.5 if save['hard'] else 1),
-        "discription": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
+        "description": "將單字拖入上方橫線組成正確句子，完成後按「詠唱」",
     },
     #36
     {
@@ -4955,7 +4955,7 @@ def reload_battle_detail():
         "enemy_hp": 320 * (1.5 if save['hard'] else 1),
         "enemy_attack": 65 * (1.5 if save['hard'] else 1),
         "curr_qs": None,
-        "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → 可能形 (能/可以)",
+        "description": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → 可能形 (能/可以)",
     },
     #37
     {
@@ -4969,7 +4969,7 @@ def reload_battle_detail():
         "enemy_hp": 340 * (1.5 if save['hard'] else 1),
         "enemy_attack": 70 * (1.5 if save['hard'] else 1),
         "curr_qs": None,
-        "discription": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → て形 (連續行動)",
+        "description": "以鍵盤輸入答案的羅馬拼音後，按Enter\n辞書形 → て形 (連續行動)",
     },
     #38
     {
@@ -4999,7 +4999,7 @@ def reload_battle_detail():
         "target": [5, 6],
         "enemy_hp": 800 * (1.5 if save['hard'] else 1), # Demon King has very high HP!
         "enemy_attack": 80 * (1.5 if save['hard'] else 1),
-        "discription": "【魔王降臨】將單字拖入橫線組成句子，發動最終詠唱！",
+        "description": "【魔王降臨】將單字拖入橫線組成句子，發動最終詠唱！",
     }
     ]
     return battle_detail
@@ -5383,12 +5383,12 @@ while running:
             pygame.draw.rect(screen, (0, 0, 0), transform_scale([79, 34, 204, 13]))
             pygame.draw.rect(screen, (255, 0, 0), transform_scale([79, 34, enemy_hp/battle_detail[stage]["enemy_hp"]*204, 13]))
 
-            # discription
+            # description
             pygame.draw.rect(screen, pygame.Color("#d9d9d9"), transform_scale([320, 0, 800, 80]))
             if(action == None):
                 text(screen, "選擇行動", (20, 20, 20), transform_scale([35])[0], transform_scale([720, 48]), "center")
             else:
-                text(screen, battle_detail[stage]["discription"], (20, 20, 20), transform_scale([35])[0], transform_scale([720, 48]), "center")
+                text(screen, battle_detail[stage]["description"], (20, 20, 20), transform_scale([35])[0], transform_scale([720, 48]), "center")
 
             # Q&A box
             pygame.draw.rect(screen, pygame.Color("#d9d9d9"), transform_scale([324, 552, 791, 408]))
@@ -5670,12 +5670,12 @@ while running:
             pygame.draw.rect(screen, (0, 0, 0), transform_scale([79, 34, 204, 13]))
             pygame.draw.rect(screen, (255, 0, 0), transform_scale([79, 34, enemy_hp/battle_detail[stage]["enemy_hp"]*204, 13]))
 
-            # discription
+            # description
             pygame.draw.rect(screen, pygame.Color("#d9d9d9"), transform_scale([320, 0, 800, 80]))
             if(action == None):
                 text(screen, "選擇行動", (20, 20, 20), transform_scale([35])[0], transform_scale([720, 48]), "center")
             else:
-                text(screen, battle_detail[stage]["discription"], (20, 20, 20), transform_scale([35])[0], transform_scale([720, 48]), "center")
+                text(screen, battle_detail[stage]["description"], (20, 20, 20), transform_scale([35])[0], transform_scale([720, 48]), "center")
 
 
             q_index = battle_detail[stage]["order"][question_num]
@@ -5954,7 +5954,6 @@ while running:
                             if question_num >= len(battle_detail[stage]["order"]):
                                 random.shuffle(battle_detail[stage]["order"])
                                 question_num = 0
-        # ... after the elif battle_detail[stage]["question_type"] == "input": block ...
         
         elif battle_detail[stage]["question_type"] == "Sentence_Order":
             # BG image
@@ -5979,7 +5978,7 @@ while running:
             if (action == None):
                 text(screen, "選擇行動", (20, 20, 20), transform_scale([35])[0], transform_scale([720, 48]), "center")
             else:
-                text(screen, battle_detail[stage]["discription"], (20, 20, 20), transform_scale([35])[0], transform_scale([720, 48]), "center")
+                text(screen, battle_detail[stage]["description"], (20, 20, 20), transform_scale([35])[0], transform_scale([720, 48]), "center")
 
             idle_times += 1
             if (idle_times >= fps*60*15 and not(save["achievement"][21])):
@@ -6374,12 +6373,12 @@ while running:
             pygame.draw.rect(screen, (0, 0, 0), transform_scale([79, 34, 204, 13]))
             pygame.draw.rect(screen, (255, 0, 0), transform_scale([79, 34, enemy_hp/battle_detail[stage]["enemy_hp"]*204, 13]))
 
-            # discription
+            # description
             pygame.draw.rect(screen, pygame.Color("#d9d9d9"), transform_scale([320, 0, 800, 80]))
             if(action == None):
                 text(screen, "選擇行動", (20, 20, 20), transform_scale([35])[0], transform_scale([720, 48]), "center")
             else:
-                text(screen, battle_detail[stage]["discription"], (20, 20, 20), transform_scale([35])[0], transform_scale([720, 48]), "center")
+                text(screen, battle_detail[stage]["description"], (20, 20, 20), transform_scale([35])[0], transform_scale([720, 48]), "center")
 
             pygame.draw.rect(screen, pygame.Color("#d9d9d9"), transform_scale([324, 702, 791, 258]))
 
