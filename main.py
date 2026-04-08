@@ -12,7 +12,7 @@ path = os.path.dirname(os.path.abspath(__file__)) + '/'
 # this is for running the executable file
 # path = os.path.dirname(os.path.realpath(sys.executable)) + '/'
 
-new_game = False
+new_game = True
 god_mod = True
 chapter_ranges =[(0, 8), (9, 19), (20, 28), (29, 38)] # (Start Stage, End Stage) for Ch 1, 2, 3, 4
 current_chapter = 0
@@ -1681,6 +1681,8 @@ def end_stage_achievement_check(recover_times, damage_taken_times, attack_times,
 
 def draw_achievemet_stack():
     if(achievement_stack[0][1] > 0):
+        if (achievement_stack[0][1] == fps):
+            play_sfx("achievememt")
         pygame.draw.rect(screen, [47, 47, 47], transform_scale([1040, 860, 400, 100]))
         pygame.draw.rect(screen, [0, 0, 0], transform_scale([1040, 860, 400, 100]), transform_scale([4])[0])
         pygame.draw.rect(screen, [178, 250, 178], transform_scale([1050, 870, 80, 80]))
@@ -1717,7 +1719,7 @@ if new_game:
         'hard': False,
         'chosen_path': 0,
     }
-if god_mod:
+if god_mod and new_game:
     save = {
         'unlock': [True]*39,
         'star': [0]*39,
@@ -2391,7 +2393,8 @@ SFX_FILES = {
     "damage": "media/sfx_hurt.wav",       # When enemy attacks player
     "error": "media/sfx_error.wav",         # Wrong answer buzzer
     "win": "media/sfx_win.wav",             # Stage clear
-    "lose": "media/sfx_lose.wav"            # Player dies
+    "lose": "media/sfx_lose.wav",           # Player dies
+    "achievememt": "media/steam-achievement.wav"            # Player dies
 }
 # 2. Dictionary to hold the loaded sound objects
 loaded_sfx = {}
@@ -5026,20 +5029,21 @@ s = pygame.Surface((WIDTH,HEIGHT))
 s.fill((0,0,0))
 br = transform_scale([4])[0]
 
+play_bgm("mondamusic_bgm.mp3")
 # main game loop
 while running: 
     # print(int(idle_times/fps/60), idle_times/fps-60*int(idle_times/fps/60))
     if game_state == "menu":
 
         # BG image
-        screen.blit(images[25 if save["star"][-1]>0 or save['hard'] else 0], (0, 0))
+        screen.blit(images[25 if (save["star"][33] > 0 or save["star"][38] > 0) or save['hard'] else 0], (0, 0))
 
         # Title text
         r = images[1].get_rect()
         r.center = screen.get_rect().center
         screen.blit(images[1], r)
 
-        if save["star"][-1] > 0:
+        if (save["star"][33] > 0 or save["star"][38] > 0):
             pygame.draw.rect(screen, [186, 148, 45], transform_scale([570, 550, 300, 50]), border_radius=br)
             pygame.draw.rect(screen, [0, 0, 0], transform_scale([570, 550, 300, 50]), br, br)
             text(screen, "輪迴", [0, 0, 0], 30, transform_scale([570+150, 550+25]), "center")
@@ -5121,7 +5125,7 @@ while running:
                                         achievement_stack.append([29, fps])
                                         write()
                     else:
-                        if click_check(pygame.mouse.get_pos(), transform_scale([570, 550, 300, 50])) and save["star"][-1] > 0:  # new round
+                        if click_check(pygame.mouse.get_pos(), transform_scale([570, 550, 300, 50])) and (save["star"][33] > 0 or save["star"][38] > 0):  # new round
                             confirming = True
                         if click_check(pygame.mouse.get_pos(), transform_scale([570, 620, 300, 50])):  #start
                             if (time == 0):
