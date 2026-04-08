@@ -1578,12 +1578,14 @@ def end_stage_achievement_check(recover_times, damage_taken_times, attack_times,
         achievement_stack.append([5, fps])
 
 
-    if (damage_taken_times == 0 and not(save["achievement"][6])):
+    if (player_hp == 100 and not(save["achievement"][6])):
         save["achievement"][6] = True
         achievement_stack.append([6, fps])
+
     if (0 < player_hp <= 100*0.1 and not(save["achievement"][7])):
         save["achievement"][7] = True
         achievement_stack.append([7, fps])
+
     if(attack_times == 0 and not(save["achievement"][20])):
         save["achievement"][20] = True
         achievement_stack.append([20, fps])
@@ -1601,7 +1603,7 @@ def end_stage_achievement_check(recover_times, damage_taken_times, attack_times,
 
 
         
-    if(stage == 8):
+    if(stage == 8 and player_hp > 0):
         if not(save["achievement"][10]):
             save["achievement"][10] = True
             achievement_stack.append([10, fps])
@@ -1610,7 +1612,7 @@ def end_stage_achievement_check(recover_times, damage_taken_times, attack_times,
             achievement_stack.append([14, fps])
             save["obtain"][0] = True
             save["obtain_w_n"] = save["obtain"][0]+save["obtain"][2]+save["obtain"][4]+save["obtain"][6]
-    elif(stage == 19):
+    elif(stage == 19 and player_hp > 0):
         if not(save["achievement"][12]):
             save["achievement"][12] = True
             achievement_stack.append([12, fps])
@@ -1624,10 +1626,10 @@ def end_stage_achievement_check(recover_times, damage_taken_times, attack_times,
             achievement_stack.append([17, fps])
             save["obtain"][3] = True
             save["obtain_e_n"] = save["obtain"][1]+save["obtain"][3]+save["obtain"][5]+save["obtain"][6]
-    elif(stage == 23 and not(save["achievement"][11])):
+    elif(stage == 23 and not(save["achievement"][11]) and player_hp > 0):
         save["achievement"][11] = True
         achievement_stack.append([11, fps])
-    elif(stage == 28 and not(save["achievement"][19])):
+    elif(stage == 28 and not(save["achievement"][19]) and player_hp > 0):
         if not(save["achievement"][13]):
             save["achievement"][13] = True
             achievement_stack.append([13, fps])
@@ -1636,35 +1638,35 @@ def end_stage_achievement_check(recover_times, damage_taken_times, attack_times,
             achievement_stack.append([19, fps])
             save["obtain"][5] = True
             save["obtain_e_n"] = save["obtain"][1]+save["obtain"][3]+save["obtain"][5]+save["obtain"][6]
-    elif(stage == 33 and not(save["achievement"][23])):
+    elif(stage == 33 and player_hp > 0 and not(save["achievement"][23])):
         save["achievement"][23] = True
         achievement_stack.append([23, fps])
-    elif(stage == 34 and not(save["achievement"][18])):
+    elif(stage == 34 and player_hp > 0 and not(save["achievement"][18])):
         save["achievement"][18] = True
         achievement_stack.append([18, fps])
         save["obtain"][4] = True
         save["obtain_w_n"] = save["obtain"][0]+save["obtain"][2]+save["obtain"][4]+save["obtain"][6]
-    elif(stage == 38 and not(save["achievement"][24])):
+    elif(stage == 38 and player_hp > 0 and not(save["achievement"][24])):
         save["achievement"][24] = True
         achievement_stack.append([24, fps])
-    elif(stage == 5 and not(save["achievement"][15])):
+    elif(stage == 5 and player_hp > 0 and not(save["achievement"][15])):
         save["achievement"][15] = True
         achievement_stack.append([15, fps])
         save["obtain"][1] = True
         save["obtain_e_n"] = save["obtain"][1]+save["obtain"][3]+save["obtain"][5]+save["obtain"][6]
         
 
-    if(stage == 33 and not(save["achievement"][27]) and save['equipt'][0] == 7 and save['equipt'][1] == 8): # here, no equiptment
+    if(stage == 33 and not(save["achievement"][27]) and save['equipt'][0] == 7 and save['equipt'][1] == 8 and player_hp > 0): # here, no equiptment
         save["achievement"][27] = True
         achievement_stack.append([27])
-    elif(stage == 38 and not(save["achievement"][27]) and save['equipt'][0] == 7 and save['equipt'][1] == 8): # here, no equiptment
+    elif(stage == 38 and not(save["achievement"][27]) and save['equipt'][0] == 7 and save['equipt'][1] == 8 and player_hp > 0): # here, no equiptment
         save["achievement"][27] = True
         achievement_stack.append([27, fps])
         
-    if(stage == 33 and not(save["achievement"][26]) and save['hard']): # here, 2nd round
+    if(stage == 33 and not(save["achievement"][26]) and save['hard'] and player_hp > 0): # here, 2nd round
         save["achievement"][26] = True
         achievement_stack.append([26, fps])
-    elif(stage == 38 and not(save["achievement"][26]) and save['hard']): # here, 2nd round
+    elif(stage == 38 and not(save["achievement"][26]) and save['hard'] and player_hp > 0): # here, 2nd round
         save["achievement"][26] = True
         achievement_stack.append([26, fps])
     
