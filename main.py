@@ -13,7 +13,7 @@ path = os.path.dirname(os.path.abspath(__file__)) + '/'
 # path = os.path.dirname(os.path.realpath(sys.executable)) + '/'
 
 new_game = True
-god_mod = True
+god_mod = False
 chapter_ranges =[(0, 8), (9, 19), (20, 28), (29, 38)] # (Start Stage, End Stage) for Ch 1, 2, 3, 4
 current_chapter = 0
 
@@ -1600,10 +1600,13 @@ def end_stage_achievement_check(recover_times, damage_taken_times, attack_times,
             save['last_play'] = [stage, 1]
     else:
         save['last_play'] = [0, 0]
-
-
         
-    if(stage == 8 and player_hp > 0):
+    if(stage == 5 and player_hp > 0 and not(save["achievement"][15])):
+        save["achievement"][15] = True
+        achievement_stack.append([15, fps])
+        save["obtain"][1] = True
+        save["obtain_e_n"] = save["obtain"][1]+save["obtain"][3]+save["obtain"][5]+save["obtain"][6]
+    elif(stage == 8 and player_hp > 0):
         if not(save["achievement"][10]):
             save["achievement"][10] = True
             achievement_stack.append([10, fps])
@@ -1649,12 +1652,6 @@ def end_stage_achievement_check(recover_times, damage_taken_times, attack_times,
     elif(stage == 38 and player_hp > 0 and not(save["achievement"][24])):
         save["achievement"][24] = True
         achievement_stack.append([24, fps])
-    elif(stage == 5 and player_hp > 0 and not(save["achievement"][15])):
-        save["achievement"][15] = True
-        achievement_stack.append([15, fps])
-        save["obtain"][1] = True
-        save["obtain_e_n"] = save["obtain"][1]+save["obtain"][3]+save["obtain"][5]+save["obtain"][6]
-        
 
     if(stage == 33 and not(save["achievement"][27]) and save['equipt'][0] == 7 and save['equipt'][1] == 8 and player_hp > 0): # here, no equiptment
         save["achievement"][27] = True
@@ -1790,7 +1787,6 @@ verb = {
 
         "verb_saseru_rareru": ["いらせられる", "行かせられる", "来させられる", "帰らせられる", "出掛けさせられる", "させられる", "食べさせられる", "飲ませられる", "見させられる", "読ませられる", "書かせられる", "聞かせられる", "買わせられる", "起きさせられる", "寝させられる", "乗らせられる", "売らせられる", "降(お)りさせられる", "迎えさせられる", "会わせられる", "働かせられる", "休ませられる", "入らせられる", "出させられる", "着させられる", "履かせられる", "脱がせられる", "座らせられる", "渡らせられる", "通らせられる", "置かせられる", "使わせられる", "刺させられる", "押させられる", "話させられる", "言わせられる", "替えさせられる", "走らせられる", "戻らせられる", "泊まらせられる", "止めさせられる", "教えさせられる", "習わせられる", "泳がせられる", "弾かせられる", "開けさせられる", "閉めさせられる", "付けさせられる", "消させられる", "洗わせられる", "入れさせられる", "取らせられる", "打たせられる", "作らせられる", "焼かせられる", "歩かせられる", "曲げさせられる"],
         "verb_saseru_rareru_hira": ["いさせられる", "いかせられる", "こさせられる", "かえらせられる", "でかけさせられる", "させられる", "たべさせられる", "のませられる", "みさせられる", "よませられる", "かかせられる", "きかせられる", "かわせられる", "おきさせられる", "ねさせられる", "のらせられる", "うらせられる", "おりさせられる", "むかえさせられる", "あわせられる", "はたらかせられる", "やすませられる", "はいらせられる", "でさせられる", "きさせられる", "はかせられる", "ぬがせられる", "すわらせられる", "わたらせられる", "とおらせられる", "おかせられる", "つかわせられる", "ささせられる", "おさせられる", "はなさせられる", "いわせられる", "かえさせられる", "はしらせられる", "もどらせられる", "とまらせられる", "やめさせられる", "おしえさせられる", "ならわせられる", "およがせられる", "ひかせられる", "あけさせられる", "しめさせられる", "つけさせられる", "けさせられる", "あらわせられる", "いれさせられる", "とらせられる", "うたせられる", "つくらせられる", "やかせられる", "あるかせられる", "まがらせられる"],
-
 }
 # basic initialize of variables for the game loop
 game_state = "menu"          # this determine initial gamestate
@@ -2060,7 +2056,6 @@ images = [
     pygame.transform.scale(pygame.image.load(path+"media/demon_general4.png"), transform_scale([532, 572])),           #86
     pygame.transform.scale(pygame.image.load(path+"media/forest_night.png"), transform_scale([1440, 1080])),           #87
     pygame.transform.scale(pygame.image.load(path+"media/forest_village.png"), transform_scale([1440, 1080])),         #88
-
 ]                                                              
 
 # 基礎言靈魔法表示: <あ>
@@ -2378,7 +2373,6 @@ dialog = [
         (1, '赤真：\n為了守護莉子，守護這個世界！接招吧，魔王！！'),
         (3, '【結局：勇者】\n赤真擊殺魔王凱旋而歸，成為世間傳頌的勇者。\n其後與女主角莉子共度餘生，直至二人壽終正寢。')
     ]
-
 ]
 
 
@@ -3728,9 +3722,6 @@ battle_detail = [
         "enemy_attack": 80 * (1.5 if save['hard'] else 1),
         "description": "【魔王降臨】將單字拖入橫線組成句子，發動最終詠唱！",
     }
-    
-    
-
 ]
 
 def reload_battle_detail():
@@ -5365,7 +5356,6 @@ while running:
             if(time > fps*1 and menu_action == "back"):
                 game_state = "menu"
                 time=0
-
 
     if game_state == "playing":
         
@@ -7122,68 +7112,67 @@ while running:
             time=0
 
     {
-#  小回復術士 
-# 在一個關卡來使用回復魔法的次數達5次
-#  普通回復術士 
-# 在一個關卡來使用回復魔法的次數達15次
-#  大回復術士 
-# 在一個關卡來使用回復魔法的次數達30次
-#  滿分 
-# 在一個關卡中收集到3顆星星
-#  半天星 
-# 收集到所有星星的一半
-#  滿天星 
-# 收集到所有星星
-#  無損 
-# 以無被攻擊過的狀態下通過其中一關卡
-#  根性 
-# 已剩餘一成血以下的狀態下通過其中一關卡
-#  超越 
-# 在輸入類關卡中輸入的字數超出框架範圍
-#  努力不懈 
-# 連續挑戰同一關卡並獲勝5次
-#  五十音 
-# 已完成全部有關五十音的關卡
-#  次序很重要 
-# 已完成有關句子順序的關卡
-#  熟悉的字(? 
-# 已完成有關漢字的關卡
-#  英雄級冒險者 
-# 已完成有關動詞轉換的關卡
-#  C級武器 
-# 已獲得名匠靈珠
-#  C級防具
-# 已獲得皇家守衛套裝
-#  A級武器 
-# 已獲得天魔杖
-#  A級防具
-# 已獲得天神甲
-#  SS級武器 
-# 已獲得言靈天杖
-#  SS級防具
-# 已獲得不滅龍鱗
-#  一拳不行就多一拳 
-# 只用滑鼠點擊殺死魔物
-#  等到天荒地老 
-# 在其中一關卡內維持什麼都不做超過15分鐘
-#  對不起 
-# 殺死莉子
-#  犧牲小我 
-# 已達成「犧牲小我」結局
-#  守護一切 
-# 已達成「守護一切」結局
-#  再度轉生 
-# 開啟二周目
-#  迎難而上 
-# 通關二周目
-#  史上最強豆腐 
-# 不穿任何裝備通關最終關卡
-#  一拳超人 
-# 只用一擊擊敗魔物
-#  勇者 
-# 已獲得所有成就
+        #  小回復術士 
+        # 在一個關卡來使用回復魔法的次數達5次
+        #  普通回復術士 
+        # 在一個關卡來使用回復魔法的次數達15次
+        #  大回復術士 
+        # 在一個關卡來使用回復魔法的次數達30次
+        #  滿分 
+        # 在一個關卡中收集到3顆星星
+        #  半天星 
+        # 收集到所有星星的一半
+        #  滿天星 
+        # 收集到所有星星
+        #  無損 
+        # 以無被攻擊過的狀態下通過其中一關卡
+        #  根性 
+        # 已剩餘一成血以下的狀態下通過其中一關卡
+        #  超越 
+        # 在輸入類關卡中輸入的字數超出框架範圍
+        #  努力不懈 
+        # 連續挑戰同一關卡並獲勝5次
+        #  五十音 
+        # 已完成全部有關五十音的關卡
+        #  次序很重要 
+        # 已完成有關句子順序的關卡
+        #  熟悉的字(? 
+        # 已完成有關漢字的關卡
+        #  英雄級冒險者 
+        # 已完成有關動詞轉換的關卡
+        #  C級武器 
+        # 已獲得名匠靈珠
+        #  C級防具
+        # 已獲得皇家守衛套裝
+        #  A級武器 
+        # 已獲得天魔杖
+        #  A級防具
+        # 已獲得天神甲
+        #  SS級武器 
+        # 已獲得言靈天杖
+        #  SS級防具
+        # 已獲得不滅龍鱗
+        #  一拳不行就多一拳 
+        # 只用滑鼠點擊殺死魔物
+        #  等到天荒地老 
+        # 在其中一關卡內維持什麼都不做超過15分鐘
+        #  對不起 
+        # 殺死莉子
+        #  犧牲小我 
+        # 已達成「犧牲小我」結局
+        #  守護一切 
+        # 已達成「守護一切」結局
+        #  再度轉生 
+        # 開啟二周目
+        #  迎難而上 
+        # 通關二周目
+        #  史上最強豆腐 
+        # 不穿任何裝備通關最終關卡
+        #  一拳超人 
+        # 只用一擊擊敗魔物
+        #  勇者 
+        # 已獲得所有成就
     }
-
     if game_state == "achievement":
         # BG image
         screen.blit(images[0], (0, 0))
@@ -7242,5 +7231,6 @@ while running:
 
     if(len(achievement_stack)>0):
         draw_achievemet_stack()
+
     clock.tick(fps)
     pygame.display.update()
