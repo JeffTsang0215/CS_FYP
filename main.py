@@ -7,10 +7,10 @@ pygame.font.init()
 pygame.mixer.init()
 
 # this is for running python main.py
-# path = os.path.dirname(os.path.abspath(__file__)) + '/'
+path = os.path.dirname(os.path.abspath(__file__)) + '/'
 
 # this is for running the executable file
-path = os.path.dirname(os.path.realpath(sys.executable)) + '/'
+# path = os.path.dirname(os.path.realpath(sys.executable)) + '/'
 
 new_game = True
 god_mod = True
@@ -5120,12 +5120,11 @@ while running:
                                 if not(save["achievement"][25]):
                                     save["achievement"][25] = True
                                     achievement_stack.append([25, fps])
-                                    write()
                                 if (not(save["achievement"][29])):
                                     if(sum(save["achievement"]) == 29):
                                         save["achievement"][29] = True
                                         achievement_stack.append([29, fps])
-                                        write()
+                                write()
                     else:
                         if click_check(pygame.mouse.get_pos(), transform_scale([570, 550, 300, 50])) and (save["star"][33] > 0 or save["star"][38] > 0):  # new round
                             confirming = True
