@@ -1642,7 +1642,7 @@ def end_stage_achievement_check(recover_times, damage_taken_times, attack_times,
         if not(save["achievement"][13]):
             save["achievement"][13] = True
             achievement_stack.append([13, fps])
-        if not(save["achievement"][19] and save["chosen_path"] == 34):
+        if not(save["achievement"][19]) and save["chosen_path"] == 34:
             save["achievement"][19] = True
             achievement_stack.append([19, fps])
             save["obtain"][5] = True
