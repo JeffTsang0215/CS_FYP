@@ -6,19 +6,14 @@ pygame.init()
 pygame.font.init()
 pygame.mixer.init()
 
-if getattr(sys, 'frozen', False):
-    # When running as compiled EXE, PyInstaller extracts files to a temp folder _MEIPASS
-    path = sys._MEIPASS + '/'
-else:
-    # When running as a normal Python script
-    path = os.path.dirname(os.path.abspath(__file__)) + '/'
+
 # this is for running python main.py
-#path = os.path.dirname(os.path.abspath(__file__)) + '/'
+path = os.path.dirname(os.path.abspath(__file__)) + '/'
 
 # this is for running the executable file
 # path = os.path.dirname(os.path.realpath(sys.executable)) + '/'
 
-new_game = False
+new_game = True
 god_mod = True
 chapter_ranges =[(0, 8), (9, 19), (20, 28), (29, 38)] # (Start Stage, End Stage) for Ch 1, 2, 3, 4
 current_chapter = 0
