@@ -2477,18 +2477,15 @@ dialog_num = 0
 #sound effect
 SFX_FILES = {
     "click": "media/sfx_click.wav",
-    "attack": "media/sfx_attack.wav",       # When player attacks
-    "heal": "media/sfx_heal.wav",           # When player uses recover
-    "damage": "media/sfx_hurt.wav",       # When enemy attacks player
-    "error": "media/sfx_error.wav",         # Wrong answer buzzer
-    "win": "media/sfx_win.wav",             # Stage clear
-    "lose": "media/sfx_lose.wav",           # Player dies
-    "achievememt": "media/steam-achievement.wav"            # Player dies
+    "attack": "media/sfx_attack.wav",                       # When player attacks
+    "heal": "media/sfx_heal.wav",                           # When player uses recover
+    "damage": "media/sfx_hurt.wav",                         # When enemy attacks player
+    "win": "media/sfx_win.wav",                             # Stage clear
+    "lose": "media/sfx_lose.wav",                           # Player dies
+    "achievememt": "media/steam-achievement.wav"            # When player unlocks an achievement
 }
-# 2. Dictionary to hold the loaded sound objects
 loaded_sfx = {}
 
-# 3. Pre-load all sound effects safely
 for name, filename in SFX_FILES.items():
     try:
         filepath = path + filename
@@ -2501,7 +2498,6 @@ for name, filename in SFX_FILES.items():
         loaded_sfx[name] = None
         print(f"Error loading {name} sound: {e}")
 
-# 4. The main function to play a sound effect
 def play_sfx(name):
     sound = loaded_sfx.get(name)
     if sound:
@@ -2522,12 +2518,10 @@ def play_bgm(filename):
     except Exception as e:
         print(f"Error playing BGM: {e}")
 
-# 6. Function to instantly update BGM volume when dragging the option slider
 def update_bgm_volume():
     volume = save.get('music', 100) / 100.0
     pygame.mixer.music.set_volume(volume)
 
-#this part is for drag type
 draggable_rects = []
 draggable_rects_initial_pos = []
 dragged_item_index = -1
@@ -7201,6 +7195,7 @@ while running:
         if(changing == 'music'):
             a, b, r = transform_scale([380, 380+680, 680])
             save["music"] = min(max(0, int((pos[0]-a)/r*100)), 100)
+            update_bgm_volume()
         elif(changing == 'sound'):
             a, b, r = transform_scale([380, 380+680, 680])
             save["sound"] = min(max(0, int((pos[0]-a)/r*100)), 100)
