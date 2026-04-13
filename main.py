@@ -18,7 +18,7 @@ else:
 # this is for running the executable file
 # path = os.path.dirname(os.path.realpath(sys.executable)) + '/'
 
-new_game = True
+new_game = False
 god_mod = True
 chapter_ranges =[(0, 8), (9, 19), (20, 28), (29, 38)] # (Start Stage, End Stage) for Ch 1, 2, 3, 4
 current_chapter = 0
@@ -1661,7 +1661,7 @@ def end_stage_achievement_check(recover_times, damage_taken_times, attack_times,
 
     if(stage == 33 and not(save["achievement"][27]) and save['equipt'][0] == 7 and save['equipt'][1] == 8 and player_hp > 0): # here, no equiptment
         save["achievement"][27] = True
-        achievement_stack.append([27])
+        achievement_stack.append([27, fps])
     elif(stage == 38 and not(save["achievement"][27]) and save['equipt'][0] == 7 and save['equipt'][1] == 8 and player_hp > 0): # here, no equiptment
         save["achievement"][27] = True
         achievement_stack.append([27, fps])
