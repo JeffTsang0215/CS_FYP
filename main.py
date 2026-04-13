@@ -6,9 +6,14 @@ pygame.init()
 pygame.font.init()
 pygame.mixer.init()
 
-
+if getattr(sys, 'frozen', False):
+    # Looks for 'media' folder right next to the .exe
+    path = os.path.dirname(os.path.realpath(sys.executable)) + '/'
+else:
+    # Looks for 'media' folder next to the .py script
+    path = os.path.dirname(os.path.abspath(__file__)) + '/'
 # this is for running python main.py
-path = os.path.dirname(os.path.abspath(__file__)) + '/'
+#path = os.path.dirname(os.path.abspath(__file__)) + '/'
 
 # this is for running the executable file
 # path = os.path.dirname(os.path.realpath(sys.executable)) + '/'
