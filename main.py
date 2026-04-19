@@ -6,17 +6,11 @@ pygame.init()
 pygame.font.init()
 pygame.mixer.init()
 
-if getattr(sys, 'frozen', False):
-    # Looks for 'media' folder right next to the .exe
-    path = os.path.dirname(os.path.realpath(sys.executable)) + '/'
-else:
-    # Looks for 'media' folder next to the .py script
-    path = os.path.dirname(os.path.abspath(__file__)) + '/'
 # this is for running python main.py
-#path = os.path.dirname(os.path.abspath(__file__)) + '/'
+path = os.path.dirname(os.path.abspath(__file__)) + '/'
 
 # this is for running the executable file
-# path = os.path.dirname(os.path.realpath(sys.executable)) + '/'
+#path = os.path.dirname(os.path.realpath(sys.executable)) + '/'
 
 new_game = True
 god_mod = True
@@ -27,8 +21,11 @@ save = {
     'unlock': [True] + [False]*38,
     'star': [0]*39,
     'current_stage': 0,
-    'achievement': [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False],
-    'obtain': [False, False, False, False, False, False, False],  # C_weapon, C_equiptment, A_weapon, A_equiptment, SS_weapon, SS_equiptment, ex_weapon
+    'achievement': [False, False, False, False, False, False, False, False, False, False, 
+    False, False, False, False, False, False, False, False, False, False, False, False, 
+    False, False, False, False, False, False, False, False],
+    'obtain': [False, False, False, False, False, False, False],  
+    # C_weapon, C_equiptment, A_weapon, A_equiptment, SS_weapon, SS_equiptment, ex_weapon
     'equipt': [7, 8],  # weapon, equiptment. 7, 8 mean empty. number follow 'obtain' index
     'obtain_w_n': 0,
     'obtain_e_n': 0,
@@ -608,8 +605,6 @@ STAGE_TITLES = [
 
 def draw_stage_selection(n):
 
-
-
     match n:
         case 0:
             bg = 10
@@ -621,7 +616,6 @@ def draw_stage_selection(n):
                 next = 18
             prev = None
         case 1:
-            # later stage can just copy from this
             # bg image
             bg = 10
             # image at center, if havent unlock then will show the gray version
@@ -629,7 +623,6 @@ def draw_stage_selection(n):
                 center = 17
             else:
                 center = 18
-            # the title text, but in image format, Jeff can help gen
             title = 40
             #image of next stage
             if n+1 < len(save["unlock"]):
@@ -1490,7 +1483,7 @@ def draw_stage_selection(n):
     if prev is not None:
         screen.blit(images[prev], transform_scale([-600, 198]))
         
-    # Draw next stage image on the right (if it exists)
+    # Draw next stage image on the right (if exists)
     if next is not None:
         screen.blit(images[next], transform_scale([1194, 198]))
 
@@ -1555,25 +1548,25 @@ def draw_story_bg(stage):
         case 28:
             screen.blit(images[3], (0, 0))
         case 29:
-            screen.blit(images[3], (0, 0))
+            screen.blit(images[25], (0, 0))
         case 30:
-            screen.blit(images[3], (0, 0))
+            screen.blit(images[25], (0, 0))
         case 31:
-            screen.blit(images[3], (0, 0))
+            screen.blit(images[25], (0, 0))
         case 32:
-            screen.blit(images[3], (0, 0))
+            screen.blit(images[25], (0, 0))
         case 33:
-            screen.blit(images[3], (0, 0))
+            screen.blit(images[25], (0, 0))
         case 34:
-            screen.blit(images[3], (0, 0))
+            screen.blit(images[25], (0, 0))
         case 35:
-            screen.blit(images[3], (0, 0))
+            screen.blit(images[25], (0, 0))
         case 36:
-            screen.blit(images[3], (0, 0))
+            screen.blit(images[25], (0, 0))
         case 37:
-            screen.blit(images[3], (0, 0))  
+            screen.blit(images[25], (0, 0))  
         case 38:
-            screen.blit(images[3], (0, 0))             
+            screen.blit(images[25], (0, 0))             
 
 def end_stage_achievement_check(recover_times, damage_taken_times, attack_times, click_times, player_hp, idle_times, stage):
     if(sum(save["star"]) >= int(34*3/2) and not(save["achievement"][4])):
@@ -2391,7 +2384,7 @@ dialog = [
     ],
     #stage 28
     [
-        (3, '天空突然一暗，四周空氣瞬間凝結，一頭毀天滅地的魔龍出現。'),
+        (3, '天空突然一暗，四周空氣瞬間凝結，\n一頭毀天滅地的魔龍出現。'),
         (1, '赤真：\n這...這是什麼怪物？！好可怕的壓迫感...\n這絕不是我們現在能抗衡的等級！牠發現我們了！'),
         (2, '莉子：\n赤真！冷靜點！為了活下去，你必須掌握「可能形」！\n這能讓你的言靈突破極限，化「不可能」為「可能」！'),
         (2, '莉子：\n聽好了！第一類動詞，把字尾的「う段音」改成「え段音」，再加上「る」。\n例如：行く(いく) 變成 行ける(いける)！'),
@@ -6274,9 +6267,9 @@ while running:
                                     correct = False
                             
                             elif reset_rect.collidepoint(event.pos):
-                                # play_sfx("click")  # Uncomment this if you added the sound manager!
+                                play_sfx("click")
                                 idle_times = 0
-                                current_sentence_indices.clear() # This empties the answer line instantly!
+                                current_sentence_indices.clear() 
                             
                             elif not is_dragging:
                                 for i, rect in enumerate(draggable_rects):
